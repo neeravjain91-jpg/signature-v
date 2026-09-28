@@ -1,0 +1,18 @@
+{
+  "manifest_version": "1.0.0",
+  "created_at": "2026-09-28T10:39:48.269495+00:00",
+  "model_version": "2.0.0-champion",
+  "checkpoint_file": "champion_siamese_model.pt",
+  "checkpoint_sha256": "4ce23874c1091a0bde492768ef884eaf09fb13390045cf09590e72071cf0b550",
+  "config_file": "champion_config.json",
+  "config_sha256": "165c8f21db6e7fa5b359f46a64ff2f61c9e8335c6aea1b15ede2f6d0750ebfb8",
+  "threshold_file": "champion_threshold.json",
+  "threshold_sha256": "87cae15933b974486b878b2d802f8b470f41554af525fab8da43265e3f9eff86",
+  "frozen_threshold": 0.7394,
+  "preprocessing_version": "1.0.0-otsu-crop-pad",
+  "training_seed": 42,
+  "train_cohort": "Writers 1-35 (7000 pairs + 35% HNM)",
+  "validation_cohort": "Writers 36-45 (1200 pairs)",
+  "frozen_test_cohort": "Writers 46-55 (1200 pairs)",
+  "zero_leakage_attestation": true
+}

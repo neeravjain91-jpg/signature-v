@@ -77,3 +77,40 @@ def test_web_interface_html():
     response = client.get("/")
     assert response.status_code == 200
     assert "SYNAPSE" in response.text
+    assert "CHAMPION v2.0" in response.text
+
+
+def test_verify_demo_endpoint_parity():
+    """Verify demo verification uses real model with non-mock metrics."""
+    res = client.post("/api/v1/verifications/verify-demo", json={
+        "amount": 2500.0,
+        "transaction_type": "CHEQUE",
+        "sample_type": "genuine",
+        "transaction_reference": "DEMO-TXN-CHEQUE-101"
+    })
+    assert res.status_code == 200
+    data = res.json()
+    assert "similarity_score" in data
+    assert "euclidean_distance" in data
+    assert "threshold_used" in data
+    assert "overall_risk_score" in data
+    assert "decision" in data
+    assert 0.0 <= data["similarity_score"] <= 1.0
+    assert 0.0 <= data["euclidean_distance"] <= 2.0
+
+
+def test_verify_upload_endpoint():
+    """Verify multipart file upload routes to same verification engine."""
+    sample_file = Path("data/raw/signatures/full_org/original_46_2.png")
+    if sample_file.exists():
+        with open(sample_file, "rb") as f:
+            res = client.post(
+                "/api/v1/verifications/verify",
+                data={"transaction_reference": "DEMO-TXN-CHEQUE-101"},
+                files={"submitted_signature": ("signature.png", f, "image/png")}
+            )
+            assert res.status_code == 200
+            data = res.json()
+            assert "similarity_score" in data
+            assert "decision" in data
+

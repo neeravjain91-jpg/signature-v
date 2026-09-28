@@ -1,0 +1,10 @@
+{
+  "calibrated_threshold": 0.7394,
+  "frozen_threshold": 0.7394,
+  "calibration_dataset": "Writers 36-45 (1200 pairs)",
+  "calibration_date": "2026-09-28T10:39:48.269495+00:00",
+  "val_eer": 0.2158,
+  "val_auc": 0.8631,
+  "val_skilled_far": 0.3167,
+  "val_tar": 0.7833
+}

@@ -1,0 +1,11 @@
+writer_id,total_pairs,mean_genuine_sim,mean_skilled_sim,mean_random_sim,tar,frr,skilled_far,random_far,overall_far,difficulty_rating
+46,120,0.7552,0.5882,0.5395,0.5833,0.4167,0.1111,0.0,0.0667,Low-Fraud-Vulnerability
+47,120,0.7371,0.5263,0.5429,0.4667,0.5333,0.0278,0.0,0.0167,Low-Fraud-Vulnerability
+48,120,0.8963,0.8644,0.5792,1.0,0.0,1.0,0.2083,0.6833,High-Fraud-Vulnerability
+49,120,0.8642,0.7823,0.5577,1.0,0.0,0.7778,0.0833,0.5,High-Fraud-Vulnerability
+50,120,0.8474,0.7172,0.3667,1.0,0.0,0.3333,0.0,0.2,Medium
+51,120,0.8599,0.5933,0.5925,0.9833,0.0167,0.0278,0.125,0.0667,Low-Fraud-Vulnerability
+52,120,0.8962,0.8491,0.453,1.0,0.0,0.9722,0.0,0.5833,High-Fraud-Vulnerability
+53,120,0.8444,0.8185,0.5511,0.8833,0.1167,0.9444,0.0417,0.5833,High-Fraud-Vulnerability
+54,120,0.7372,0.5957,0.5608,0.4833,0.5167,0.0833,0.0417,0.0667,Low-Fraud-Vulnerability
+55,120,0.8743,0.7294,0.5785,0.95,0.05,0.4722,0.2083,0.3667,Medium
