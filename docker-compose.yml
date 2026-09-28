@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine
+    container_name: synapse-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: synapse_admin
+      POSTGRES_PASSWORD: synapse_secure_password_2026
+      POSTGRES_DB: synapse_bank_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synapse_admin -d synapse_bank_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # SYNAPSE Backend API Service
+  api:
+    build: .
+    container_name: synapse-api
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://synapse_admin:synapse_secure_password_2026@db:5432/synapse_bank_db
+      SYNAPSE_JWT_SECRET: synapse-super-secret-production-key-2026-biometrics
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./data:/app/data
+    command: >
+      sh -c "alembic upgrade head &&
+             python database/seed_demo_data.py &&
+             uvicorn api.main:app --host 0.0.0.0 --port 8000"
+
+volumes:
+  postgres_data:

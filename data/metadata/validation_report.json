@@ -1,0 +1,30 @@
+{
+  "status": "PASS_WITH_WARNINGS",
+  "total_files_examined": 2642,
+  "valid_files_count": 2640,
+  "anomalies_detected": {
+    "zero_byte_files": [],
+    "unreadable_corrupt_files": [],
+    "unsupported_format_files": [
+      {
+        "path": "full_org\\Thumbs.db",
+        "extension": ".db",
+        "note": "OS metadata file (ignored during training)"
+      },
+      {
+        "path": "full_forg\\Thumbs.db",
+        "extension": ".db",
+        "note": "OS metadata file (ignored during training)"
+      }
+    ],
+    "undersized_dimension_files": [],
+    "extreme_aspect_ratio_files": [],
+    "duplicate_hashes": {}
+  },
+  "writer_completeness": {
+    "missing_writers": [],
+    "incomplete_genuine": {},
+    "incomplete_forged": {}
+  },
+  "statistics": {}
+}

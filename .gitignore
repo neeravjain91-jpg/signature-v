@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+.pytest_cache/
+
+# Large binary datasets & images (keep structure and pairs)
+data/raw/
+data/processed/
+*.zip
+*.rar
+*.tar.gz
+
+# Retain metadata and pairs
+!data/metadata/
+!data/pairs/
+
+# SQLite databases
+*.db
+*.sqlite3
+
+# OS metadata
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,66 @@
+dataset:
+  name: "CEDAR"
+  full_name: "CEDAR Offline Handwritten Signature Dataset"
+  institution: "Center of Excellence for Document Analysis and Recognition (CEDAR), State University of New York at Buffalo"
+  sources:
+    official_rar: "https://cedar.buffalo.edu/NIJ/data/signatures.rar"
+    official_zip_mirror: "https://github.com/nikostsagk/signature-verification/releases/download/cedar/cedar_dataset.zip"
+  license: "Public for academic and scientific research with proper attribution"
+  citation: "Kalera, M. K., Srihari, S., & Xu, A. (2004). Offline signature verification and identification using distance statistics. IEEE Transactions on Pattern Analysis and Machine Intelligence, 26(10), 1390-1396."
+
+paths:
+  raw_dir: "data/raw/signatures"
+  processed_dir: "data/processed"
+  pairs_dir: "data/pairs"
+  metadata_dir: "data/metadata"
+
+structure:
+  genuine_dir_name: "full_org"
+  forged_dir_name: "full_forg"
+  genuine_filename_regex: "^original_(\\d+)_(\\d+)\\.png$"
+  forged_filename_regex: "^forgeries_(\\d+)_(\\d+)\\.png$"
+  expected_writers: 55
+  expected_genuine_per_writer: 24
+  expected_forged_per_writer: 24
+  expected_total_signatures: 2640
+
+split:
+  methodology: "writer_independent"
+  evaluation_protocol: "open_set"
+  random_seed: 42
+  train_writers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+  val_writers: [36, 37, 38, 39, 40, 41, 42, 43, 44, 45]
+  test_writers: [46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
+
+pairs:
+  random_seed: 42
+  pairs_per_writer_train:
+    positive_pairs_per_writer: 100
+    skilled_negative_pairs_per_writer: 60
+    random_negative_pairs_per_writer: 40
+  pairs_per_writer_eval:
+    positive_pairs_per_writer: 60
+    skilled_negative_pairs_per_writer: 36
+    random_negative_pairs_per_writer: 24
+
+validation:
+  min_file_size_bytes: 500
+  supported_extensions: [".png", ".jpg", ".jpeg", ".tiff", ".bmp"]
+  min_width: 50
+  min_height: 20
+  min_aspect_ratio: 0.1
+  max_aspect_ratio: 10.0
+  check_duplicates: true
+
+preprocessing:
+  target_height: 155
+  target_width: 220
+  grayscale: true
+  denoise: true
+  denoise_method: "gaussian"  # or median
+  denoise_kernel: 3
+  background_normalization: "otsu_threshold"
+  invert_colors: true         # White strokes on black background (standard for CNN feature extraction)
+  crop_bounding_box: true
+  bbox_padding: 8
+  normalize_float: true       # Values scaled to [0.0, 1.0]
