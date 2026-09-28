@@ -40,11 +40,11 @@
             </nav>
 
             <div class="flex items-center space-x-3">
-                <div class="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 text-xs">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span class="font-medium">REST API CONNECTED</span>
+                <div id="conn-badge" class="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 text-xs">
+                    <span id="conn-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="conn-status-text" class="font-medium">REST API CONNECTED</span>
                 </div>
-                <a href="/docs" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center gap-1.5">
+                <a id="api-docs-link" href="http://localhost:8000/docs" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center gap-1.5">
                     <i class="fa-solid fa-book"></i> API Docs
                 </a>
             </div>
@@ -60,14 +60,14 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Verifications</p>
-                        <h3 id="stat-total-verif" class="text-3xl font-bold text-white mt-1">1,248</h3>
+                        <h3 id="stat-total-verif" class="text-3xl font-bold text-white mt-1">--</h3>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
                         <i class="fa-solid fa-calculator text-lg"></i>
                     </div>
                 </div>
                 <p class="text-xs text-slate-400 mt-4 flex items-center">
-                    <span class="text-emerald-400 font-semibold mr-1"><i class="fa-solid fa-arrow-up"></i> +12%</span> this week
+                    <span class="text-cyan-400 font-semibold mr-1"><i class="fa-solid fa-database"></i> Live Database</span> ledger count
                 </p>
             </div>
 
@@ -75,7 +75,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Automated Pass Rate</p>
-                        <h3 id="stat-verified-rate" class="text-3xl font-bold text-emerald-400 mt-1">84.7%</h3>
+                        <h3 id="stat-verified-rate" class="text-3xl font-bold text-emerald-400 mt-1">--%</h3>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
                         <i class="fa-solid fa-circle-check text-lg"></i>
@@ -88,20 +88,20 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Fraud Block Rate</p>
-                        <h3 id="stat-rejected-rate" class="text-3xl font-bold text-rose-400 mt-1">83.8%</h3>
+                        <h3 id="stat-rejected-rate" class="text-3xl font-bold text-rose-400 mt-1">--%</h3>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center">
                         <i class="fa-solid fa-shield-halved text-lg"></i>
                     </div>
                 </div>
-                <p class="text-xs text-slate-400 mt-4">Random impostor defense rate</p>
+                <p class="text-xs text-slate-400 mt-4">Impostor & high-risk block rate</p>
             </div>
 
             <div class="glass-card rounded-2xl p-5 relative overflow-hidden">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Officer Escalations</p>
-                        <h3 id="stat-pending-reviews" class="text-3xl font-bold text-amber-400 mt-1">3</h3>
+                        <h3 id="stat-pending-reviews" class="text-3xl font-bold text-amber-400 mt-1">--</h3>
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
                         <i class="fa-solid fa-user-clock text-lg"></i>
@@ -134,7 +134,10 @@
                     <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 space-y-3">
                         <div class="flex justify-between items-center text-xs text-slate-400">
                             <span class="font-semibold uppercase tracking-wider">Transaction Context</span>
-                            <span class="mono text-cyan-400">DEMO-TXN-CHEQUE-101</span>
+                            <div>
+                                <span class="mono text-cyan-400 font-semibold">DEMO-TXN-CHEQUE-101</span>
+                                <span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Synthetic Demo Txn</span>
+                            </div>
                         </div>
                         <div class="grid grid-cols-2 gap-3 text-sm">
                             <div>
@@ -163,20 +166,26 @@
                     <div class="grid grid-cols-2 gap-4">
                         <!-- Reference Specimen -->
                         <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800 text-center">
-                            <span class="text-xs font-semibold text-slate-400 block mb-2">Registered Specimen</span>
-                            <div class="h-28 bg-black/60 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden p-2">
-                                <img id="preview-ref" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='40'><text x='10' y='25' fill='%23666' font-size='12'>Specimen A</text></svg>" class="max-h-full max-w-full object-contain filter invert opacity-90">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-semibold text-slate-400">Registered Specimen</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">CEDAR Enrolled</span>
                             </div>
-                            <span class="text-[10px] text-slate-400 block mt-1.5">Vault ID: <span class="mono text-slate-300">sig_primary_v1</span></span>
+                            <div class="h-28 bg-black/60 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden p-2">
+                                <img id="preview-ref" src="http://localhost:8000/api/v1/sample-image?type=genuine_ref" alt="Enrolled Specimen" class="max-h-full max-w-full object-contain filter invert opacity-90">
+                            </div>
+                            <span class="text-[10px] text-slate-400 block mt-1.5">Vault ID: <span class="mono text-slate-300">sig_primary_v1 (w46)</span></span>
                         </div>
 
                         <!-- Submitted Signature -->
                         <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800 text-center">
-                            <span class="text-xs font-semibold text-slate-400 block mb-2">Questioned Cheque</span>
-                            <div class="h-28 bg-black/60 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden p-2">
-                                <img id="preview-sub" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='40'><text x='10' y='25' fill='%23666' font-size='12'>Cheque B</text></svg>" class="max-h-full max-w-full object-contain filter invert opacity-90">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-semibold text-slate-400">Questioned Signature</span>
+                                <span id="label-sub-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">Genuine Sample</span>
                             </div>
-                            <span class="text-[10px] text-slate-400 block mt-1.5">Format: <span class="mono text-slate-300">300 DPI PNG</span></span>
+                            <div class="h-28 bg-black/60 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden p-2">
+                                <img id="preview-sub" src="http://localhost:8000/api/v1/sample-image?type=genuine_sub" alt="Questioned Signature" class="max-h-full max-w-full object-contain filter invert opacity-90">
+                            </div>
+                            <span class="text-[10px] text-slate-400 block mt-1.5">Specimen: <span id="label-sub-type" class="mono text-slate-300">Questioned (Genuine)</span></span>
                         </div>
                     </div>
 
@@ -190,7 +199,10 @@
                 <div class="lg:col-span-7 bg-slate-900/60 rounded-2xl p-6 border border-slate-800 flex flex-col justify-between">
                     <div>
                         <div class="flex justify-between items-center mb-6">
-                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Verification Verdict</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Verification Verdict</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">PyTorch Siamese ResNet-18</span>
+                            </div>
                             <span id="decision-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">
                                 READY TO VERIFY
                             </span>
@@ -201,13 +213,13 @@
                             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 text-center">
                                 <span class="text-xs text-slate-400 block mb-1">Siamese Similarity</span>
                                 <span id="res-similarity" class="text-2xl font-bold mono text-white">--</span>
-                                <span class="text-[10px] text-slate-400 block mt-0.5">Threshold: <span class="mono text-cyan-400">0.7691</span></span>
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Threshold: <span id="active-threshold-val" class="mono text-cyan-400">0.7691</span></span>
                             </div>
 
                             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 text-center">
                                 <span class="text-xs text-slate-400 block mb-1">Euclidean Distance</span>
                                 <span id="res-distance" class="text-2xl font-bold mono text-white">--</span>
-                                <span class="text-[10px] text-slate-400 block mt-0.5">Metric: L2 Hypersphere</span>
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Formula: <span class="mono text-slate-300">S = 1 - D/2</span></span>
                             </div>
 
                             <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 text-center">
@@ -261,8 +273,8 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-slate-800 flex justify-between items-center text-[11px] text-slate-400">
-                        <span>Architecture: <span class="text-slate-300 font-medium">Siamese-ResNet-Contrastive</span></span>
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px] text-slate-400">
+                        <span>Model: <span class="text-slate-300 font-medium">SiameseSignatureNet (Calibrated 0.7691)</span></span>
                         <span>Traceability ID: <span id="trace-id" class="mono text-cyan-400">N/A</span></span>
                     </div>
                 </div>
@@ -297,16 +309,8 @@
                         </tr>
                     </thead>
                     <tbody id="queue-table-body" class="divide-y divide-slate-800/60">
-                        <tr class="hover:bg-slate-800/40">
-                            <td class="py-3.5 px-4 mono text-cyan-400 font-medium">DEMO-TXN-WIRE-102</td>
-                            <td class="py-3.5 px-4 text-white font-medium">Alice Walker</td>
-                            <td class="py-3.5 px-4 mono text-amber-400 font-semibold">$48,000.00</td>
-                            <td class="py-3.5 px-4 mono">0.7250</td>
-                            <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">0.4650 (MEDIUM)</span></td>
-                            <td class="py-3.5 px-4 text-slate-400">High-value tier + borderline stroke similarity</td>
-                            <td class="py-3.5 px-4 text-right">
-                                <button onclick="openReviewModal('DEMO-TXN-WIRE-102', 'Alice Walker', 48000, 0.7250, '17776cb4-b026-4828-9567-2b0bc5cf917a')" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded font-medium transition">Adjudicate</button>
-                            </td>
+                        <tr>
+                            <td colspan="7" class="py-4 text-center text-slate-500">Loading pending reviews from database...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -396,82 +400,159 @@
 
     <!-- Interactive Script -->
     <script>
+        // Automatic API origin resolution: use port 8000 if running on 5173 or another dev server
+        const API_BASE = (window.location.port === '8000') ? '' : 'http://localhost:8000';
         let currentVerificationId = null;
+        let currentPreset = 'genuine';
 
-        function loadPreset(type) {
-            if (type === 'genuine') {
-                document.getElementById('input-amount').value = '4500.00';
-                document.getElementById('input-type').value = 'CHEQUE';
-                document.getElementById('preview-ref').src = '/api/v1/sample-image?type=genuine_ref';
-                document.getElementById('preview-sub').src = '/api/v1/sample-image?type=genuine_sub';
-            } else {
-                document.getElementById('input-amount').value = '15000.00';
-                document.getElementById('input-type').value = 'WITHDRAWAL';
-                document.getElementById('preview-ref').src = '/api/v1/sample-image?type=genuine_ref';
-                document.getElementById('preview-sub').src = '/api/v1/sample-image?type=forged_sub';
+        // 1. Health check & model metadata sync
+        async function checkBackendHealth() {
+            const badge = document.getElementById('conn-badge');
+            const dot = document.getElementById('conn-dot');
+            const text = document.getElementById('conn-status-text');
+            const docsLink = document.getElementById('api-docs-link');
+
+            if (docsLink) {
+                docsLink.href = API_BASE + '/docs';
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/v1/health`);
+                if (res.ok) {
+                    const data = await res.json();
+                    badge.className = 'flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 text-xs';
+                    dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                    text.innerText = 'FASTAPI LIVE (PORT 8000)';
+
+                    if (data.active_model && data.active_model.threshold) {
+                        const threshEl = document.getElementById('active-threshold-val');
+                        if (threshEl) threshEl.innerText = Number(data.active_model.threshold).toFixed(4);
+                    }
+                } else {
+                    throw new Error('Non-200 status');
+                }
+            } catch (err) {
+                badge.className = 'flex items-center space-x-2 px-3 py-1 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-400 text-xs';
+                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+                text.innerText = 'BACKEND OFFLINE (PORT 8000)';
             }
         }
 
+        // 2. Real-time Dashboard KPI Metrics Loader
+        async function loadDashboardMetrics() {
+            try {
+                const res = await fetch(`${API_BASE}/api/v1/dashboard/metrics`);
+                if (res.ok) {
+                    const data = await res.json();
+                    const s = data.summary;
+                    document.getElementById('stat-total-verif').innerText = s.total_verifications.toLocaleString();
+                    document.getElementById('stat-verified-rate').innerText = s.pass_rate_pct.toFixed(1) + '%';
+                    document.getElementById('stat-rejected-rate').innerText = s.rejection_rate_pct.toFixed(1) + '%';
+                    document.getElementById('stat-pending-reviews').innerText = s.manual_review_count;
+
+                    if (data.active_model && data.active_model.threshold) {
+                        const threshEl = document.getElementById('active-threshold-val');
+                        if (threshEl) threshEl.innerText = Number(data.active_model.threshold).toFixed(4);
+                    }
+                }
+            } catch (err) {
+                console.warn('Dashboard metrics fetch error:', err);
+            }
+        }
+
+        // 3. Preset Selector (Switching Genuine vs Forged Pair)
+        function loadPreset(type) {
+            currentPreset = type;
+            const amountInput = document.getElementById('input-amount');
+            const typeInput = document.getElementById('input-type');
+            const previewRef = document.getElementById('preview-ref');
+            const previewSub = document.getElementById('preview-sub');
+            const subBadge = document.getElementById('label-sub-badge');
+            const subType = document.getElementById('label-sub-type');
+
+            if (type === 'genuine') {
+                amountInput.value = '4500.00';
+                typeInput.value = 'CHEQUE';
+                previewRef.src = `${API_BASE}/api/v1/sample-image?type=genuine_ref`;
+                previewSub.src = `${API_BASE}/api/v1/sample-image?type=genuine_sub`;
+                if (subBadge) {
+                    subBadge.className = 'text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800';
+                    subBadge.innerText = 'Genuine Sample';
+                }
+                if (subType) subType.innerText = 'Questioned (Genuine)';
+            } else {
+                amountInput.value = '15000.00';
+                typeInput.value = 'WITHDRAWAL';
+                previewRef.src = `${API_BASE}/api/v1/sample-image?type=genuine_ref`;
+                previewSub.src = `${API_BASE}/api/v1/sample-image?type=forged_sub`;
+                if (subBadge) {
+                    subBadge.className = 'text-[9px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800';
+                    subBadge.innerText = 'Skilled Forgery';
+                }
+                if (subType) subType.innerText = 'Questioned (Forgery)';
+            }
+        }
+
+        // 4. End-to-End AI Biometric Verification (Calls Real Siamese Network via FastAPI)
         async function executeVerification() {
             const btn = document.getElementById('btn-verify');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Neural Network...';
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running Siamese Inference...';
             btn.disabled = true;
 
             try {
                 const amount = parseFloat(document.getElementById('input-amount').value);
                 const txnType = document.getElementById('input-type').value;
 
-                // Call FastAPI verification endpoint
-                const formData = new FormData();
-                formData.append('transaction_reference', 'DEMO-TXN-CHEQUE-101');
-                
-                // Fetch mock image blob
-                const res = await fetch('/api/v1/verifications/verify-demo', {
+                const payload = {
+                    amount: amount,
+                    transaction_type: txnType,
+                    sample_type: currentPreset,
+                    transaction_reference: 'DEMO-TXN-CHEQUE-101'
+                };
+
+                const res = await fetch(`${API_BASE}/api/v1/verifications/verify-demo`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ amount: amount, transaction_type: txnType })
+                    body: JSON.stringify(payload)
                 });
 
                 if (res.ok) {
                     const data = await res.json();
                     renderResults(data);
+                    // Refresh DB metrics and review queue
+                    loadDashboardMetrics();
+                    loadPendingReviews();
                 } else {
-                    // Fallback visual simulation for frontend standalone
-                    simulateResults(amount, txnType);
+                    const errDetail = await res.text();
+                    alert(`Verification Error (${res.status}): ${errDetail}`);
+                    const badge = document.getElementById('decision-badge');
+                    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800';
+                    badge.innerText = 'API ERROR (' + res.status + ')';
                 }
             } catch (err) {
-                simulateResults(parseFloat(document.getElementById('input-amount').value), document.getElementById('input-type').value);
+                alert(`Backend Connection Failure: Unable to reach FastAPI at ${API_BASE}. Ensure "python -m uvicorn api.main:app --port 8000" is running.`);
+                const badge = document.getElementById('decision-badge');
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800';
+                badge.innerText = 'BACKEND OFFLINE';
             } finally {
-                btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Run AI Biometric Verification';
+                btn.innerHTML = originalBtnHtml;
                 btn.disabled = false;
             }
         }
 
-        function simulateResults(amount, txnType) {
-            const isGenuine = amount < 10000;
-            const sim = isGenuine ? (0.88 + Math.random() * 0.08) : (0.35 + Math.random() * 0.25);
-            const dist = (1 - sim) * 2.0;
-            const overallRisk = isGenuine ? (0.05 + Math.random() * 0.12) : (0.75 + Math.random() * 0.15);
-            
-            const payload = {
-                similarity_score: sim.toFixed(4),
-                euclidean_distance: dist.toFixed(4),
-                overall_risk_score: overallRisk.toFixed(4),
-                risk_level: overallRisk < 0.25 ? 'LOW' : (overallRisk < 0.60 ? 'MEDIUM' : 'HIGH'),
-                decision: overallRisk < 0.25 ? 'VERIFIED' : (overallRisk < 0.60 ? 'MANUAL_REVIEW' : 'REJECTED'),
-                similarity_component: (1 - sim).toFixed(4),
-                image_quality_component: '0.0800',
-                transaction_risk_component: (amount > 10000 ? 0.65 : 0.15).toFixed(4),
-                request_reference: 'REQ-' + Math.random().toString(36).substring(2, 10).toUpperCase()
-            };
-            renderResults(payload);
-        }
-
+        // 5. Render ML Verification & Risk Assessment Results
         function renderResults(data) {
-            document.getElementById('res-similarity').innerText = data.similarity_score;
-            document.getElementById('res-distance').innerText = data.euclidean_distance;
-            document.getElementById('res-overall-risk').innerText = data.overall_risk_score;
+            document.getElementById('res-similarity').innerText = Number(data.similarity_score).toFixed(4);
+            document.getElementById('res-distance').innerText = Number(data.euclidean_distance).toFixed(4);
+            document.getElementById('res-overall-risk').innerText = Number(data.overall_risk_score).toFixed(4);
+            document.getElementById('res-risk-tier').innerText = `Tier: ${data.risk_level}`;
             document.getElementById('trace-id').innerText = data.request_reference;
+
+            if (data.threshold_used) {
+                const threshEl = document.getElementById('active-threshold-val');
+                if (threshEl) threshEl.innerText = Number(data.threshold_used).toFixed(4);
+            }
 
             const badge = document.getElementById('decision-badge');
             if (data.decision === 'VERIFIED') {
@@ -482,39 +563,50 @@
                 badge.innerText = 'MANUAL REVIEW (ESCALATE)';
             } else {
                 badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800';
-                badge.innerText = 'REJECTED (FRAUD DETECTED)';
+                badge.innerText = 'REJECTED (FRAUD BLOCKED)';
             }
 
-            // Progress bars
-            const simPct = Math.min(100, parseFloat(data.similarity_component || (1 - data.similarity_score)) * 100);
-            document.getElementById('bar-val-sim').innerText = (simPct / 100).toFixed(4);
+            // Decomposition progress bars
+            const simComp = data.similarity_component !== undefined ? Number(data.similarity_component) : Math.max(0, 1 - Number(data.similarity_score));
+            const simPct = Math.min(100, Math.max(0, simComp * 100));
+            document.getElementById('bar-val-sim').innerText = simComp.toFixed(4);
             document.getElementById('bar-fill-sim').style.width = simPct + '%';
 
-            const qualPct = Math.min(100, parseFloat(data.image_quality_component || 0.08) * 100);
-            document.getElementById('bar-val-quality').innerText = (qualPct / 100).toFixed(4);
+            const qualComp = data.image_quality_component !== undefined ? Number(data.image_quality_component) : 0.08;
+            const qualPct = Math.min(100, Math.max(0, qualComp * 100));
+            document.getElementById('bar-val-quality').innerText = qualComp.toFixed(4);
             document.getElementById('bar-fill-quality').style.width = qualPct + '%';
 
-            const txnPct = Math.min(100, parseFloat(data.transaction_risk_component || 0.20) * 100);
-            document.getElementById('bar-val-txn').innerText = (txnPct / 100).toFixed(4);
+            const txnComp = data.transaction_risk_component !== undefined ? Number(data.transaction_risk_component) : 0.20;
+            const txnPct = Math.min(100, Math.max(0, txnComp * 100));
+            document.getElementById('bar-val-txn').innerText = txnComp.toFixed(4);
             document.getElementById('bar-fill-txn').style.width = txnPct + '%';
 
-            // Factors
+            // Explainable Audit Rationale Codes from Backend
             const tagContainer = document.getElementById('factor-tags');
-            if (data.decision === 'VERIFIED') {
-                tagContainer.innerHTML = '<span class="px-2.5 py-1 rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-800">AUTHENTIC_STROKE_CORRELATION</span><span class="px-2.5 py-1 rounded-md bg-blue-950/80 text-blue-400 border border-blue-800">NORMAL_AMOUNT_TIER</span>';
-            } else if (data.decision === 'MANUAL_REVIEW') {
-                tagContainer.innerHTML = '<span class="px-2.5 py-1 rounded-md bg-amber-950/80 text-amber-400 border border-amber-800">BORDERLINE_SIMILARITY_MATCH</span><span class="px-2.5 py-1 rounded-md bg-amber-950/80 text-amber-400 border border-amber-800">HIGH_VALUE_TIER</span>';
+            if (data.risk_factors && data.risk_factors.length > 0) {
+                tagContainer.innerHTML = data.risk_factors.map(f => {
+                    const isSevere = f.code.includes('SEVERE') || f.code.includes('POOR') || f.code.includes('FRAUD') || f.code.includes('IRREVERSIBLE');
+                    const isWarn = f.code.includes('BORDERLINE') || f.code.includes('HIGH_VALUE');
+                    const cls = isSevere ? 'bg-rose-950/80 text-rose-400 border-rose-800' :
+                                isWarn ? 'bg-amber-950/80 text-amber-400 border-amber-800' :
+                                'bg-emerald-950/80 text-emerald-400 border-emerald-800';
+                    return `<span title="${f.description}" class="px-2.5 py-1 rounded-md border text-xs cursor-help ${cls}">${f.code}</span>`;
+                }).join('');
+            } else if (data.decision === 'VERIFIED') {
+                tagContainer.innerHTML = '<span class="px-2.5 py-1 rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-800">AUTHENTIC_STROKE_CORRELATION</span>';
             } else {
-                tagContainer.innerHTML = '<span class="px-2.5 py-1 rounded-md bg-rose-950/80 text-rose-400 border border-rose-800">SEVERE_STROKE_DISCREPANCY</span><span class="px-2.5 py-1 rounded-md bg-rose-950/80 text-rose-400 border border-rose-800">HIGH_FRAUD_PROBABILITY</span>';
+                tagContainer.innerHTML = '<span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 border border-slate-700">NO_ABNORMAL_FACTORS</span>';
             }
         }
 
+        // 6. Officer Adjudication Queue
         function openReviewModal(txnRef, custName, amount, sim, verifId) {
             currentVerificationId = verifId;
             document.getElementById('modal-txn-ref').innerText = txnRef;
             document.getElementById('modal-cust-name').innerText = custName;
-            document.getElementById('modal-amount').innerText = '$' + amount.toLocaleString('en-US', {minimumFractionDigits: 2});
-            document.getElementById('modal-sim').innerText = sim;
+            document.getElementById('modal-amount').innerText = '$' + Number(amount).toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('modal-sim').innerText = Number(sim).toFixed(4);
             document.getElementById('modal-comment').value = '';
             document.getElementById('review-modal').classList.remove('hidden');
         }
@@ -531,7 +623,7 @@
             }
 
             try {
-                await fetch('/api/v1/verifications/' + currentVerificationId + '/adjudicate', {
+                const res = await fetch(`${API_BASE}/api/v1/verifications/${currentVerificationId}/adjudicate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -540,33 +632,111 @@
                         review_comment: comment
                     })
                 });
-            } catch(e) {}
 
-            alert('Transaction successfully adjudicated: ' + decision);
-            closeReviewModal();
-            loadPendingReviews();
+                if (res.ok) {
+                    alert(`Transaction successfully adjudicated: ${decision}`);
+                    closeReviewModal();
+                    loadPendingReviews();
+                    loadDashboardMetrics();
+                } else {
+                    const err = await res.text();
+                    alert(`Adjudication error: ${err}`);
+                }
+            } catch(e) {
+                alert('Connection failure submitting officer adjudication.');
+            }
         }
 
         async function loadPendingReviews() {
+            const tableBody = document.getElementById('queue-table-body');
             try {
-                const res = await fetch('/api/v1/verifications/pending-reviews');
+                const res = await fetch(`${API_BASE}/api/v1/verifications/pending-reviews`);
                 if (res.ok) {
                     const data = await res.json();
                     document.getElementById('stat-pending-reviews').innerText = data.pending_reviews_count;
+
+                    if (!data.queue || data.queue.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="7" class="py-5 text-center text-slate-500 font-medium">No pending transactions requiring officer review.</td></tr>';
+                        return;
+                    }
+
+                    tableBody.innerHTML = data.queue.map(item => `
+                        <tr class="hover:bg-slate-800/40">
+                            <td class="py-3.5 px-4 mono text-cyan-400 font-medium">${item.transaction_reference}</td>
+                            <td class="py-3.5 px-4 text-white font-medium">${item.customer_name}</td>
+                            <td class="py-3.5 px-4 mono text-amber-400 font-semibold">$${Number(item.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                            <td class="py-3.5 px-4 mono">${Number(item.similarity_score).toFixed(4)}</td>
+                            <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">${Number(item.overall_risk_score || 0).toFixed(4)} (${item.risk_level || 'ESCALATED'})</span></td>
+                            <td class="py-3.5 px-4 text-slate-400">Escalated for biometric/financial compliance review</td>
+                            <td class="py-3.5 px-4 text-right">
+                                <button onclick="openReviewModal('${item.transaction_reference}', '${item.customer_name}', ${item.amount}, ${item.similarity_score}, '${item.verification_id}')" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded font-medium transition">Adjudicate</button>
+                            </td>
+                        </tr>
+                    `).join('');
                 }
-            } catch (e) {}
+            } catch (e) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-rose-400">Unable to load review queue: backend unavailable.</td></tr>';
+            }
         }
 
+        // 7. Regulatory Non-Repudiation Audit Trail Lookup
         async function fetchAuditTrail() {
             const txnRef = document.getElementById('lookup-txn-ref').value.trim();
+            const container = document.getElementById('audit-trail-container');
+            if (!txnRef) return;
+
             try {
-                const res = await fetch('/api/v1/audit/trail/' + txnRef);
+                const res = await fetch(`${API_BASE}/api/v1/audit/trail/${encodeURIComponent(txnRef)}`);
                 if (res.ok) {
                     const data = await res.json();
-                    alert('Audit Trail verified for ' + txnRef + ': Current status is ' + data.current_status);
+                    let historyHtml = '';
+                    if (data.verification_history && data.verification_history.length > 0) {
+                        historyHtml = data.verification_history.map((vh, i) => `
+                            <div class="relative pl-6 border-l-2 border-slate-800 ml-4 space-y-4">
+                                <div class="relative">
+                                    <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-cyan-500"></span>
+                                    <p class="font-semibold text-white">Verification Attempt #${i + 1} — Verdict: <span class="mono text-cyan-400">${vh.decision}</span></p>
+                                    <p class="text-slate-400 mt-0.5">Similarity: <span class="mono text-emerald-400">${Number(vh.similarity_score).toFixed(4)}</span> | Risk Score: <span class="mono text-amber-400">${vh.risk_assessment ? Number(vh.risk_assessment.overall_risk_score).toFixed(4) : 'N/A'}</span></p>
+                                </div>
+                                ${vh.manual_reviews && vh.manual_reviews.length > 0 ? vh.manual_reviews.map(mr => `
+                                <div class="relative">
+                                    <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-amber-500"></span>
+                                    <p class="font-semibold text-white">Officer Adjudication: <span class="mono text-amber-400">${mr.decision}</span> by ${mr.reviewer}</p>
+                                    <p class="text-slate-400 mt-0.5">Comment: "${mr.comment}" (${new Date(mr.reviewed_at).toLocaleString()})</p>
+                                </div>
+                                `).join('') : ''}
+                            </div>
+                        `).join('');
+                    } else {
+                        historyHtml = '<p class="text-slate-500 pl-4">No verification history recorded for this voucher yet.</p>';
+                    }
+
+                    container.innerHTML = `
+                        <div class="flex items-center space-x-3 text-sm">
+                            <span class="text-slate-400">Active Voucher:</span>
+                            <span class="mono font-bold text-white">${data.transaction_reference}</span>
+                            <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-semibold">${data.current_status}</span>
+                            <span class="text-xs text-slate-400 font-mono">$${data.amount.toLocaleString()} ${data.currency} (${data.type})</span>
+                        </div>
+                        <div class="mt-4 space-y-4 text-xs text-slate-300">
+                            ${historyHtml}
+                        </div>
+                    `;
+                } else {
+                    alert(`Audit Trail Lookup Failed: Transaction "${txnRef}" not found.`);
                 }
-            } catch (e) {}
+            } catch (e) {
+                alert('Connection error fetching audit trail.');
+            }
         }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkBackendHealth();
+            loadDashboardMetrics();
+            loadPendingReviews();
+            loadPreset('genuine');
+        });
     </script>
 </body>
 </html>

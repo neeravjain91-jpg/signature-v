@@ -147,7 +147,9 @@ class BankingVerificationService:
         self,
         transaction_reference: str,
         submitted_signature_path: str,
-        request_reference: Optional[str] = None
+        request_reference: Optional[str] = None,
+        amount_override: Optional[float] = None,
+        transaction_type_override: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Executes end-to-end verification of a questioned transaction signature:
@@ -224,12 +226,14 @@ class BankingVerificationService:
         euclidean_dist = model_res["euclidean_distance"]
 
         # 6. Evaluate Multi-Factor Fraud Risk
+        eval_amount = float(amount_override) if amount_override is not None else float(txn.amount)
+        eval_txn_type = transaction_type_override if transaction_type_override else txn.transaction_type
         risk_res = self.risk_engine.evaluate(
             similarity_score=sim_score,
             model_threshold=active_thresh,
             image_quality_score=quality_score,
-            amount=float(txn.amount),
-            transaction_type=txn.transaction_type,
+            amount=eval_amount,
+            transaction_type=eval_txn_type,
             behavioral_score=0.05
         )
 
@@ -312,6 +316,10 @@ class BankingVerificationService:
             "overall_risk_score": risk_res["overall_risk_score"],
             "risk_level": risk_res["risk_level"],
             "risk_factors": risk_res["risk_factors"],
+            "similarity_component": risk_res["similarity_component"],
+            "image_quality_component": risk_res["image_quality_component"],
+            "transaction_risk_component": risk_res["transaction_risk_component"],
+            "behavioral_component": risk_res["behavioral_component"],
             "transaction_status": txn.status,
             "request_reference": req_ref
         }

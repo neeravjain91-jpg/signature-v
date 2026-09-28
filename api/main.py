@@ -90,6 +90,8 @@ class AdjudicateReviewRequest(BaseModel):
 class VerifyDemoRequest(BaseModel):
     amount: float = Field(4500.0, examples=[4500.0])
     transaction_type: str = Field("CHEQUE", examples=["CHEQUE"])
+    sample_type: Optional[str] = Field(None, examples=["genuine", "forged"])
+    transaction_reference: Optional[str] = Field("DEMO-TXN-CHEQUE-101", examples=["DEMO-TXN-CHEQUE-101"])
 
 
 # =============================================================================
@@ -268,12 +270,19 @@ async def verify_signature(
 def verify_demo(payload: VerifyDemoRequest, db: Session = Depends(get_db)):
     """Interactive demo verification for testing live from the web dashboard."""
     service = BankingVerificationService(db_session=db)
-    # Use real test signature from disk
-    sample_sub = "data/raw/signatures/full_org/original_46_2.png" if payload.amount < 10000 else "data/raw/signatures/full_forg/forgeries_46_1.png"
+    # Use real test signature from disk (CEDAR writer 46)
+    if payload.sample_type:
+        sample_sub = "data/raw/signatures/full_org/original_46_2.png" if payload.sample_type == "genuine" else "data/raw/signatures/full_forg/forgeries_46_1.png"
+    else:
+        sample_sub = "data/raw/signatures/full_org/original_46_2.png" if payload.amount < 10000 else "data/raw/signatures/full_forg/forgeries_46_1.png"
+
+    txn_ref = payload.transaction_reference or "DEMO-TXN-CHEQUE-101"
     try:
         return service.verify_transaction(
-            transaction_reference="DEMO-TXN-CHEQUE-101",
-            submitted_signature_path=sample_sub
+            transaction_reference=txn_ref,
+            submitted_signature_path=sample_sub,
+            amount_override=payload.amount,
+            transaction_type_override=payload.transaction_type
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
