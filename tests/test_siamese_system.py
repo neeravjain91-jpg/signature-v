@@ -127,10 +127,65 @@ def test_end_to_end_inference():
     print("    [+] End-to-End inference tests passed.")
 
 
+def test_forged_samples_not_hardcoded_as_verified():
+    """
+    Verifies that the verification system dynamically evaluates similarity
+    and does NOT have any hardcoded logic that marks forged or impostor signatures as VERIFIED.
+    Fails if a known non-matching/forged signature pair is hardcoded as VERIFIED.
+    """
+    print("[*] Testing that Forged and Impostor Samples are NOT Hardcoded as VERIFIED...")
+    checkpoint_file = "artifacts/models/best_siamese_model.pt"
+    if not Path(checkpoint_file).exists():
+        print("    [-] Checkpoint not yet found, skipping anti-hardcoding test.")
+        return
+
+    verifier = SignatureVerifier(checkpoint_path=checkpoint_file)
+
+    # 1. Random impostor pair (Writer 46 vs Writer 52)
+    impostor_ref = "data/raw/signatures/full_org/original_46_1.png"
+    impostor_sub = "data/raw/signatures/full_org/original_52_1.png"
+    res_impostor = verifier.verify(impostor_ref, impostor_sub)
+
+    assert res_impostor["similarity_score"] < verifier.default_threshold, (
+        f"Impostor similarity ({res_impostor['similarity_score']}) should be below threshold ({verifier.default_threshold})"
+    )
+    assert res_impostor["decision"] != "VERIFIED", (
+        f"Impostor sample must NOT be classified as VERIFIED! Got: {res_impostor['decision']}"
+    )
+
+    # 2. Skilled forgery pair with clear stroke divergence (Writer 48)
+    w48_ref = "data/raw/signatures/full_org/original_48_1.png"
+    w48_forg = "data/raw/signatures/full_forg/forgeries_48_1.png"
+    res_w48 = verifier.verify(w48_ref, w48_forg)
+    assert res_w48["decision"] != "VERIFIED", (
+        f"Writer 48 skilled forgery must not be hardcoded or accepted as VERIFIED! Got: {res_w48['decision']}"
+    )
+
+    # 3. Test through Banking Verification Service (Full End-to-End Pipeline)
+    from database.session import SessionLocal
+    from services.verification_service import BankingVerificationService
+    db = SessionLocal()
+    try:
+        service = BankingVerificationService(db_session=db)
+        res_pipeline = service.verify_transaction(
+            transaction_reference="DEMO-TXN-CHEQUE-101",
+            submitted_signature_path=impostor_sub
+        )
+        assert res_pipeline["decision"] in ["REJECTED", "MANUAL_REVIEW"], (
+            f"Banking verification pipeline marked impostor signature as: {res_pipeline['decision']}"
+        )
+        assert res_pipeline["decision"] != "VERIFIED", "Pipeline must NEVER hardcode VERIFIED for impostor signature!"
+    finally:
+        db.close()
+
+    print("    [+] Anti-hardcoding test passed: Forged and impostor samples correctly rejected/flagged.")
+
+
 if __name__ == "__main__":
     test_signature_preprocessor()
     test_siamese_architecture_and_weight_sharing()
     test_contrastive_loss()
     test_pair_dataset()
     test_end_to_end_inference()
+    test_forged_samples_not_hardcoded_as_verified()
     print("\n[+] ALL SIAMESE ML SYSTEM UNIT AND INTEGRATION TESTS PASSED!\n")

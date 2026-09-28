@@ -19,6 +19,7 @@ from pathlib import Path
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
+import json
 from typing import Union, Dict, Any, Optional
 import numpy as np
 from PIL import Image
@@ -55,7 +56,20 @@ class SignatureVerifier:
 
         checkpoint = torch.load(self.checkpoint_path, map_location=self.device)
         embedding_dim = checkpoint.get("embedding_dim", 256)
-        self.default_threshold = threshold or checkpoint.get("optimal_threshold", 0.7500)
+
+        # Resolve threshold: CLI parameter > calibrated_threshold.json > checkpoint
+        if threshold is not None:
+            self.default_threshold = threshold
+        else:
+            calib_file = Path("artifacts/models/calibrated_threshold.json")
+            if calib_file.exists():
+                try:
+                    with open(calib_file, "r") as f:
+                        self.default_threshold = float(json.load(f)["calibrated_threshold"])
+                except Exception:
+                    self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
+            else:
+                self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
 
         self.model = SiameseSignatureNet(
             embedding_dim=embedding_dim,
