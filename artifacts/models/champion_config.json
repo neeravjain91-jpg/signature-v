@@ -1,0 +1,40 @@
+{
+  "model_name": "SYNAPSE Champion Siamese Verifier",
+  "model_version": "2.0.0-champion",
+  "architecture": "SiameseSignatureNet",
+  "backbone": "resnet18",
+  "embedding_dimension": 256,
+  "loss_function": "HybridMetricLoss (Contrastive alpha=1.0, Triplet beta=0.5, margin=1.0, triplet_margin=0.3)",
+  "hard_negative_mining": {
+    "enabled": true,
+    "ratio": 0.35,
+    "source": "Training Split Only (Writers 1-35)",
+    "mined_count": 800
+  },
+  "data_augmentation": "RealisticSignatureAugmentor (rotation, shear, scale, scanner noise)",
+  "preprocessing": {
+    "method": "otsu",
+    "target_size": [
+      224,
+      224
+    ],
+    "denoise": true
+  },
+  "frozen_threshold": 0.7382,
+  "multi_reference_strategy": "max",
+  "validation_metrics": {
+    "auc_roc": 0.8277,
+    "eer": 0.2433,
+    "tar": 0.7567,
+    "frr": 0.2433,
+    "overall_far": 0.2433,
+    "skilled_forgery_far": 0.2778,
+    "random_forgery_far": 0.1917,
+    "multi_reference_max_auc": 0.8963,
+    "multi_reference_max_skilled_far": 0.1583,
+    "multi_reference_max_tar": 0.83
+  },
+  "parameter_count": 5276640,
+  "model_size_mb": 20.13,
+  "inference_latency_ms": 6.84
+}

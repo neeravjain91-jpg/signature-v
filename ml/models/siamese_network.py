@@ -87,6 +87,92 @@ class SignatureEncoder(nn.Module):
         return normalized_embedding
 
 
+class CustomCNNEncoder(nn.Module):
+    """
+    Standard sequential CNN feature extractor without residual shortcuts.
+    Traditional baseline architecture for signature verification.
+    """
+    def __init__(self, embedding_dim: int = 256, dropout_rate: float = 0.3):
+        super().__init__()
+        self.embedding_dim = embedding_dim
+        self.features = nn.Sequential(
+            nn.Conv2d(1, 32, kernel_size=5, stride=2, padding=2, bias=False),
+            nn.BatchNorm2d(32),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+
+            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(64),
+            nn.ReLU(inplace=True),
+
+            nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(128),
+            nn.ReLU(inplace=True),
+
+            nn.Conv2d(128, 256, kernel_size=3, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(256),
+            nn.ReLU(inplace=True),
+
+            nn.AdaptiveAvgPool2d((1, 1))
+        )
+        self.projector = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(256, 256),
+            nn.BatchNorm1d(256),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=dropout_rate),
+            nn.Linear(256, embedding_dim)
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        feat = self.features(x)
+        raw_emb = self.projector(feat)
+        return F.normalize(raw_emb, p=2, dim=1)
+
+
+class PretrainedResNet18Encoder(nn.Module):
+    """
+    Torchvision ResNet-18 adapted for single-channel grayscale input and unit-sphere projection.
+    """
+    def __init__(self, embedding_dim: int = 256, dropout_rate: float = 0.3, pretrained: bool = True):
+        super().__init__()
+        self.embedding_dim = embedding_dim
+        import torchvision.models as models
+
+        try:
+            weights = models.ResNet18_Weights.DEFAULT if pretrained else None
+            base_model = models.resnet18(weights=weights)
+        except Exception:
+            base_model = models.resnet18(weights=None)
+
+        # Adapt first conv from 3-channels to 1-channel
+        orig_conv = base_model.conv1
+        new_conv = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        with torch.no_grad():
+            if pretrained and orig_conv.weight is not None:
+                # Average weights across RGB channels
+                new_conv.weight.copy_(orig_conv.weight.mean(dim=1, keepdim=True))
+        base_model.conv1 = new_conv
+
+        # Replace fc with identity and use custom projection head
+        num_features = base_model.fc.in_features
+        base_model.fc = nn.Identity()
+        self.backbone = base_model
+
+        self.projector = nn.Sequential(
+            nn.Linear(num_features, 512),
+            nn.BatchNorm1d(512),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=dropout_rate),
+            nn.Linear(512, embedding_dim)
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        feat = self.backbone(x)
+        raw_emb = self.projector(feat)
+        return F.normalize(raw_emb, p=2, dim=1)
+
+
 class SiameseSignatureNet(nn.Module):
     """
     Twin Siamese Neural Network for Signature Verification.
@@ -97,13 +183,21 @@ class SiameseSignatureNet(nn.Module):
         self,
         embedding_dim: int = 256,
         dropout_rate: float = 0.3,
-        default_threshold: float = 0.7500
+        default_threshold: float = 0.7500,
+        backbone: str = "resnet18"
     ):
         super().__init__()
         self.embedding_dim = embedding_dim
         self.default_threshold = default_threshold
+        self.backbone_name = backbone
+
         # Single shared CNN encoder instance
-        self.encoder = SignatureEncoder(embedding_dim=embedding_dim, dropout_rate=dropout_rate)
+        if backbone == "custom_cnn":
+            self.encoder = CustomCNNEncoder(embedding_dim=embedding_dim, dropout_rate=dropout_rate)
+        elif backbone == "resnet18_pretrained":
+            self.encoder = PretrainedResNet18Encoder(embedding_dim=embedding_dim, dropout_rate=dropout_rate, pretrained=True)
+        else:
+            self.encoder = SignatureEncoder(embedding_dim=embedding_dim, dropout_rate=dropout_rate)
 
     def forward_one(self, x: torch.Tensor) -> torch.Tensor:
         """Encodes a single signature image into a normalized embedding vector."""

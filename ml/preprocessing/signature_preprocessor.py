@@ -27,6 +27,7 @@ class SignaturePreprocessor:
         denoise: bool = True,
         denoise_kernel: int = 3,
         binarize: bool = True,
+        binarization_method: str = "otsu",
         invert_colors: bool = True,
         bbox_padding: int = 10,
         normalize_range: Tuple[float, float] = (0.0, 1.0)
@@ -36,7 +37,8 @@ class SignaturePreprocessor:
             target_size: (height, width) of output image. Default (224, 224).
             denoise: Apply Gaussian smoothing to reduce scan grain.
             denoise_kernel: Kernel size for smoothing filter.
-            binarize: Apply Otsu adaptive binarization.
+            binarize: Apply binarization / thresholding.
+            binarization_method: Method for thresholding ('otsu', 'adaptive', 'morphology', 'none').
             invert_colors: If True, foreground strokes are 255/1.0, background is 0/0.0.
             bbox_padding: Padding around stroke bounding box in pixels.
             normalize_range: (min, max) range for float normalization.
@@ -45,6 +47,7 @@ class SignaturePreprocessor:
         self.denoise = denoise
         self.denoise_kernel = denoise_kernel
         self.binarize = binarize
+        self.binarization_method = binarization_method
         self.invert_colors = invert_colors
         self.bbox_padding = bbox_padding
         self.normalize_range = normalize_range
@@ -94,12 +97,30 @@ class SignaturePreprocessor:
 
     def binarize_image(self, image: np.ndarray) -> np.ndarray:
         """
-        Binarizes image using Otsu thresholding.
-        When invert_colors is True, foreground ink strokes become 255 and background becomes 0.
+        Binarizes or enhances image based on self.binarization_method.
+        Methods:
+          - 'otsu': Otsu global thresholding.
+          - 'adaptive': Local Gaussian adaptive thresholding.
+          - 'morphology': Morphological illumination normalization + Otsu.
+          - 'none': Returns inverted grayscale without hard binarization.
         """
-        flags = cv2.THRESH_BINARY_INV if self.invert_colors else cv2.THRESH_BINARY
-        _, thresh = cv2.threshold(image, 0, 255, flags + cv2.THRESH_OTSU)
-        return thresh
+        if self.binarization_method == "adaptive":
+            flags = cv2.THRESH_BINARY_INV if self.invert_colors else cv2.THRESH_BINARY
+            return cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, flags, 21, 5)
+        elif self.binarization_method == "morphology":
+            kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (15, 15))
+            bg = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
+            sub = cv2.subtract(bg, image) if self.invert_colors else cv2.subtract(image, bg)
+            norm = cv2.normalize(sub, None, 0, 255, cv2.NORM_MINMAX)
+            _, thresh = cv2.threshold(norm, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            return thresh
+        elif self.binarization_method == "none":
+            return (255 - image) if self.invert_colors else image
+        else:
+            # Default 'otsu'
+            flags = cv2.THRESH_BINARY_INV if self.invert_colors else cv2.THRESH_BINARY
+            _, thresh = cv2.threshold(image, 0, 255, flags + cv2.THRESH_OTSU)
+            return thresh
 
     def crop_bounding_box(self, binary_image: np.ndarray) -> np.ndarray:
         """

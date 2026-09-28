@@ -25,6 +25,7 @@ class SignaturePairDataset(Dataset):
         preprocessor: Optional[SignaturePreprocessor] = None,
         target_size: tuple = (224, 224),
         augment: bool = False,
+        augmentor: Optional[Callable] = None,
         cache_in_memory: bool = False
     ):
         """
@@ -32,7 +33,8 @@ class SignaturePairDataset(Dataset):
             pairs_source: Path to pairs CSV, or a pandas DataFrame, or list of dicts.
             preprocessor: Custom preprocessor. If None, default SignaturePreprocessor is used.
             target_size: (H, W) if preprocessor is None.
-            augment: If True, applies random rotation (+/-5 deg) and subtle affine transformations.
+            augment: If True, applies data augmentation.
+            augmentor: Optional custom augmentation callable. If None and augment=True, uses default.
             cache_in_memory: If True, caches preprocessed tensors in RAM for faster multi-epoch training.
         """
         if isinstance(pairs_source, (str, Path)):
@@ -45,7 +47,8 @@ class SignaturePairDataset(Dataset):
             raise TypeError(f"Unsupported pairs_source type: {type(pairs_source)}")
 
         self.preprocessor = preprocessor or SignaturePreprocessor(target_size=target_size)
-        self.augment = augment
+        self.augment = augment or (augmentor is not None)
+        self.augmentor = augmentor
         self.cache_in_memory = cache_in_memory
         self.cache: Dict[str, torch.Tensor] = {}
 
@@ -65,9 +68,12 @@ class SignaturePairDataset(Dataset):
         return tensor
 
     def _apply_augmentation(self, tensor: torch.Tensor) -> torch.Tensor:
-        """Applies subtle natural signing variations: slight rotation."""
+        """Applies signing variations."""
         if not self.augment:
             return tensor
+
+        if self.augmentor is not None:
+            return self.augmentor(tensor)
 
         import random
         import cv2

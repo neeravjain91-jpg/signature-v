@@ -40,7 +40,7 @@ class BankingVerificationService:
     def __init__(
         self,
         db_session: Session,
-        checkpoint_path: str = "artifacts/models/best_siamese_model.pt",
+        checkpoint_path: Optional[str] = None,
         verifier: Optional[SignatureVerifier] = None,
         risk_engine: Optional[FraudRiskEngine] = None
     ):

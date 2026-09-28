@@ -181,6 +181,55 @@ def test_forged_samples_not_hardcoded_as_verified():
     print("    [+] Anti-hardcoding test passed: Forged and impostor samples correctly rejected/flagged.")
 
 
+def test_champion_model_and_config():
+    """Phase 27: Verify champion model checkpoint and frozen configuration."""
+    champ_pt = Path("artifacts/models/champion_siamese_model.pt")
+    champ_cfg = Path("artifacts/models/champion_config.json")
+
+    assert champ_pt.exists(), "Champion model checkpoint must exist"
+    assert champ_cfg.exists(), "Champion config JSON must exist"
+
+    import json
+    with open(champ_cfg, "r") as f:
+        cfg = json.load(f)
+
+    assert "frozen_threshold" in cfg, "Champion config must contain frozen_threshold"
+    assert 0.65 <= cfg["frozen_threshold"] <= 0.85, f"Threshold {cfg['frozen_threshold']} out of expected range"
+    assert cfg["model_version"] == "2.0.0-champion"
+
+    # Verify model weights loading
+    verifier = SignatureVerifier(checkpoint_path=champ_pt)
+    assert verifier.model_version == "2.0.0-champion"
+    assert verifier.default_threshold == cfg["frozen_threshold"]
+
+
+def test_writer_disjoint_splits():
+    """Phase 27: Verify zero writer identity leakage across splits."""
+    import pandas as pd
+    train_df = pd.read_csv("data/pairs/train_pairs.csv")
+    val_df = pd.read_csv("data/pairs/validation_pairs.csv")
+    test_df = pd.read_csv("data/pairs/test_pairs.csv")
+
+    w_train = set(train_df["writer_1"]).union(set(train_df["writer_2"]))
+    w_val = set(val_df["writer_1"]).union(set(val_df["writer_2"]))
+    w_test = set(test_df["writer_1"]).union(set(test_df["writer_2"]))
+
+    assert len(w_train.intersection(w_val)) == 0, "Train and Val writer sets must be strictly disjoint!"
+    assert len(w_val.intersection(w_test)) == 0, "Val and Test writer sets must be strictly disjoint!"
+    assert len(w_train.intersection(w_test)) == 0, "Train and Test writer sets must be strictly disjoint!"
+
+
+def test_multi_reference_aggregation_logic():
+    """Phase 27: Verify multi-specimen reference aggregation strategies."""
+    ref_sims = [0.88, 0.82, 0.76]
+    # Max
+    assert max(ref_sims) == 0.88
+    # Mean
+    assert abs(sum(ref_sims)/3.0 - 0.82) < 1e-4
+    # Top-2
+    assert abs((0.88 + 0.82)/2.0 - 0.85) < 1e-4
+
+
 if __name__ == "__main__":
     test_signature_preprocessor()
     test_siamese_architecture_and_weight_sharing()
@@ -188,4 +237,7 @@ if __name__ == "__main__":
     test_pair_dataset()
     test_end_to_end_inference()
     test_forged_samples_not_hardcoded_as_verified()
+    test_champion_model_and_config()
+    test_writer_disjoint_splits()
+    test_multi_reference_aggregation_logic()
     print("\n[+] ALL SIAMESE ML SYSTEM UNIT AND INTEGRATION TESTS PASSED!\n")

@@ -36,7 +36,7 @@ class SignatureVerifier:
 
     def __init__(
         self,
-        checkpoint_path: Union[str, Path] = "artifacts/models/best_siamese_model.pt",
+        checkpoint_path: Optional[Union[str, Path]] = None,
         threshold: Optional[float] = None,
         device: Optional[str] = None
     ):
@@ -46,34 +46,51 @@ class SignatureVerifier:
             self.device = torch.device(device)
 
         self.preprocessor = SignaturePreprocessor(target_size=(224, 224))
-        self.checkpoint_path = Path(checkpoint_path)
 
-        if not self.checkpoint_path.exists():
-            raise FileNotFoundError(
-                f"Model checkpoint not found at: {self.checkpoint_path}. "
-                "Please run `python ml/training/train.py` first."
-            )
+        # 1. Resolve Checkpoint: Champion > Baseline
+        champ_path = Path("artifacts/models/champion_siamese_model.pt")
+        base_path = Path("artifacts/models/best_siamese_model.pt")
+        if checkpoint_path is not None:
+            self.checkpoint_path = Path(checkpoint_path)
+        elif champ_path.exists():
+            self.checkpoint_path = champ_path
+        elif base_path.exists():
+            self.checkpoint_path = base_path
+        else:
+            raise FileNotFoundError("No model checkpoint found in artifacts/models/")
 
         checkpoint = torch.load(self.checkpoint_path, map_location=self.device)
         embedding_dim = checkpoint.get("embedding_dim", 256)
+        backbone = checkpoint.get("backbone", "resnet18")
 
-        # Resolve threshold: CLI parameter > calibrated_threshold.json > checkpoint
+        # 2. Resolve Threshold and Model Version
+        self.model_version = "1.0.0-baseline"
+        champ_config_file = Path("artifacts/models/champion_config.json")
+        calib_file = Path("artifacts/models/calibrated_threshold.json")
+
         if threshold is not None:
             self.default_threshold = threshold
-        else:
-            calib_file = Path("artifacts/models/calibrated_threshold.json")
-            if calib_file.exists():
-                try:
-                    with open(calib_file, "r") as f:
-                        self.default_threshold = float(json.load(f)["calibrated_threshold"])
-                except Exception:
-                    self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
-            else:
+        elif champ_config_file.exists() and "champion" in str(self.checkpoint_path).lower():
+            try:
+                with open(champ_config_file, "r") as f:
+                    cdata = json.load(f)
+                    self.default_threshold = float(cdata["frozen_threshold"])
+                    self.model_version = cdata.get("model_version", "2.0.0-champion")
+            except Exception:
+                self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7382))
+        elif calib_file.exists():
+            try:
+                with open(calib_file, "r") as f:
+                    self.default_threshold = float(json.load(f)["calibrated_threshold"])
+            except Exception:
                 self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
+        else:
+            self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7500))
 
         self.model = SiameseSignatureNet(
             embedding_dim=embedding_dim,
-            default_threshold=self.default_threshold
+            default_threshold=self.default_threshold,
+            backbone=backbone
         )
         self.model.load_state_dict(checkpoint["model_state_dict"])
         self.model.to(self.device)

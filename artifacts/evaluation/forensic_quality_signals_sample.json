@@ -1,0 +1,11 @@
+{
+  "valid": true,
+  "height_px": 247,
+  "width_px": 468,
+  "laplacian_variance": 665.72,
+  "contrast_range": 40.0,
+  "stroke_density": 0.0458,
+  "connected_components": 7,
+  "stroke_aspect_ratio": 2.0,
+  "is_low_resolution": false
+}

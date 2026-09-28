@@ -65,7 +65,7 @@ def evaluate_test_cohort(
 
     with open(thresh_file, "r") as f:
         calib_data = json.load(f)
-    frozen_threshold = float(calib_data["calibrated_threshold"])
+    frozen_threshold = float(calib_data.get("frozen_threshold", calib_data.get("calibrated_threshold")))
     print(f"[+] Loaded FROZEN threshold from validation calibration: {frozen_threshold:.4f}")
 
     # 2. Load Frozen Model Checkpoint
@@ -346,7 +346,12 @@ def main():
     parser.add_argument("--calibrated-threshold", default="artifacts/models/calibrated_threshold.json", help="Path to calibrated threshold JSON")
     parser.add_argument("--test-pairs", default="data/pairs/test_pairs.csv", help="Path to test pairs CSV")
     parser.add_argument("--output", default="artifacts/evaluation/test_evaluation_results.json", help="Path to output results JSON")
-    parser.add_argument("--batch-size", type=int, default=32, help="Batch size for evaluation")
+    parser.add_argument("--roc-plot", default="docs/ROC_CURVE.png", help="Path to save ROC curve plot")
+    parser.add_argument("--far-frr-plot", default="docs/FAR_FRR_CURVE.png", help="Path to save FAR/FRR curve plot")
+    parser.add_argument("--dist-plot", default="docs/SCORE_DISTRIBUTIONS.png", help="Path to save score distributions plot")
+    parser.add_argument("--fa-cases", default="artifacts/evaluation/false_acceptance_cases.json", help="Path to save FA cases JSON")
+    parser.add_argument("--fr-cases", default="artifacts/evaluation/false_rejection_cases.json", help="Path to save FR cases JSON")
+    parser.add_argument("--batch-size", type=int, default=64, help="Batch size for evaluation")
     args = parser.parse_args()
 
     evaluate_test_cohort(
@@ -354,6 +359,11 @@ def main():
         calibrated_threshold_path=args.calibrated_threshold,
         test_pairs_path=args.test_pairs,
         output_results_path=args.output,
+        fa_cases_path=args.fa_cases,
+        fr_cases_path=args.fr_cases,
+        roc_plot_path=args.roc_plot,
+        far_frr_plot_path=args.far_frr_plot,
+        dist_plot_path=args.dist_plot,
         batch_size=args.batch_size
     )
 

@@ -1,0 +1,47 @@
+{
+  "max": {
+    "strategy": "max",
+    "roc_auc": 0.8963,
+    "eer": 0.1717,
+    "threshold": 0.7968,
+    "skilled_far": 0.1583,
+    "tar": 0.83,
+    "overall_far": 0.1717
+  },
+  "mean": {
+    "strategy": "mean",
+    "roc_auc": 0.8691,
+    "eer": 0.235,
+    "threshold": 0.7361,
+    "skilled_far": 0.2861,
+    "tar": 0.765,
+    "overall_far": 0.235
+  },
+  "top_k": {
+    "strategy": "top_k",
+    "roc_auc": 0.8822,
+    "eer": 0.2083,
+    "threshold": 0.7682,
+    "skilled_far": 0.25,
+    "tar": 0.79,
+    "overall_far": 0.2083
+  },
+  "centroid": {
+    "strategy": "centroid",
+    "roc_auc": 0.8839,
+    "eer": 0.205,
+    "threshold": 0.7659,
+    "skilled_far": 0.2444,
+    "tar": 0.7917,
+    "overall_far": 0.205
+  },
+  "median": {
+    "strategy": "median",
+    "roc_auc": 0.8622,
+    "eer": 0.225,
+    "threshold": 0.7375,
+    "skilled_far": 0.2694,
+    "tar": 0.7783,
+    "overall_far": 0.225
+  }
+}
