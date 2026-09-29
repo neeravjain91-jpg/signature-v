@@ -71,8 +71,14 @@ def evaluate_test_cohort(
     # 2. Load Frozen Model Checkpoint
     checkpoint = torch.load(checkpoint_path, map_location=device)
     embedding_dim = checkpoint.get("embedding_dim", 256)
+    model_arch = str(checkpoint.get("model_architecture", checkpoint.get("backbone", "resnet18"))).lower()
 
-    model = SiameseSignatureNet(embedding_dim=embedding_dim)
+    if "resnet" in model_arch:
+        from ml.models.architectures import SiameseResNet18
+        model = SiameseResNet18(embedding_dim=embedding_dim, in_channels=1)
+    else:
+        model = SiameseSignatureNet(embedding_dim=embedding_dim)
+
     model.load_state_dict(checkpoint["model_state_dict"])
     model.to(device)
     model.eval()

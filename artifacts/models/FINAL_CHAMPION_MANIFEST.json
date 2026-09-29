@@ -1,0 +1,13 @@
+{
+  "manifest_version": "1.0.0",
+  "model_name": "SYNAPSE Final Champion Verifier v3.0.0",
+  "creation_timestamp_utc": "2026-09-29T02:22:55.908093+00:00",
+  "cryptographic_signatures": {
+    "model_weights_sha256": "6fffe178942b2e547290519034b0830a6ab39ab35ee2a8f943d3e17811a35f18",
+    "config_sha256": "78107c54e0b382f6f52719e8eb7b85fe4b43bed79a64dbdc058927644f89efda"
+  },
+  "frozen_calibrated_threshold": 0.706,
+  "calibration_cohort": "CEDAR Writers 36-45 (1,200 pairs)",
+  "test_cohort": "CEDAR Writers 46-55 (1,200 pairs)",
+  "protocol_integrity_attestation": "Model trained strictly on Writers 1-35. Threshold calibrated strictly on Writers 36-45. Zero test cohort exposure."
+}

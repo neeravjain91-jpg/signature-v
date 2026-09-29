@@ -47,12 +47,17 @@ class RealisticSignatureAugmentor:
     def __call__(self, tensor: torch.Tensor) -> torch.Tensor:
         """
         Args:
-            tensor: Single-channel image tensor (1, H, W) normalized to [0, 1].
+            tensor: Image tensor of shape (1, H, W) or (C, H, W) normalized to [0, 1].
         Returns:
-            Augmented single-channel tensor (1, H, W).
+            Augmented tensor with identical shape and dtype.
         """
-        img_np = tensor.squeeze(0).numpy().copy()
-        h, w = img_np.shape
+        is_multi_channel = (tensor.ndim == 3 and tensor.shape[0] > 1)
+        if is_multi_channel:
+            c, h, w = tensor.shape
+            img_np = tensor.permute(1, 2, 0).numpy().copy()  # (H, W, C)
+        else:
+            img_np = tensor.squeeze(0).numpy().copy()  # (H, W)
+            h, w = img_np.shape
 
         # 1. Random Affine (Rotation + Translation + Shear + Scale)
         angle = random.uniform(-self.max_rotation_deg, self.max_rotation_deg)
@@ -74,8 +79,6 @@ class RealisticSignatureAugmentor:
             [sin_a + np.tan(shear_x) * cos_a,  cos_a, ty - sin_a*cx + (1 - cos_a)*cy]
         ], dtype=np.float32)
 
-        # Background in preprocessed images is 0 (black/zero foreground or normalized white)
-        # Background value check:
         bg_val = 0.0
         img_np = cv2.warpAffine(img_np, M, (w, h), borderMode=cv2.BORDER_CONSTANT, borderValue=bg_val)
 
@@ -85,11 +88,15 @@ class RealisticSignatureAugmentor:
 
         # 3. Scanner / Flatbed grain noise (low probability)
         if random.random() < self.noise_prob:
-            noise = np.random.normal(0.0, 0.02, (h, w)).astype(np.float32)
+            noise_shape = (h, w, c) if is_multi_channel else (h, w)
+            noise = np.random.normal(0.0, 0.02, noise_shape).astype(np.float32)
             img_np = np.clip(img_np + noise, 0.0, 1.0)
 
         # 4. Contrast scaling
         c_scale = random.uniform(self.contrast_range[0], self.contrast_range[1])
         img_np = np.clip(img_np * c_scale, 0.0, 1.0)
 
-        return torch.from_numpy(img_np).unsqueeze(0).float()
+        if is_multi_channel:
+            return torch.from_numpy(img_np).permute(2, 0, 1).float()
+        else:
+            return torch.from_numpy(img_np).unsqueeze(0).float()

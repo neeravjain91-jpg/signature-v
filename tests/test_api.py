@@ -77,7 +77,7 @@ def test_web_interface_html():
     response = client.get("/")
     assert response.status_code == 200
     assert "SYNAPSE" in response.text
-    assert "CHAMPION v2.0" in response.text
+    assert "FINAL CHAMPION" in response.text
 
 
 def test_verify_demo_endpoint_parity():

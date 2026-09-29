@@ -47,11 +47,14 @@ class SignatureVerifier:
 
         self.preprocessor = SignaturePreprocessor(target_size=(224, 224))
 
-        # 1. Resolve Checkpoint: Champion > Baseline
+        # 1. Resolve Checkpoint: Final Champion > Champion > Baseline
+        final_champ_path = Path("artifacts/models/final_champion_model.pt")
         champ_path = Path("artifacts/models/champion_siamese_model.pt")
         base_path = Path("artifacts/models/best_siamese_model.pt")
         if checkpoint_path is not None:
             self.checkpoint_path = Path(checkpoint_path)
+        elif final_champ_path.exists():
+            self.checkpoint_path = final_champ_path
         elif champ_path.exists():
             self.checkpoint_path = champ_path
         elif base_path.exists():
@@ -62,14 +65,24 @@ class SignatureVerifier:
         checkpoint = torch.load(self.checkpoint_path, map_location=self.device)
         embedding_dim = checkpoint.get("embedding_dim", 256)
         backbone = checkpoint.get("backbone", "resnet18")
+        model_arch = str(checkpoint.get("model_architecture", "")).lower()
 
         # 2. Resolve Threshold and Model Version
         self.model_version = "1.0.0-baseline"
+        final_config_file = Path("artifacts/models/final_champion_config.json")
         champ_config_file = Path("artifacts/models/champion_config.json")
         calib_file = Path("artifacts/models/calibrated_threshold.json")
 
         if threshold is not None:
             self.default_threshold = threshold
+        elif final_config_file.exists() and "final_champion" in str(self.checkpoint_path).lower():
+            try:
+                with open(final_config_file, "r") as f:
+                    cdata = json.load(f)
+                    self.default_threshold = float(cdata.get("frozen_calibrated_threshold", cdata.get("frozen_threshold", 0.7060)))
+                    self.model_version = cdata.get("model_version", "3.0.0-final-champion")
+            except Exception:
+                self.default_threshold = float(checkpoint.get("calibrated_threshold", 0.7060))
         elif champ_config_file.exists() and "champion" in str(self.checkpoint_path).lower():
             try:
                 with open(champ_config_file, "r") as f:
@@ -87,11 +100,17 @@ class SignatureVerifier:
         else:
             self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7500))
 
-        self.model = SiameseSignatureNet(
-            embedding_dim=embedding_dim,
-            default_threshold=self.default_threshold,
-            backbone=backbone
-        )
+        if "resnet" in model_arch:
+            from ml.models.architectures import SiameseResNet18
+            self.model = SiameseResNet18(embedding_dim=embedding_dim, in_channels=1)
+            self.model.default_threshold = self.default_threshold
+        else:
+            self.model = SiameseSignatureNet(
+                embedding_dim=embedding_dim,
+                default_threshold=self.default_threshold,
+                backbone=backbone
+            )
+
         self.model.load_state_dict(checkpoint["model_state_dict"])
         self.model.to(self.device)
         self.model.eval()
@@ -108,7 +127,8 @@ class SignatureVerifier:
         if tensor.dim() == 3:
             tensor = tensor.unsqueeze(0)
         with torch.no_grad():
-            embedding = self.model.forward_one(tensor)
+            forward_fn = getattr(self.model, "forward_one", getattr(self.model, "forward_once", None))
+            embedding = forward_fn(tensor)
         return embedding.squeeze(0).cpu().numpy()
 
     def verify(

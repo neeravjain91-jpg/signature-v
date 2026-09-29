@@ -1,0 +1,8 @@
+{
+  "frozen_threshold": 0.706,
+  "calibrated_threshold": 0.706,
+  "calibration_cohort": "CEDAR Writers 36-45 (1,200 pairs)",
+  "criterion": "Equal Error Rate (EER) minimization on development validation cohort",
+  "calibrated_at_utc": "2026-09-29T02:22:57Z",
+  "provenance": "Validation Cohort (Writers 36-45), Zero Test Leakage"
+}
