@@ -1,0 +1,22 @@
+{
+  "evaluation_mode": "Single-Pair",
+  "frozen_threshold": 0.5924,
+  "auc_roc": 0.8759,
+  "eer": 0.2183,
+  "accuracy": 0.7733,
+  "precision": 0.731,
+  "recall": 0.865,
+  "f1_score": 0.7924,
+  "tar": 0.865,
+  "frr": 0.135,
+  "skilled_forgery_far": 0.5028,
+  "random_impostor_far": 0.0417,
+  "overall_far": 0.3183,
+  "confusion_matrix": {
+    "tp": 519,
+    "fp": 191,
+    "tn": 409,
+    "fn": 81,
+    "total": 1200
+  }
+}

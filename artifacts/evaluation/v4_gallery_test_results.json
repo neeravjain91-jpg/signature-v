@@ -1,0 +1,23 @@
+{
+  "evaluation_mode": "3-Specimen Customer Gallery (max similarity)",
+  "enrolled_specimens_per_customer": 3,
+  "frozen_threshold": 0.6312,
+  "auc_roc": 0.9308,
+  "eer": 0.1387,
+  "accuracy": 0.837,
+  "precision": 0.7421,
+  "recall": 0.8905,
+  "f1_score": 0.8095,
+  "tar": 0.8905,
+  "frr": 0.1095,
+  "skilled_forgery_far": 0.2625,
+  "random_impostor_far": 0.0222,
+  "overall_far": 0.197,
+  "confusion_matrix": {
+    "tp": 187,
+    "fp": 65,
+    "tn": 265,
+    "fn": 23,
+    "total": 540
+  }
+}

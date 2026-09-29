@@ -1,0 +1,13 @@
+{
+  "model_name": "HF_Vision_Transformer",
+  "model_version": "1.0.0-transformers-vit",
+  "eer": 0.2449979991996799,
+  "auc_roc": 0.8118247298919569,
+  "accuracy": 0.755,
+  "far": 0.24509803921568626,
+  "frr": 0.24489795918367346,
+  "f1_score": 0.751269035532995,
+  "calibrated_threshold": 0.7312881350517273,
+  "average_latency_ms": 23.031085729599,
+  "model_size_mb": 21.73
+}

@@ -1,5 +1,5 @@
 """
-Authentication & Role-Based Access Control (RBAC) Module for SYNAPSE.
+Authentication & Role-Based Access Control (RBAC) Module for SIGNATURE VMAKE.
 
 Implements:
 - Bcrypt salted password hashing
@@ -26,7 +26,7 @@ from database.models import User
 from database.session import get_db
 
 # Configuration
-SECRET_KEY = os.getenv("SYNAPSE_JWT_SECRET", "synapse-super-secret-production-key-2026-biometrics")
+SECRET_KEY = os.getenv("SIGNATURE_VMAKE_JWT_SECRET", os.getenv("SYNAPSE_JWT_SECRET", "vmake-super-secret-production-key-2026-biometrics"))
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 8  # 8 hours
 

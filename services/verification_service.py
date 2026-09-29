@@ -149,7 +149,8 @@ class BankingVerificationService:
         submitted_signature_path: str,
         request_reference: Optional[str] = None,
         amount_override: Optional[float] = None,
-        transaction_type_override: Optional[str] = None
+        transaction_type_override: Optional[str] = None,
+        model_track: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Executes end-to-end verification of a questioned transaction signature:
@@ -215,15 +216,28 @@ class BankingVerificationService:
                     ref_image_path = p
                     break
 
-        # 5. Execute Siamese Verification
-        active_thresh = float(self.active_model.threshold) if self.active_model else 0.7691
-        model_res = self.verifier.verify(
-            reference_input=ref_image_path,
-            submitted_input=submitted_signature_path,
-            threshold=active_thresh
-        )
-        sim_score = model_res["similarity_score"]
-        euclidean_dist = model_res["euclidean_distance"]
+        # 5. Execute Verification using active or selected model verifier
+        if model_track:
+            from ml.inference.verify_signature import get_model_verifier
+            active_verifier = get_model_verifier(model_track)
+        else:
+            active_verifier = self.verifier
+
+        active_thresh = float(active_verifier.threshold) if hasattr(active_verifier, "threshold") else (float(self.active_model.threshold) if self.active_model else 0.7691)
+
+        if hasattr(active_verifier, "verify"):
+            model_res = active_verifier.verify(
+                reference_input=ref_image_path,
+                submitted_input=submitted_signature_path,
+                threshold=active_thresh
+            )
+            sim_score = model_res["similarity_score"]
+            euclidean_dist = model_res.get("euclidean_distance", model_res.get("distance", 0.0))
+        else:
+            out = active_verifier.verify_pair(ref_image_path, submitted_signature_path, threshold=active_thresh)
+            sim_score = out.similarity_score
+            euclidean_dist = out.distance
+            model_res = out.to_dict()
 
         # 6. Evaluate Multi-Factor Fraud Risk
         eval_amount = float(amount_override) if amount_override is not None else float(txn.amount)

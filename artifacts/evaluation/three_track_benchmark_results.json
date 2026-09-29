@@ -1,0 +1,74 @@
+{
+  "Track_A_Classical_Sklearn": {
+    "model_name": "Classical_SVM_Baseline",
+    "model_type": "CLASSICAL_SKLEARN",
+    "model_version": "1.0.0-sklearn-svm",
+    "calibrated_threshold": 0.4264575334152325,
+    "auc_roc": 0.8422869147659063,
+    "eer": 0.22999199679871946,
+    "accuracy": 0.7675,
+    "precision": 0.7614213197969543,
+    "recall": 0.7653061224489796,
+    "f1_score": 0.7633587786259542,
+    "far": 0.23039215686274508,
+    "frr": 0.23469387755102042,
+    "tar": 0.7653061224489796,
+    "average_latency_ms": 7.35,
+    "confusion_matrix": {
+      "true_positives": 150,
+      "false_positives": 47,
+      "true_negatives": 157,
+      "false_negatives": 46,
+      "total_samples": 400
+    },
+    "model_size_mb": 5.37
+  },
+  "Track_B_Vision_Transformer": {
+    "model_name": "HF_Vision_Transformer",
+    "model_type": "VISION_TRANSFORMER",
+    "model_version": "1.0.0-transformers-vit",
+    "calibrated_threshold": 0.7312881350517273,
+    "auc_roc": 0.8118247298919569,
+    "eer": 0.2449979991996799,
+    "accuracy": 0.755,
+    "precision": 0.7474747474747475,
+    "recall": 0.7551020408163265,
+    "f1_score": 0.751269035532995,
+    "far": 0.24509803921568626,
+    "frr": 0.24489795918367346,
+    "tar": 0.7551020408163265,
+    "average_latency_ms": 38.38,
+    "confusion_matrix": {
+      "true_positives": 148,
+      "false_positives": 50,
+      "true_negatives": 154,
+      "false_negatives": 48,
+      "total_samples": 400
+    },
+    "model_size_mb": 21.73
+  },
+  "Track_C_Siamese_ResNet": {
+    "model_name": "Siamese_ResNet_Champion",
+    "model_type": "SIAMESE_RESNET",
+    "model_version": "4.0.0-champion",
+    "calibrated_threshold": 0.5924,
+    "auc_roc": 0.9008103241296519,
+    "eer": 0.18742496998799518,
+    "accuracy": 0.815,
+    "precision": 0.805,
+    "recall": 0.8214285714285714,
+    "f1_score": 0.8131313131313131,
+    "far": 0.19117647058823528,
+    "frr": 0.17857142857142858,
+    "tar": 0.8214285714285714,
+    "average_latency_ms": 42.13,
+    "confusion_matrix": {
+      "true_positives": 161,
+      "false_positives": 39,
+      "true_negatives": 165,
+      "false_negatives": 35,
+      "total_samples": 400
+    },
+    "model_size_mb": 43.19
+  }
+}

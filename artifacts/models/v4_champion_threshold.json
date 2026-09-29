@@ -1,0 +1,8 @@
+{
+  "single_pair_threshold": 0.5924,
+  "gallery_threshold": 0.6312,
+  "frozen_threshold": 0.5924,
+  "calibrated_threshold": 0.5924,
+  "calibration_cohort": "CEDAR Writers 36-45",
+  "calibrated_at_utc": "2026-09-29T08:16:46.067668+00:00"
+}

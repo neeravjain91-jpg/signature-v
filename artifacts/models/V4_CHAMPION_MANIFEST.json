@@ -1,0 +1,16 @@
+{
+  "manifest_version": "1.0.0",
+  "model_name": "SYNAPSE v4 Customer-Conditioned Champion",
+  "model_version": "4.0.0-champion",
+  "creation_timestamp_utc": "2026-09-29T08:16:46.067668+00:00",
+  "cryptographic_signatures": {
+    "model_weights_sha256": "428a71b537cf580d65708954507530df729c697aaa64dc62ac0d702fea043211",
+    "config_sha256": "05e0b6852f56f4c66b21d501e1de9c64f898f0ed2b4663ea466484179e87fa61",
+    "threshold_sha256": "adaee1dba145b99346fbb784afd1b082df0bc079e776ce7f06a27562fa3e0f04"
+  },
+  "single_pair_threshold": 0.5924,
+  "gallery_threshold": 0.6312,
+  "enrolled_specimens_count": 3,
+  "gallery_aggregation_rule": "max",
+  "protocol_integrity_attestation": "Model trained strictly on Writers 1-35. Thresholds calibrated strictly on Writers 36-45. Zero test cohort exposure."
+}

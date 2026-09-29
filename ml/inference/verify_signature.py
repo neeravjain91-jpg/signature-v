@@ -1,37 +1,35 @@
 """
-Inference Engine for Intelligent Signature Verification.
+SIGNATURE VMAKE — Inference Engine & Biometric Verifier.
 
-Receives:
-    Input A: Registered/Reference signature (specimen)
-    Input B: New/Submitted signature (questioned cheque/voucher)
-
-Produces:
-    - embedding A
-    - embedding B
-    - distance (Euclidean metric)
-    - similarity score (0.0 to 1.0)
-    - verification decision (VERIFIED | MANUAL_REVIEW | REJECTED)
+Implements the SignatureVerificationModel interface for Siamese Deep Metric Learning,
+with unified factory dispatch for all three model tracks:
+- Model A: Classical scikit-learn (SVM / Random Forest)
+- Model B: Hugging Face Vision Transformer (ViT)
+- Model C: Siamese Deep Neural Network (Metric Learning ResNet)
 """
 
 import sys
+import os
+import json
 from pathlib import Path
+from typing import Union, Dict, Any, Optional, List
+import numpy as np
+from PIL import Image
+import torch
+import torch.nn.functional as F
 
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-import json
-from typing import Union, Dict, Any, Optional
-import numpy as np
-from PIL import Image
-import torch
-
+from ml.models.model_interface import SignatureVerificationModel, VerificationOutput
 from ml.preprocessing.signature_preprocessor import SignaturePreprocessor
 from ml.models.siamese_network import SiameseSignatureNet
 
 
-class SignatureVerifier:
+class SignatureVerifier(SignatureVerificationModel):
     """
-    High-level inference engine for pair verification and embedding extraction.
+    Production Siamese Deep Neural Verifier conforming to SignatureVerificationModel interface.
+    Backward-compatible with existing enrollment and verification services.
     """
 
     def __init__(
@@ -47,12 +45,16 @@ class SignatureVerifier:
 
         self.preprocessor = SignaturePreprocessor(target_size=(224, 224))
 
-        # 1. Resolve Checkpoint: Final Champion > Champion > Baseline
+        # 1. Resolve Checkpoint Priority: v4 Champion > Final Champion > Champion > Baseline
+        v4_path = Path("artifacts/models/v4_champion_model.pt")
         final_champ_path = Path("artifacts/models/final_champion_model.pt")
         champ_path = Path("artifacts/models/champion_siamese_model.pt")
         base_path = Path("artifacts/models/best_siamese_model.pt")
+
         if checkpoint_path is not None:
             self.checkpoint_path = Path(checkpoint_path)
+        elif v4_path.exists():
+            self.checkpoint_path = v4_path
         elif final_champ_path.exists():
             self.checkpoint_path = final_champ_path
         elif champ_path.exists():
@@ -60,7 +62,7 @@ class SignatureVerifier:
         elif base_path.exists():
             self.checkpoint_path = base_path
         else:
-            raise FileNotFoundError("No model checkpoint found in artifacts/models/")
+            raise FileNotFoundError("No Siamese model checkpoint found in artifacts/models/")
 
         checkpoint = torch.load(self.checkpoint_path, map_location=self.device)
         embedding_dim = checkpoint.get("embedding_dim", 256)
@@ -68,38 +70,60 @@ class SignatureVerifier:
         model_arch = str(checkpoint.get("model_architecture", "")).lower()
 
         # 2. Resolve Threshold and Model Version
-        self.model_version = "1.0.0-baseline"
+        resolved_threshold = 0.5924
+        self.gallery_threshold = 0.6312
+        model_version = "4.0.0-champion"
+        v4_thresh_file = Path("artifacts/models/v4_champion_threshold.json")
         final_config_file = Path("artifacts/models/final_champion_config.json")
         champ_config_file = Path("artifacts/models/champion_config.json")
         calib_file = Path("artifacts/models/calibrated_threshold.json")
 
         if threshold is not None:
-            self.default_threshold = threshold
+            resolved_threshold = float(threshold)
+        elif v4_thresh_file.exists() and "v4" in str(self.checkpoint_path).lower():
+            try:
+                with open(v4_thresh_file, "r") as f:
+                    tdata = json.load(f)
+                    resolved_threshold = float(tdata.get("single_pair_threshold", 0.5924))
+                    self.gallery_threshold = float(tdata.get("gallery_threshold", 0.6312))
+                    model_version = "4.0.0-champion"
+            except Exception:
+                resolved_threshold = float(checkpoint.get("optimal_threshold", 0.5924))
         elif final_config_file.exists() and "final_champion" in str(self.checkpoint_path).lower():
             try:
                 with open(final_config_file, "r") as f:
                     cdata = json.load(f)
-                    self.default_threshold = float(cdata.get("frozen_calibrated_threshold", cdata.get("frozen_threshold", 0.7060)))
-                    self.model_version = cdata.get("model_version", "3.0.0-final-champion")
+                    resolved_threshold = float(cdata.get("frozen_calibrated_threshold", cdata.get("frozen_threshold", 0.7060)))
+                    model_version = cdata.get("model_version", "3.0.0-final-champion")
             except Exception:
-                self.default_threshold = float(checkpoint.get("calibrated_threshold", 0.7060))
+                resolved_threshold = float(checkpoint.get("calibrated_threshold", 0.7060))
         elif champ_config_file.exists() and "champion" in str(self.checkpoint_path).lower():
             try:
                 with open(champ_config_file, "r") as f:
                     cdata = json.load(f)
-                    self.default_threshold = float(cdata["frozen_threshold"])
-                    self.model_version = cdata.get("model_version", "2.0.0-champion")
+                    resolved_threshold = float(cdata.get("frozen_threshold", 0.7382))
+                    model_version = cdata.get("model_version", "2.0.0-champion")
             except Exception:
-                self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7382))
+                resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7382))
         elif calib_file.exists():
             try:
                 with open(calib_file, "r") as f:
-                    self.default_threshold = float(json.load(f)["calibrated_threshold"])
+                    resolved_threshold = float(json.load(f).get("calibrated_threshold", 0.7766))
             except Exception:
-                self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
+                resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
         else:
-            self.default_threshold = float(checkpoint.get("optimal_threshold", 0.7500))
+            resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7500))
 
+        super().__init__(
+            model_name="Siamese_ResNet_Champion",
+            model_version=model_version,
+            model_type="SIAMESE_RESNET",
+            threshold=resolved_threshold,
+            review_margin=0.05
+        )
+        self.default_threshold = resolved_threshold
+
+        # 3. Instantiate Neural Architecture
         if "resnet" in model_arch:
             from ml.models.architectures import SiameseResNet18
             self.model = SiameseResNet18(embedding_dim=embedding_dim, in_channels=1)
@@ -111,9 +135,17 @@ class SignatureVerifier:
                 backbone=backbone
             )
 
-        self.model.load_state_dict(checkpoint["model_state_dict"])
+        if "model_state_dict" in checkpoint:
+            self.model.load_state_dict(checkpoint["model_state_dict"])
+        elif isinstance(checkpoint, dict):
+            self.model.load_state_dict(checkpoint)
+
         self.model.to(self.device)
         self.model.eval()
+
+    def extract_features(self, image: Union[str, Path, np.ndarray, Image.Image]) -> np.ndarray:
+        """Extracts 256-d unit hypersphere embedding."""
+        return self.extract_embedding(image)
 
     def extract_embedding(
         self,
@@ -121,7 +153,7 @@ class SignatureVerifier:
     ) -> np.ndarray:
         """
         Generates a 256-dimensional L2-normalized feature embedding for a signature.
-        Used for database enrollment.
+        Used for database enrollment and metric comparison.
         """
         tensor = self.preprocessor.preprocess(image_input, as_tensor=True).to(self.device)
         if tensor.dim() == 3:
@@ -131,6 +163,14 @@ class SignatureVerifier:
             embedding = forward_fn(tensor)
         return embedding.squeeze(0).cpu().numpy()
 
+    def compute_distance(self, feat1: np.ndarray, feat2: np.ndarray) -> float:
+        """Euclidean distance between two unit embeddings."""
+        return float(np.linalg.norm(feat1 - feat2))
+
+    def compute_similarity(self, distance: float) -> float:
+        """Non-linear metric similarity S = 1 / (1 + D)."""
+        return float(1.0 / (1.0 + distance))
+
     def verify(
         self,
         reference_input: Union[str, Path, np.ndarray, Image.Image],
@@ -138,9 +178,7 @@ class SignatureVerifier:
         threshold: Optional[float] = None
     ) -> Dict[str, Any]:
         """
-        Compares questioned signature against reference specimen.
-        Returns:
-            Dictionary containing similarity score, distance, embeddings, and decision.
+        Backward-compatible verification call returning dict.
         """
         thresh = threshold if threshold is not None else self.default_threshold
 
@@ -153,11 +191,11 @@ class SignatureVerifier:
 
         with torch.no_grad():
             emb1, emb2 = self.model.forward(t1, t2)
-            distance = self.model.compute_distance(emb1, emb2).item()
-            similarity = self.model.compute_similarity(torch.tensor([distance])).item()
+            distance = float(self.model.compute_distance(emb1, emb2).item())
+            similarity = float(self.model.compute_similarity(torch.tensor([distance])).item())
 
         # Decision Logic with Borderline Manual Review Buffer
-        manual_review_buffer = 0.10
+        manual_review_buffer = self.review_margin
         if similarity >= thresh:
             decision = "VERIFIED"
             risk_level = "LOW"
@@ -178,26 +216,97 @@ class SignatureVerifier:
             "embedding_b": emb2.squeeze(0).cpu().tolist()
         }
 
+    def verify_gallery(
+        self,
+        reference_inputs: list,
+        submitted_input: Union[str, Path, np.ndarray, Image.Image],
+        threshold: Optional[float] = None,
+        strategy: str = "max"
+    ) -> Dict[str, Any]:
+        """
+        Verifies questioned signature against multiple enrolled customer reference specimens.
+        """
+        thresh = threshold if threshold is not None else getattr(self, "gallery_threshold", 0.6312)
 
-def main():
-    import argparse
-    parser = argparse.ArgumentParser(description="Verify a pair of signatures")
-    parser.add_argument("--ref", required=True, help="Path to reference signature")
-    parser.add_argument("--sub", required=True, help="Path to submitted signature")
-    parser.add_argument("--checkpoint", default="artifacts/models/best_siamese_model.pt")
-    parser.add_argument("--threshold", type=float, default=None)
-    args = parser.parse_args()
+        t_sub = self.preprocessor.preprocess(submitted_input, as_tensor=True).to(self.device)
+        if t_sub.dim() == 3:
+            t_sub = t_sub.unsqueeze(0)
 
-    verifier = SignatureVerifier(checkpoint_path=args.checkpoint, threshold=args.threshold)
-    result = verifier.verify(args.ref, args.sub)
-    print("\n--- Signature Verification Result ---")
-    print(f"Similarity Score   : {result['similarity_score']}")
-    print(f"Euclidean Distance : {result['euclidean_distance']}")
-    print(f"Threshold Used     : {result['threshold_used']}")
-    print(f"Decision           : {result['decision']}")
-    print(f"Risk Level         : {result['risk_recommendation']}")
-    print("--------------------------------------\n")
+        with torch.no_grad():
+            forward_fn = getattr(self.model, "forward_one", getattr(self.model, "forward_once", None))
+            q_emb = F.normalize(forward_fn(t_sub), p=2, dim=1)
+
+            sims = []
+            dists = []
+            for ref_in in reference_inputs:
+                t_ref = self.preprocessor.preprocess(ref_in, as_tensor=True).to(self.device)
+                if t_ref.dim() == 3:
+                    t_ref = t_ref.unsqueeze(0)
+                r_emb = F.normalize(forward_fn(t_ref), p=2, dim=1)
+                d = float(self.model.compute_distance(r_emb, q_emb).item())
+                s = float(self.model.compute_similarity(torch.tensor([d])).item())
+                dists.append(d)
+                sims.append(s)
+
+        sims_arr = np.array(sims)
+        if strategy == "max":
+            agg_similarity = float(np.max(sims_arr))
+        elif strategy == "top_k":
+            top_k = min(2, len(sims_arr))
+            agg_similarity = float(np.mean(np.sort(sims_arr)[-top_k:]))
+        elif strategy == "mean":
+            agg_similarity = float(np.mean(sims_arr))
+        else:
+            agg_similarity = float(np.max(sims_arr))
+
+        agg_distance = float(1.0 / max(agg_similarity, 1e-6) - 1.0)
+
+        manual_review_buffer = self.review_margin
+        if agg_similarity >= thresh:
+            decision = "VERIFIED"
+            risk_level = "LOW"
+        elif agg_similarity >= (thresh - manual_review_buffer):
+            decision = "MANUAL_REVIEW"
+            risk_level = "MEDIUM"
+        else:
+            decision = "REJECTED"
+            risk_level = "HIGH"
+
+        return {
+            "similarity_score": round(agg_similarity, 4),
+            "euclidean_distance": round(agg_distance, 4),
+            "threshold_used": round(thresh, 4),
+            "decision": decision,
+            "risk_recommendation": risk_level,
+            "specimens_evaluated": len(reference_inputs),
+            "pairwise_similarities": [round(s, 4) for s in sims],
+            "aggregation_strategy": strategy
+        }
 
 
-if __name__ == "__main__":
-    main()
+def get_model_verifier(
+    model_type: str = "siamese",
+    checkpoint_path: Optional[str] = None,
+    threshold: Optional[float] = None,
+    device: Optional[str] = None
+) -> SignatureVerificationModel:
+    """
+    Factory function returning a concrete SignatureVerificationModel instance.
+    Supports:
+    - 'siamese': Deep Siamese ResNet
+    - 'transformer': Hugging Face Vision Transformer
+    - 'sklearn' / 'classical': Classical SVM with 264-d HOG/morphological features
+    """
+    m_type = model_type.lower()
+    if m_type in ("siamese", "resnet", "champion"):
+        return SignatureVerifier(checkpoint_path=checkpoint_path, threshold=threshold, device=device)
+    elif m_type in ("transformer", "vit"):
+        from ml.models.transformer_signature_model import VisionTransformerVerifier
+        ckpt = checkpoint_path or "artifacts/models/transformer_signature_model.pt"
+        return VisionTransformerVerifier(checkpoint_path=ckpt, threshold=threshold or 0.7313, device=device)
+    elif m_type in ("sklearn", "classical", "svm"):
+        from ml.baselines.classical_classifier import ClassicalSklearnVerifier
+        ckpt = checkpoint_path or "artifacts/models/classical_svm_model.joblib"
+        return ClassicalSklearnVerifier(checkpoint_path=ckpt, threshold=threshold or 0.4265)
+    else:
+        raise ValueError(f"Unknown model_type: '{model_type}'. Choose from 'siamese', 'transformer', 'sklearn'.")

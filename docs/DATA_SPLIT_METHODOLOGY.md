@@ -1,4 +1,7 @@
-# Data Split Methodology & Anti-Leakage Protocol
+# SIGNATURE VMAKE — Data Split Methodology & Anti-Leakage Protocol
+
+**Document Version:** 1.0.0  
+**Project:** SIGNATURE VMAKE (`signature-vmake`)  
 
 ## 1. Executive Summary
 
