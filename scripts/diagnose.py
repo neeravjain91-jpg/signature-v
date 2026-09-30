@@ -53,6 +53,8 @@ def main():
         ("OpenCV", "cv2"),
         ("Pillow", "PIL"),
         ("NumPy", "numpy"),
+        ("Pandas", "pandas"),
+        ("Alembic", "alembic"),
     ]
     for label, mod in pkgs:
         def check_mod(m=mod):
@@ -68,7 +70,8 @@ def main():
         try:
             cust_count = db.query(Customer).count()
             models_count = db.query(ModelVersion).count()
-            return f"Connected to {DB_URL.split('?')[0]} | Customers: {cust_count}, Models: {models_count}"
+            db_type = "PostgreSQL" if "postgres" in DB_URL else "SQLite (Local Dev/Test Fallback)"
+            return f"{db_type} at {DB_URL.split('?')[0]} | Customers: {cust_count}, Models: {models_count}"
         finally:
             db.close()
     all_passed &= check_status("Database Connectivity", check_db)
@@ -84,10 +87,12 @@ def main():
         return f"CEDAR Benchmark ({org_c} genuine, {forg_c} forged)"
     all_passed &= check_status("Dataset Availability", check_data)
 
-    # 5. Checkpoints & Model Inference (Dual-Track Architecture)
+    # 5. Checkpoints & Model Inference (All 4 Synopsis Candidates)
     models = [
-        ("Track A (Classical scikit-learn Baseline)", "sklearn", "artifacts/models/classical_svm_model.joblib"),
-        ("Track B (Hugging Face Vision Transformer - Production Default)", "transformer", "artifacts/models/transformer_signature_model.pt"),
+        ("Candidate 1: Classical SVM Baseline", "svm", "artifacts/models/classical_svm_model.joblib"),
+        ("Candidate 2: Classical Random Forest", "random_forest", "artifacts/models/classical_random_forest_model.joblib"),
+        ("Candidate 3: Classical Logistic Regression", "logistic", "artifacts/models/classical_logistic_model.joblib"),
+        ("Candidate 4: HF Vision Transformer (Production Default)", "transformer", "artifacts/models/transformer_signature_model.pt"),
     ]
     for label, track_id, ckpt_path in models:
         def check_model(t=track_id, ckpt=ckpt_path):
@@ -96,11 +101,11 @@ def main():
                 raise FileNotFoundError(f"Checkpoint not found at {ckpt}")
             from ml.inference.verify_signature import get_model_verifier
             v = get_model_verifier(t)
-            # Run quick inference
+            # Run real sample inference
             ref = "data/raw/signatures/full_org/original_46_1.png"
             sub = "data/raw/signatures/full_org/original_46_2.png"
             out = v.verify(ref, sub)
-            return f"Loaded ({p.stat().st_size / (1024*1024):.1f} MB) | Inf Sim: {out.similarity_score:.4f}"
+            return f"Loaded ({p.stat().st_size / (1024*1024):.2f} MB) | Inf Sim: {out.similarity_score:.4f} | Dec: {out.decision}"
         all_passed &= check_status(f"Model: {label}", check_model)
 
     # 6. Frontend Files

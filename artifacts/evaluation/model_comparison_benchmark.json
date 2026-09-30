@@ -1,8 +1,5 @@
 {
-  "evaluation_dataset": "CEDAR Test Cohort (Writers 46-55)",
-  "test_pairs_count": 1200,
-  "protocol": "Strictly Writer-Disjoint Open-Set Evaluation",
-  "Track_A_Classical_Sklearn": {
+  "classical_svm": {
     "eer": 0.18999999999999997,
     "eer_threshold": 0.5415035421367204,
     "evaluated_threshold": 0.3635581057970125,
@@ -993,7 +990,7 @@
     "model_version": "1.0.0-sklearn-svm",
     "threshold_used": 0.3636
   },
-  "Track_A_Random_Forest": {
+  "classical_random_forest": {
     "eer": 0.1333333333333333,
     "eer_threshold": 0.5271418545809772,
     "evaluated_threshold": 0.42638977146069634,
@@ -1741,7 +1738,7 @@
     "model_version": "1.0.0-sklearn-random_forest",
     "threshold_used": 0.4264
   },
-  "Track_A_Logistic_Regression": {
+  "classical_logistic": {
     "eer": 0.18833333333333335,
     "eer_threshold": 0.6808103544266763,
     "evaluated_threshold": 0.20151873472743834,
@@ -2618,7 +2615,7 @@
     "model_version": "1.0.0-sklearn-logistic",
     "threshold_used": 0.2015
   },
-  "Track_B_Vision_Transformer": {
+  "vision_transformer": {
     "eer": 0.2766666666666666,
     "eer_threshold": 0.8142319768667221,
     "evaluated_threshold": 0.7312881350517273,

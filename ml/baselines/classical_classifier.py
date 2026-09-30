@@ -59,6 +59,7 @@ class ClassicalSklearnVerifier(SignatureVerificationModel):
             self.scaler = data.get("scaler")
             self.threshold = float(data.get("calibrated_threshold", self.threshold))
             self.model_version = str(data.get("model_version", self.model_version))
+            self.model_name = str(data.get("model_name", self.model_name))
         else:
             self.classifier = data
 

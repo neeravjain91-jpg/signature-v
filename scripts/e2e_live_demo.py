@@ -55,16 +55,16 @@ def run_demo():
     health_data = resp.json()
     print(f"[OK] API Health:\n{json.dumps(health_data, indent=2)}")
     assert health_data["status"] == "HEALTHY"
-    assert "transformer" in health_data["available_tracks"]
-    assert "sklearn" in health_data["available_tracks"]
+    for track in ["transformer", "svm", "random_forest", "logistic"]:
+        assert track in health_data["available_tracks"], f"Missing {track} in available tracks"
 
     resp = client.get("/api/v1/models/health")
     assert resp.status_code == 200, f"Models health failed: {resp.text}"
     models_health = resp.json()
     print(f"[OK] Models Runtime Readiness:\n{json.dumps(models_health, indent=2)}")
-    assert models_health["models"]["sklearn"]["status"] == "ready"
-    assert models_health["models"]["transformer"]["status"] == "ready"
-    print("[PASS] Dual-Track Models (Track B: Hugging Face ViT Default, Track A: scikit-learn SVM Baseline) are live and ready.")
+    for track in ["transformer", "svm", "random_forest", "logistic"]:
+        assert models_health["models"][track]["status"] == "ready", f"Model {track} not ready"
+    print("[PASS] Candidate Models (Track B: Hugging Face ViT Default, Track A: RF, SVM, Logistic) are live and ready.")
 
     # 2. Customer Registration
     log("2. CUSTOMER REGISTRATION")
@@ -131,9 +131,9 @@ def run_demo():
     assert verif_res["match"] is True
     print(f"[PASS] Track B Decision: {verif_res['decision']}, Verdict: {verif_res['verdict']}, Similarity: {verif_res['similarity_score']:.4f}, Threshold: {verif_res['threshold_used']:.4f}")
 
-    # 5. Dual-Track Comparative Verification (Track B ViT vs Track A SVM)
-    log("5. DUAL-TRACK COMPARATIVE VERIFICATION (TRACK B ViT vs TRACK A SVM)")
-    for track_name in ["transformer", "sklearn"]:
+    # 5. Multi-Model Comparative Verification (ViT, RF, SVM, Logistic)
+    log("5. MULTI-MODEL CANDIDATE VERIFICATION (ViT, RF, SVM, LOGISTIC)")
+    for track_name in ["transformer", "random_forest", "svm", "logistic"]:
         with open(sig_file2, "rb") as f:
             files = {"submitted_signature": ("original_46_2.png", f, "image/png")}
             data = {

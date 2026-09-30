@@ -275,12 +275,20 @@ def get_model_verifier(
         from ml.models.transformer_signature_model import VisionTransformerVerifier
         ckpt = checkpoint_path or "artifacts/models/transformer_signature_model.pt"
         return VisionTransformerVerifier(checkpoint_path=ckpt, threshold=threshold or 0.7313, device=device)
-    elif m_type in ("sklearn", "classical", "svm", "track_a"):
+    elif m_type in ("svm", "classical_svm", "sklearn", "classical", "track_a"):
         from ml.baselines.classical_classifier import ClassicalSklearnVerifier
         ckpt = checkpoint_path or "artifacts/models/classical_svm_model.joblib"
         return ClassicalSklearnVerifier(checkpoint_path=ckpt, threshold=threshold or 0.3636)
+    elif m_type in ("random_forest", "rf", "forest"):
+        from ml.baselines.classical_classifier import ClassicalSklearnVerifier
+        ckpt = checkpoint_path or "artifacts/models/classical_random_forest_model.joblib"
+        return ClassicalSklearnVerifier(checkpoint_path=ckpt, threshold=threshold or 0.4264)
+    elif m_type in ("logistic", "logistic_regression", "lr"):
+        from ml.baselines.classical_classifier import ClassicalSklearnVerifier
+        ckpt = checkpoint_path or "artifacts/models/classical_logistic_model.joblib"
+        return ClassicalSklearnVerifier(checkpoint_path=ckpt, threshold=threshold or 0.2015)
     elif m_type in ("siamese", "resnet", "champion", "track_c", "neural"):
         return SignatureVerifier(checkpoint_path=checkpoint_path, threshold=threshold, device=device)
     else:
-        raise ValueError(f"Unknown model_type: '{model_type}'. Choose from 'transformer' (Track B), 'sklearn' (Track A).")
+        raise ValueError(f"Unknown model_type: '{model_type}'. Choose from 'transformer', 'svm', 'random_forest', 'logistic'.")
 

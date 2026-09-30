@@ -34,17 +34,29 @@ from ml.evaluation.metrics import calculate_biometric_metrics
 
 def cache_image_features(image_paths: list, extractor: ClassicalFeatureExtractor) -> Dict[str, np.ndarray]:
     """Extracts and caches features for unique images to avoid redundant computation."""
-    unique_paths = list(set(image_paths))
-    print(f"Extracting features for {len(unique_paths)} unique images...")
+    cache_file = Path("artifacts/models/classical_features_cache.joblib")
     cache = {}
-    for i, path in enumerate(unique_paths):
-        if (i + 1) % 200 == 0 or (i + 1) == len(unique_paths):
-            print(f"  Processed {i + 1}/{len(unique_paths)} images...")
+    if cache_file.exists():
         try:
-            cache[path] = extractor.extract(path)
-        except Exception as e:
-            # Fallback zero vector
-            cache[path] = np.zeros(264, dtype=np.float32)
+            cache = joblib.load(cache_file)
+            print(f"Loaded {len(cache)} cached image features from {cache_file}")
+        except Exception:
+            cache = {}
+
+    unique_paths = list(set(image_paths))
+    missing_paths = [p for p in unique_paths if p not in cache]
+    if missing_paths:
+        print(f"Extracting features for {len(missing_paths)} new unique images...")
+        for i, path in enumerate(missing_paths):
+            if (i + 1) % 200 == 0 or (i + 1) == len(missing_paths):
+                print(f"  Processed {i + 1}/{len(missing_paths)} images...")
+            try:
+                cache[path] = extractor.extract(path)
+            except Exception:
+                cache[path] = np.zeros(264, dtype=np.float32)
+        cache_file.parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump(cache, cache_file)
+        print(f"Updated feature cache on disk ({len(cache)} items).")
     return cache
 
 
@@ -165,4 +177,6 @@ def train_and_evaluate(
 
 
 if __name__ == "__main__":
-    train_and_evaluate(model_type="svm", max_train_samples=2500)
+    for m in ["svm", "random_forest", "logistic"]:
+        print(f"\n{'='*65}\nTraining Classical ML Baseline: {m.upper()}\n{'='*65}")
+        train_and_evaluate(model_type=m, max_train_samples=2500)

@@ -242,8 +242,10 @@
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">AI Inference Engine Track</label>
                             <select id="select-manual-model-track" onchange="updateModeUI()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
-                                <option value="transformer" selected>Track B: Hugging Face Vision Transformer (ViT) [Production]</option>
-                                <option value="sklearn">Track A: scikit-learn Classical Baseline (SVM)</option>
+                                <option value="transformer" selected>Track B: Hugging Face Vision Transformer (ViT) [Production Default]</option>
+                                <option value="svm">Track A1: scikit-learn Support Vector Machine (SVM)</option>
+                                <option value="random_forest">Track A2: scikit-learn Random Forest (RF)</option>
+                                <option value="logistic">Track A3: scikit-learn Logistic Regression (LR)</option>
                             </select>
                         </div>
 
@@ -410,7 +412,9 @@
                                 <label class="block text-xs text-slate-400 mb-1">AI Inference Engine / Model Track</label>
                                 <select id="select-model-track" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-500">
                                     <option value="transformer" selected>Track B: Hugging Face Vision Transformer (ViT) [Production Default]</option>
-                                    <option value="sklearn">Track A: scikit-learn Classical Baseline (SVM)</option>
+                                    <option value="svm">Track A1: scikit-learn Support Vector Machine (SVM)</option>
+                                    <option value="random_forest">Track A2: scikit-learn Random Forest (RF)</option>
+                                    <option value="logistic">Track A3: scikit-learn Logistic Regression (LR)</option>
                                 </select>
                             </div>
 
@@ -1223,7 +1227,7 @@
                             <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 text-[10px] font-bold border border-emerald-800">PRODUCTION</span></td>
                         </tr>
                         <tr>
-                            <td class="px-4 py-3 font-semibold text-white">Track A: Classical Sklearn</td>
+                            <td class="px-4 py-3 font-semibold text-white">Track A1: Classical SVM</td>
                             <td class="px-4 py-3 text-slate-400 font-sans">264-d HOG + Morphology + Linear SVM</td>
                             <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Classical_Sklearn?.auc_roc?.toFixed(4) || '0.8574'}</td>
                             <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Classical_Sklearn?.eer * 100)?.toFixed(2) || '19.00'}%</td>
@@ -1232,8 +1236,34 @@
                             <td class="px-3 py-3 text-center">${(data.Track_A_Classical_Sklearn?.frr * 100)?.toFixed(2) || '13.17'}%</td>
                             <td class="px-3 py-3 text-center font-bold">${data.Track_A_Classical_Sklearn?.f1_score?.toFixed(4) || '0.8065'}</td>
                             <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Classical_Sklearn?.average_latency_ms?.toFixed(1) || '6.0'} ms</td>
-                            <td class="px-3 py-3 text-center">${data.Track_A_Classical_Sklearn?.model_size_mb || '5.6'} MB</td>
-                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] border border-slate-700">BASELINE / EDGE</span></td>
+                            <td class="px-3 py-3 text-center">${data.Track_A_Classical_Sklearn?.model_size_mb || '1.9'} MB</td>
+                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] border border-slate-700">BASELINE</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-semibold text-white">Track A2: Random Forest</td>
+                            <td class="px-4 py-3 text-slate-400 font-sans">264-d Features + 100 Decision Trees</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Random_Forest?.auc_roc?.toFixed(4) || '0.9424'}</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Random_Forest?.eer * 100)?.toFixed(2) || '13.33'}%</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Random_Forest?.accuracy * 100)?.toFixed(2) || '82.92'}%</td>
+                            <td class="px-3 py-3 text-center">${(data.Track_A_Random_Forest?.far * 100)?.toFixed(2) || '30.33'}%</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Random_Forest?.frr * 100)?.toFixed(2) || '3.83'}%</td>
+                            <td class="px-3 py-3 text-center font-bold">${data.Track_A_Random_Forest?.f1_score?.toFixed(4) || '0.8492'}</td>
+                            <td class="px-3 py-3 text-center">${data.Track_A_Random_Forest?.average_latency_ms?.toFixed(1) || '10.2'} ms</td>
+                            <td class="px-3 py-3 text-center">${data.Track_A_Random_Forest?.model_size_mb || '2.4'} MB</td>
+                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 text-[10px] border border-cyan-800">CHAMPION ML</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-semibold text-white">Track A3: Logistic Regression</td>
+                            <td class="px-4 py-3 text-slate-400 font-sans">264-d Features + L2 Regularization</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Logistic_Regression?.auc_roc?.toFixed(4) || '0.8808'}</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Logistic_Regression?.eer * 100)?.toFixed(2) || '18.83'}%</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Logistic_Regression?.accuracy * 100)?.toFixed(2) || '80.50'}%</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Logistic_Regression?.far * 100)?.toFixed(2) || '27.00'}%</td>
+                            <td class="px-3 py-3 text-center">${(data.Track_A_Logistic_Regression?.frr * 100)?.toFixed(2) || '12.00'}%</td>
+                            <td class="px-3 py-3 text-center font-bold">${data.Track_A_Logistic_Regression?.f1_score?.toFixed(4) || '0.8186'}</td>
+                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Logistic_Regression?.average_latency_ms?.toFixed(1) || '6.0'} ms</td>
+                            <td class="px-3 py-3 text-center">${data.Track_A_Logistic_Regression?.model_size_mb || '0.02'} MB</td>
+                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] border border-slate-700">LIGHTWEIGHT</span></td>
                         </tr>
                     `;
                 }
@@ -1303,18 +1333,33 @@
             const singleThreshLabel = document.getElementById('label-single-thresh');
             const galleryThreshLabel = document.getElementById('label-gallery-thresh');
 
-            const baseThresh = (modelTrack === 'sklearn') ? 0.3636 : 0.7313;
-            const galThresh = (modelTrack === 'sklearn') ? 0.4000 : 0.7600;
+            let baseThresh = 0.7313;
+            let galThresh = 0.7600;
+            let modelLabel = 'ViT';
+
+            if (modelTrack === 'svm' || modelTrack === 'sklearn') {
+                baseThresh = 0.3636;
+                galThresh = 0.4000;
+                modelLabel = 'SVM';
+            } else if (modelTrack === 'random_forest') {
+                baseThresh = 0.4264;
+                galThresh = 0.4600;
+                modelLabel = 'Random Forest';
+            } else if (modelTrack === 'logistic') {
+                baseThresh = 0.2015;
+                galThresh = 0.2400;
+                modelLabel = 'Logistic Reg.';
+            }
 
             if (singleThreshLabel) singleThreshLabel.innerText = `Latest specimen (\u03c4* = ${baseThresh.toFixed(4)})`;
             if (galleryThreshLabel) galleryThreshLabel.innerText = `Max similarity (\u03c4_gal* = ${galThresh.toFixed(4)})`;
 
             if (mode === 'gallery') {
                 threshEl.innerText = galThresh.toFixed(4);
-                modeBadge.innerText = `Mode 2: Customer Gallery Verification (Max-Sim, ${modelTrack === 'sklearn' ? 'SVM' : 'ViT'})`;
+                modeBadge.innerText = `Mode 2: Customer Gallery Verification (Max-Sim, ${modelLabel})`;
             } else {
                 threshEl.innerText = baseThresh.toFixed(4);
-                modeBadge.innerText = `Mode 1: Single Reference Verification (${modelTrack === 'sklearn' ? 'SVM' : 'ViT'})`;
+                modeBadge.innerText = `Mode 1: Single Reference Verification (${modelLabel})`;
             }
         }
 

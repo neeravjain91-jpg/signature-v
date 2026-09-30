@@ -689,9 +689,9 @@ class BankingVerificationService:
         # 6. Determine Biometric Verdict & Operational Banking Decision
         db_decision = risk_res["recommended_decision"]
         is_match = bool(sim_score >= active_thresh)
-        if db_decision == "VERIFIED":
+        if sim_score >= active_thresh:
             user_verdict = "MATCH"
-        elif db_decision == "MANUAL_REVIEW":
+        elif sim_score >= (active_thresh - 0.05):
             user_verdict = "BORDERLINE"
         else:
             user_verdict = "NO MATCH"

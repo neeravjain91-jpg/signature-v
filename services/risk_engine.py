@@ -134,10 +134,17 @@ class FraudRiskEngine:
         """
         factors: List[Dict[str, str]] = []
 
-        # 1. Similarity Risk Component (1 - similarity)
+        # 1. Similarity Risk Component calibrated to model threshold
         sim = float(similarity_score)
         thresh = float(model_threshold)
-        similarity_risk = float(np.clip(1.0 - sim, 0.0, 1.0))
+        if sim >= thresh:
+            # Score meets or exceeds threshold: Low similarity risk (0.0 to 0.20)
+            margin = (sim - thresh) / max(1.0 - thresh, 1e-6)
+            similarity_risk = float(np.clip((1.0 - margin) * 0.20, 0.0, 0.20))
+        else:
+            # Score below threshold: High similarity risk (0.50 to 1.0)
+            deficit = (thresh - sim) / max(thresh, 1e-6)
+            similarity_risk = float(np.clip(0.50 + 0.50 * deficit, 0.50, 1.0))
 
         if sim < (thresh - 0.12):
             factors.append({

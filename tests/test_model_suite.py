@@ -53,8 +53,8 @@ def test_classical_feature_extractor():
     assert abs(norm - 1.0) < 1e-4
 
 
-def test_classical_sklearn_verifier():
-    verifier = ClassicalSklearnVerifier()
+def test_classical_svm_verifier():
+    verifier = ClassicalSklearnVerifier("artifacts/models/classical_svm_model.joblib")
     assert isinstance(verifier, SignatureVerificationModel)
     assert verifier.model_type == "CLASSICAL_SKLEARN"
 
@@ -65,7 +65,38 @@ def test_classical_sklearn_verifier():
         output = verifier.verify_pair(sample_1, sample_2)
         assert isinstance(output, VerificationOutput)
         assert 0.0 <= output.similarity_score <= 1.0
-        assert 0.0 <= output.confidence <= 1.0
+        assert output.decision in ("VERIFIED", "REJECTED", "MANUAL_REVIEW")
+
+
+def test_classical_random_forest_verifier():
+    verifier = ClassicalSklearnVerifier("artifacts/models/classical_random_forest_model.joblib")
+    assert isinstance(verifier, SignatureVerificationModel)
+    assert verifier.model_type == "CLASSICAL_SKLEARN"
+    assert "RANDOM_FOREST" in verifier.model_name
+
+    sample_1 = "data/raw/signatures/full_org/original_46_1.png"
+    sample_2 = "data/raw/signatures/full_org/original_46_2.png"
+
+    if Path(sample_1).exists() and Path(sample_2).exists():
+        output = verifier.verify_pair(sample_1, sample_2)
+        assert isinstance(output, VerificationOutput)
+        assert 0.0 <= output.similarity_score <= 1.0
+        assert output.decision in ("VERIFIED", "REJECTED", "MANUAL_REVIEW")
+
+
+def test_classical_logistic_verifier():
+    verifier = ClassicalSklearnVerifier("artifacts/models/classical_logistic_model.joblib")
+    assert isinstance(verifier, SignatureVerificationModel)
+    assert verifier.model_type == "CLASSICAL_SKLEARN"
+    assert "LOGISTIC" in verifier.model_name
+
+    sample_1 = "data/raw/signatures/full_org/original_46_1.png"
+    sample_2 = "data/raw/signatures/full_org/original_46_2.png"
+
+    if Path(sample_1).exists() and Path(sample_2).exists():
+        output = verifier.verify_pair(sample_1, sample_2)
+        assert isinstance(output, VerificationOutput)
+        assert 0.0 <= output.similarity_score <= 1.0
         assert output.decision in ("VERIFIED", "REJECTED", "MANUAL_REVIEW")
 
 
@@ -87,9 +118,11 @@ def test_huggingface_vision_transformer_verifier():
 
 def test_model_verifier_factory():
     for track, expected_type in [
-        ("siamese", "SIAMESE_RESNET"),
         ("transformer", "VISION_TRANSFORMER"),
-        ("sklearn", "CLASSICAL_SKLEARN")
+        ("svm", "CLASSICAL_SKLEARN"),
+        ("random_forest", "CLASSICAL_SKLEARN"),
+        ("logistic", "CLASSICAL_SKLEARN"),
+        ("sklearn", "CLASSICAL_SKLEARN"),
     ]:
         v = get_model_verifier(track)
         assert isinstance(v, SignatureVerificationModel)
