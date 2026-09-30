@@ -1,4 +1,4 @@
-# SIGNATURE VMAKE — Offline Signature Verification & Fraud Risk Assessment Platform
+# SYNAPSE — Intelligent Signature Verification & Fraud Risk Assessment Platform
 
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-orange.svg)](https://scikit-learn.org/)
@@ -51,7 +51,7 @@ flowchart TD
 
 Every mandated technology serves a genuine, non-trivial, executable role in the platform:
 
-| Technology | Genuine Role in SIGNATURE VMAKE | Verifiable Artifacts & Source |
+| Technology | Genuine Role in SYNAPSE | Verifiable Artifacts & Source |
 | :--- | :--- | :--- |
 | **Python 3.11** | Core platform runtime, asynchronous event loop (`asyncio`), dataclasses, and strict type hints. | Entire codebase |
 | **scikit-learn** | **Track A Classical Baseline:** 264-d HOG & morphological feature extractor, Platt-scaled Support Vector Machine (`CalibratedClassifierCV`), and biometric evaluation metrics (ROC-AUC, EER, FAR, FRR). | [`ml/baselines/classical_classifier.py`](ml/baselines/classical_classifier.py)<br/>`artifacts/models/classical_svm_model.joblib` |
@@ -88,28 +88,28 @@ The three model tracks were rigorously evaluated on **400 open-set validation pa
 ---
 
 ## 4. Multi-Factor Fraud Risk Engine
-
-Rather than relying strictly on raw biometric similarity, SIGNATURE VMAKE computes a calibrated composite fraud risk score:
-
+ 
+Rather than relying strictly on raw biometric similarity, SYNAPSE computes a calibrated composite fraud risk score:
+ 
 $$\text{Risk}_{\text{composite}} = 0.50 \cdot (1 - S_{\text{bio}}) + 0.15 \cdot (1 - Q_{\text{img}}) + 0.20 \cdot R_{\text{txn}} + 0.15 \cdot R_{\text{behavior}}$$
-
+ 
 Where:
 - $S_{\text{bio}}$: Gallery aggregated biometric similarity ($[0.0, 1.0]$).
 - $Q_{\text{img}}$: Physical capture quality score based on Laplacian blur variance ($\sigma_L^2$) and contrast.
 - $R_{\text{txn}}$: Non-linear monetary exposure tiered by amount.
 - $R_{\text{behavior}}$: Transaction channel risk (teller counter vs clearing house) and customer velocity.
-
+ 
 ### Operational Decision Tiers:
 - **LOW RISK ($< 0.25$):** Auto-Pass (`VERIFIED`).
 - **MEDIUM RISK ($0.25 - 0.60$):** Escalated to Compliance Review Queue (`MANUAL_REVIEW`).
 - **HIGH RISK ($\ge 0.60$):** Immediate Auto-Block & Security Alert (`REJECTED`).
-
+ 
 ---
-
+ 
 ## 5. Repository Directory Layout
-
+ 
 ```
-signature-vmake/
+synapse/
 ├── alembic.ini                         # Database migration configuration
 ├── docker-compose.yml                  # Production PostgreSQL & FastAPI stack
 ├── Dockerfile                          # Microservice container definition
@@ -179,8 +179,8 @@ signature-vmake/
 ### 6.1 Local Environment Setup
 ```bash
 # Clone the repository
-git clone https://github.com/neeravjain91-jpg/signature-verification.git
-cd signature-vmake
+git clone https://github.com/neeravjain91-jpg/signature-v.git
+cd signature-v
 
 # Automated Windows Setup (PowerShell):
 powershell -ExecutionPolicy Bypass -File scripts/setup_windows.ps1
