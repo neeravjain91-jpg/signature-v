@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: signature-vmake-api
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PORT
+        value: 8000
