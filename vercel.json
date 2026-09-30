@@ -1,9 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "name": "signature-v",
-  "version": 2,
-  "outputDirectory": "web",
   "cleanUrls": true,
+  "outputDirectory": "web",
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
   "rewrites": [
     {
       "source": "/(.*)",

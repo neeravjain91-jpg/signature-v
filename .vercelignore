@@ -1,11 +1,21 @@
-artifacts/models/*.pt
-artifacts/models/*.joblib
-data/raw/
-data/vault/
-database/*.db
+# Ignore backend code and python dependencies for Vercel static UI deployment
+api/
+requirements.txt
+ml/
+services/
+database/
+scripts/
+tests/
+artifacts/
+data/
+Dockerfile
+docker-compose.yml
+alembic/
+alembic.ini
 .venv/
 venv/
 __pycache__/
 *.pyc
+*.py
 .pytest_cache/
 scratch/
