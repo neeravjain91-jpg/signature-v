@@ -12,14 +12,14 @@
    - Zero compilation overhead: utilizes CDN Tailwind, FontAwesome, and vanilla ES6 modules.
 2. **Backend & ML Inference Layer (Containerized Docker / Render / Railway / Cloud Run)**:
    - Python 3.11 FastAPI application ([`api/main.py`](../api/main.py)) hosting 10 core banking modules.
-   - Triple-track ML verification stack: ResNet-18 Siamese Champion (`vmake_champion_model.pt`), Hugging Face Vision Transformer (`transformer_signature_model.pt`), and Classical scikit-learn SVM (`classical_svm_model.joblib`).
+   - Dual-track ML verification stack: Hugging Face Vision Transformer (`transformer_signature_model.pt` - Production Default) and Classical scikit-learn SVM (`classical_svm_model.joblib` - Edge Baseline).
    - SQLite/PostgreSQL persistent ledger and disk vault storage for enrolled biometric specimens.
 
 ```mermaid
 flowchart LR
     User["Client Browser / Mobile / Auditor"] -->|HTTPS CDN| Vercel["Vercel Edge Network<br/>(web/index.html)"]
-    Vercel -->|Rewrites / Direct CORS| Backend["FastAPI ML Backend<br/>(Render / Railway / Docker)"]
-    Backend --> ML["ML Inference Engine<br/>• ResNet-18 Siamese<br/>• Vision Transformer<br/>• Classical SVM"]
+    Vercel -->|Direct CORS / API URL| Backend["FastAPI ML Backend<br/>(Render / Railway / Docker)"]
+    Backend --> ML["Dual-Track ML Inference Engine<br/>• HF Vision Transformer (Default)<br/>• Classical Sklearn SVM (Edge)"]
     Backend --> Vault["Biometric Specimen Vault<br/>data/vault/signatures/"]
     Backend --> DB[("Database Ledger<br/>SQLite / PostgreSQL")]
 ```
