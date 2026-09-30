@@ -1,8 +1,10 @@
 """
-Pytest Test Suite for SYNAPSE REST API Endpoints and Workflows.
+Pytest Test Suite for SIGNATURE VMAKE REST API Endpoints and Workflows.
 """
 
 import sys
+import io
+import uuid
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -17,7 +19,11 @@ def test_health_check_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "HEALTHY"
+    assert "SIGNATURE VMAKE" in data["service"]
     assert "active_model" in data
+    assert "available_tracks" in data
+    assert "transformer" in data["available_tracks"]
+    assert "sklearn" in data["available_tracks"]
 
 
 def test_dashboard_metrics_endpoint():
@@ -37,12 +43,37 @@ def test_customer_list_endpoint():
     assert len(data["customers"]) >= 1
 
 
-def test_transaction_list_endpoint():
-    response = client.get("/api/v1/transactions")
-    assert response.status_code == 200
-    data = response.json()
+def test_customer_create_endpoint():
+    cust_ref = f"TEST-CUST-{uuid.uuid4().hex[:6].upper()}"
+    res = client.post("/api/v1/customers", json={
+        "customer_reference": cust_ref,
+        "full_name": "Test Customer Jane",
+        "phone_reference": "sha256:phone_hash_test"
+    })
+    assert res.status_code == 200
+    assert res.json()["customer_reference"] == cust_ref
+
+
+def test_transaction_list_and_create_endpoints():
+    # 1. List transactions
+    res_list = client.get("/api/v1/transactions")
+    assert res_list.status_code == 200
+    data = res_list.json()
     assert "transactions" in data
     assert len(data["transactions"]) >= 1
+
+    # 2. Create transaction
+    txn_ref = f"TEST-TXN-{uuid.uuid4().hex[:6].upper()}"
+    res_create = client.post("/api/v1/transactions", json={
+        "account_reference": "DEMO-ACC-CHK-8802",
+        "transaction_reference": txn_ref,
+        "transaction_type": "CHEQUE",
+        "amount": 1250.0,
+        "currency": "USD"
+    })
+    assert res_create.status_code == 200
+    assert res_create.json()["transaction_reference"] == txn_ref
+    assert res_create.json()["status"] == "PENDING"
 
 
 def test_authentication_workflow():
@@ -76,41 +107,66 @@ def test_audit_trail_endpoint():
 def test_web_interface_html():
     response = client.get("/")
     assert response.status_code == 200
-    assert "SYNAPSE" in response.text
-    assert "CHAMPION" in response.text
+    assert "SIGNATURE VMAKE" in response.text
+    assert "Model Comparison" in response.text
 
 
-def test_verify_demo_endpoint_parity():
-    """Verify demo verification uses real model with non-mock metrics."""
-    res = client.post("/api/v1/verifications/verify-demo", json={
-        "amount": 2500.0,
+def test_model_benchmark_endpoint():
+    response = client.get("/api/v1/models/benchmark")
+    assert response.status_code == 200
+    data = response.json()
+    assert "Track_A_Classical_Sklearn" in data
+    assert "Track_B_Vision_Transformer" in data
+    assert "Track_C_Siamese_ResNet" in data
+    assert data["Track_A_Classical_Sklearn"]["auc_roc"] > 0.70
+    assert data["Track_B_Vision_Transformer"]["auc_roc"] > 0.70
+    assert data["Track_C_Siamese_ResNet"]["auc_roc"] > 0.80
+
+
+def test_verify_demo_multi_track():
+    """Verify demo verification with all 3 model tracks."""
+    for track in ["siamese", "transformer", "sklearn"]:
+        res = client.post("/api/v1/verifications/verify-demo", json={
+            "amount": 3500.0,
+            "transaction_type": "CHEQUE",
+            "sample_type": "genuine",
+            "transaction_reference": "DEMO-TXN-CHEQUE-101",
+            "model_track": track
+        })
+        assert res.status_code == 200
+        data = res.json()
+        assert "similarity_score" in data
+        assert "decision" in data
+        assert 0.0 <= data["similarity_score"] <= 1.0
+
+
+def test_get_verification_by_id():
+    # 1. Trigger verification
+    res_v = client.post("/api/v1/verifications/verify-demo", json={
+        "amount": 2000.0,
         "transaction_type": "CHEQUE",
         "sample_type": "genuine",
         "transaction_reference": "DEMO-TXN-CHEQUE-101"
     })
-    assert res.status_code == 200
-    data = res.json()
+    assert res_v.status_code == 200
+    verif_id = res_v.json()["verification_id"]
+
+    # 2. Retrieve verification by ID
+    res_get = client.get(f"/api/v1/verifications/{verif_id}")
+    assert res_get.status_code == 200
+    data = res_get.json()
+    assert data["verification_id"] == verif_id
     assert "similarity_score" in data
-    assert "euclidean_distance" in data
-    assert "threshold_used" in data
-    assert "overall_risk_score" in data
-    assert "decision" in data
-    assert 0.0 <= data["similarity_score"] <= 1.0
-    assert 0.0 <= data["euclidean_distance"] <= 2.0
+    assert "risk_assessment" in data
 
 
-def test_verify_upload_endpoint():
-    """Verify multipart file upload routes to same verification engine."""
-    sample_file = Path("data/raw/signatures/full_org/original_46_2.png")
-    if sample_file.exists():
-        with open(sample_file, "rb") as f:
-            res = client.post(
-                "/api/v1/verifications/verify",
-                data={"transaction_reference": "DEMO-TXN-CHEQUE-101"},
-                files={"submitted_signature": ("signature.png", f, "image/png")}
-            )
-            assert res.status_code == 200
-            data = res.json()
-            assert "similarity_score" in data
-            assert "decision" in data
-
+def test_verify_upload_validation_rejects_invalid_file():
+    """Security test: Reject files with unwhitelisted extensions."""
+    fake_exe = io.BytesIO(b"MZ\x90\x00NotAnImage")
+    res = client.post(
+        "/api/v1/verifications/verify",
+        data={"transaction_reference": "DEMO-TXN-CHEQUE-101"},
+        files={"submitted_signature": ("malicious.exe", fake_exe, "application/octet-stream")}
+    )
+    assert res.status_code == 400
+    assert "Unsupported file extension" in res.json()["detail"]

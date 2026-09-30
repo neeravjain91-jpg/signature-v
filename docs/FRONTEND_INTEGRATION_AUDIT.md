@@ -1,12 +1,12 @@
 # Frontend-to-Backend Integration Audit & Remediation Report
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Audit Date: September 28, 2026 | Environment: Windows / FastAPI / PyTorch / SQLite-PostgreSQL*
 
 ---
 
 ## 1. Executive Summary & Objective
 
-The SYNAPSE frontend was deployed at `http://localhost:5173` while the backend services run on FastAPI at `http://localhost:8000`. The objective of this audit was to examine `web/index.html` and its associated JavaScript logic to determine whether the dashboard displayed genuine backend data or hardcoded/demo values, verify mathematical consistency with the calibrated Siamese Neural Network (`SiameseSignatureNet`), and ensure an unbroken, genuine pipeline from the user interface through deep learning inference and banking risk evaluation.
+The SIGNATURE VMAKE frontend was deployed at `http://localhost:5173` while the backend services run on FastAPI at `http://localhost:8000`. The objective of this audit was to examine `web/index.html` and its associated JavaScript logic to determine whether the dashboard displayed genuine backend data or hardcoded/demo values, verify mathematical consistency with the calibrated Siamese Neural Network (`SiameseSignatureNet`), and ensure an unbroken, genuine pipeline from the user interface through deep learning inference and banking risk evaluation.
 
 **Key Directive:** **Do NOT redesign the UI.** Preserve existing layout, visual styling, and component hierarchy while strictly connecting all data flows to live backend endpoints and eliminating client-side synthetic simulations.
 
@@ -189,4 +189,4 @@ tests/test_traceability.py::test_verification_traceability PASSED        [100%]
 
 ## 7. Conclusion
 
-The SYNAPSE frontend is now fully audited and authenticated against the backend. All simulated values have been removed. Every metric displayed on the dashboard originates either from live database queries (SQLAlchemy/SQLite/PostgreSQL) or real PyTorch neural network inference (`SiameseSignatureNet`). The banking prototype adheres strictly to the academic synopsis, providing complete biometric and transactional auditability without compromising user interface continuity.
+The SIGNATURE VMAKE frontend is now fully audited and authenticated against the backend. All simulated values have been removed. Every metric displayed on the dashboard originates either from live database queries (SQLAlchemy/SQLite/PostgreSQL) or real PyTorch neural network inference (`SiameseSignatureNet`). The banking prototype adheres strictly to the academic synopsis, providing complete biometric and transactional auditability without compromising user interface continuity.

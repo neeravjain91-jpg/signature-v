@@ -1,0 +1,17 @@
+{
+  "model_name": "SIGNATURE VMAKE Siamese Champion",
+  "model_version": "1.0.0-vmake-champion",
+  "evaluation_cohort": "CEDAR Writers 36-45",
+  "metrics": {
+    "calibrated_threshold": 0.6053,
+    "auc_roc": 0.8608,
+    "eer": 0.238,
+    "accuracy": 0.762,
+    "tar": 0.76,
+    "frr": 0.24,
+    "skilled_far": 0.3631,
+    "random_far": 0.0215,
+    "overall_far": 0.236
+  },
+  "evaluated_at_utc": "2026-09-29T19:33:19.042174+00:00"
+}

@@ -4,34 +4,34 @@ services:
   # PostgreSQL Database Service
   db:
     image: postgres:15-alpine
-    container_name: synapse-postgres
+    container_name: vmake-postgres
     restart: always
     environment:
-      POSTGRES_USER: synapse_admin
-      POSTGRES_PASSWORD: synapse_secure_password_2026
-      POSTGRES_DB: synapse_bank_db
+      POSTGRES_USER: vmake_admin
+      POSTGRES_PASSWORD: vmake_secure_password_2026
+      POSTGRES_DB: vmake_bank_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U synapse_admin -d synapse_bank_db"]
+      test: ["CMD-SHELL", "pg_isready -U vmake_admin -d vmake_bank_db"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # SYNAPSE Backend API Service
+  # SIGNATURE VMAKE Backend API Service
   api:
     build: .
-    container_name: synapse-api
+    container_name: vmake-api
     restart: always
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://synapse_admin:synapse_secure_password_2026@db:5432/synapse_bank_db
-      SYNAPSE_JWT_SECRET: synapse-super-secret-production-key-2026-biometrics
+      DATABASE_URL: postgresql://vmake_admin:vmake_secure_password_2026@db:5432/vmake_bank_db
+      SIGNATURE_VMAKE_JWT_SECRET: vmake-super-secret-production-key-2026-biometrics
       PYTHONUNBUFFERED: "1"
     ports:
       - "8000:8000"

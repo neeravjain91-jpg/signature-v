@@ -1,5 +1,5 @@
 """
-Deterministic Retraining and Freezing Pipeline for SYNAPSE v4 Champion.
+Deterministic Retraining and Freezing Pipeline for SIGNATURE VMAKE v4 Champion.
 
 Key Innovations:
 - Architecture: Modified ResNet-18 (256-D Hyperspherical Unit Embedding)
@@ -63,7 +63,7 @@ def train_and_freeze_v4():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print("==================================================")
-    print("   SYNAPSE v4 CHAMPION DETERMINISTIC RETRAINING")
+    print("   SIGNATURE VMAKE v4 CHAMPION DETERMINISTIC RETRAINING")
     print("==================================================")
     print(f"[*] Training Cohort        : Writers 1-35 (data/pairs/train_pairs.csv)")
     print(f"[*] Calibration Cohort     : Writers 36-45 (data/pairs/validation_pairs.csv)")
@@ -205,7 +205,7 @@ def train_and_freeze_v4():
 
     # Export Config
     config = {
-        "model_name": "SYNAPSE v4 Customer-Conditioned Champion",
+        "model_name": "SIGNATURE VMAKE v4 Customer-Conditioned Champion",
         "model_version": "4.0.0-champion",
         "dataset": "CEDAR Offline Signature Benchmark",
         "train_writers": list(range(1, 36)),
@@ -262,7 +262,7 @@ def train_and_freeze_v4():
     # Export Cryptographic Manifest
     manifest = {
         "manifest_version": "1.0.0",
-        "model_name": "SYNAPSE v4 Customer-Conditioned Champion",
+        "model_name": "SIGNATURE VMAKE v4 Customer-Conditioned Champion",
         "model_version": "4.0.0-champion",
         "creation_timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "cryptographic_signatures": {

@@ -1,5 +1,5 @@
 # REALISTIC AUGMENTATION & PREPROCESSING ABLATION
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Phase 7 & 8: Data Transformations & Preprocessing Pipeline Exploration*
 *Date: September 28, 2026 | Environment: Python 3.11.9, PyTorch 2.13.0+cpu*
 

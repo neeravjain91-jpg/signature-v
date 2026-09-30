@@ -1,5 +1,5 @@
 # EXPERIMENT BASELINE REPORT
-**SYNAPSE — Siamese Signature Verification & Fraud Detection Platform**
+**SIGNATURE VMAKE — Siamese Signature Verification & Fraud Detection Platform**
 *Phase 1: Baseline Reproduction & Experimental Groundwork*
 *Date: September 28, 2026 | Environment: Python 3.11.9, PyTorch 2.13.0+cpu, Windows x64*
 

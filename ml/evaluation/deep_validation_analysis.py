@@ -1,5 +1,5 @@
 """
-Deep Validation Analysis Suite for SYNAPSE.
+Deep Validation Analysis Suite for SIGNATURE VMAKE.
 
 Executes:
 - Phase 14: Test-Time Augmentation (TTA) evaluation on validation data
@@ -335,7 +335,7 @@ def extract_advanced_quality_signals(image_path: str) -> Dict[str, Any]:
 def execute_deep_analysis():
     device = torch.device("cpu")
     print("==================================================")
-    print("   SYNAPSE DEEP VALIDATION ANALYSIS (PHASES 14-19)")
+    print("   SIGNATURE VMAKE DEEP VALIDATION ANALYSIS (PHASES 14-19)")
     print("==================================================")
 
     # Load Baseline Model

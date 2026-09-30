@@ -1,12 +1,12 @@
 # FINAL ML VALIDATION & SYSTEM IMPROVEMENT REPORT
-**SYNAPSE — Intelligent Signature Verification & Banking Fraud Detection Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification & Banking Fraud Detection Platform**
 *Audit & Evaluation Date: September 28, 2026 | Environment: Python 3.11.9, PyTorch 2.13.0+cpu, Windows x64*
 
 ---
 
 ## 1. Executive Summary & Improvement Highlights
 
-This report documents the rigorous, leakage-free upgrade of the **SYNAPSE Siamese Neural Network ML system** from the initial baseline (`artifacts/models/best_siamese_model.pt`) to the production **Champion Model** (`artifacts/models/champion_siamese_model.pt`, `2.0.0-champion`).
+This report documents the rigorous, leakage-free upgrade of the **SIGNATURE VMAKE Siamese Neural Network ML system** from the initial baseline (`artifacts/models/best_siamese_model.pt`) to the production **Champion Model** (`artifacts/models/champion_siamese_model.pt`, `2.0.0-champion`).
 
 ### Primary Objectives & Outcomes
 1. **Targeted Skilled Forgery Mitigation**:
@@ -104,7 +104,7 @@ The forensic case study for test Writer 46 was re-evaluated under identical cond
 
 ### Scientific Finding
 While the Champion model achieved an unprecedented $40.28\%$ reduction in skilled forgery false acceptances across the entire test cohort (from $62.22\%$ to $21.94\%$), on this individual extreme optical tracing (`original_46_1` vs `forgeries_46_1`), the 2D visual letterform trajectory remains too close to genuine specimens for single-pair static vision alone to reject it without rejecting genuine handwriting.
-This demonstrates the absolute necessity of **SYNAPSE's multi-layered defense**:
+This demonstrates the absolute necessity of **SIGNATURE VMAKE's multi-layered defense**:
 1. Multi-specimen gallery matching (Phase 13), which reduces skilled FAR to $15.83\%$.
 2. Multi-factor banking risk scoring (Phase 19), which flags high-monetary-tier transactions ($>\$10,000$) or atypical transaction channels for mandatory officer review.
 

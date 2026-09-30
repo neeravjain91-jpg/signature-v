@@ -1,7 +1,7 @@
-# SYNAPSE EVOLUTION & COMPREHENSIVE BENCHMARK: v1 vs. v2 vs. v3 vs. v4 (PHASE 10)
+# SIGNATURE VMAKE EVOLUTION & COMPREHENSIVE BENCHMARK: v1 vs. v2 vs. v3 vs. v4 (PHASE 10)
 
 ## Executive Summary
-This document provides the canonical, unvarnished forensic benchmark across all four generations of the SYNAPSE offline signature verification system on the strictly withheld, open-set **CEDAR Test Cohort (Writers 46–55)**. 
+This document provides the canonical, unvarnished forensic benchmark across all four generations of the SIGNATURE VMAKE offline signature verification system on the strictly withheld, open-set **CEDAR Test Cohort (Writers 46–55)**. 
 
 No metrics have been smoothed or hidden: v3's single-pair skilled forgery false acceptance spike ($68.89\%$) is thoroughly explained, and the genuine breakthrough of **v4's Customer-Conditioned Multi-Reference Verification** ($26.25\%$ Skilled FAR, $0.9308$ AUC) is substantiated by empirical evidence.
 

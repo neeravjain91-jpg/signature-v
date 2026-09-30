@@ -1,5 +1,5 @@
 """
-Adaptive Hard Negative Mining 2.0 Pipeline for SYNAPSE.
+Adaptive Hard Negative Mining 2.0 Pipeline for SIGNATURE VMAKE.
 
 Key Capabilities:
 1. Strictly mines EXCLUSIVELY from training writers (Writers 1-45 or active fold train writers).

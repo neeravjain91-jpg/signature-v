@@ -1,5 +1,5 @@
 # BASELINE VS. CHAMPION BENCHMARK COMPARISON
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Phase 16: Definitive Unbiased Evaluation on Frozen Test Cohort (Writers 46–55)*
 *Date: September 28, 2026 | Protocol: Strict Zero-Leakage (Threshold & Model Weights Frozen)*
 
@@ -52,4 +52,4 @@ When customer signature card galleries (3 enrolled specimens per customer) are d
    - **Preserved Clearance**: TAR maintained at $83.50\%$, ensuring banking operations do not suffer teller queue gridlock.
 2. **Where Challenges Remain**:
    - On direct optical tracings (where a skilled forger slowly traced over a backlit genuine original), single-pair 2D visual representations still exhibit non-trivial residual false acceptances ($47.5\%$).
-   - This empirically confirms that **single-pair static image comparison alone is insufficient for zero-trust banking security**, and justifies SYNAPSE's multi-layered architecture combining multi-specimen reference galleries and financial transaction risk rules.
+   - This empirically confirms that **single-pair static image comparison alone is insufficient for zero-trust banking security**, and justifies SIGNATURE VMAKE's multi-layered architecture combining multi-specimen reference galleries and financial transaction risk rules.

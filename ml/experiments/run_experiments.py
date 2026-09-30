@@ -1,5 +1,5 @@
 """
-Comprehensive Systematic Experimentation Suite for SYNAPSE.
+Comprehensive Systematic Experimentation Suite for SIGNATURE VMAKE.
 
 Executes controlled validation experiments across:
 - Hard Negative Mining (Phase 4)

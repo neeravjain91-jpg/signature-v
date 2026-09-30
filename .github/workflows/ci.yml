@@ -1,4 +1,4 @@
-name: SYNAPSE CI Pipeline
+name: SIGNATURE VMAKE CI Pipeline
 
 on:
   push:
@@ -14,9 +14,9 @@ jobs:
       postgres:
         image: postgres:15-alpine
         env:
-          POSTGRES_USER: synapse_test
-          POSTGRES_PASSWORD: synapse_test_password
-          POSTGRES_DB: synapse_test_db
+          POSTGRES_USER: vmake_test
+          POSTGRES_PASSWORD: vmake_test_password
+          POSTGRES_DB: vmake_test_db
         ports:
           - 5432:5432
         options: >-
@@ -47,7 +47,7 @@ jobs:
 
     - name: Validate SQL Schema & Migrations
       env:
-        DATABASE_URL: postgresql://synapse_test:synapse_test_password@localhost:5432/synapse_test_db
+        DATABASE_URL: postgresql://vmake_test:vmake_test_password@localhost:5432/vmake_test_db
       run: |
         alembic upgrade head
         python database/seed_demo_data.py

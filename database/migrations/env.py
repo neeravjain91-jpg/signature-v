@@ -20,7 +20,14 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 def get_url():
-    return os.getenv("DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+    url = os.getenv("DATABASE_URL")
+    if not url:
+        try:
+            import psycopg2
+            url = config.get_main_option("sqlalchemy.url")
+        except ImportError:
+            url = "sqlite:///database/banking_system_demo.db"
+    return url or "sqlite:///database/banking_system_demo.db"
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""

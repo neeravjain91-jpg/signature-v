@@ -1,5 +1,5 @@
 # MULTI-SAMPLE REFERENCE AGGREGATION & TTA
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Phase 13 & 14: Multi-Specimen Banking Gallery & Inference Dynamics*
 *Date: September 28, 2026 | Environment: Python 3.11.9, PyTorch 2.13.0+cpu*
 

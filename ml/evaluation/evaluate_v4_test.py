@@ -1,5 +1,5 @@
 """
-Final Frozen Test Evaluation for SYNAPSE v4 on Writers 46-55.
+Final Frozen Test Evaluation for SIGNATURE VMAKE v4 on Writers 46-55.
 
 Evaluates:
 1. Single-Pair Verification on the canonical 1,200 pairs using frozen threshold tau* = 0.5924
@@ -49,7 +49,7 @@ def evaluate_v4_test():
     preprocessor = SignaturePreprocessor(binarization_method="otsu", target_size=(224, 224))
 
     print("==================================================")
-    print("   SYNAPSE v4 FINAL FROZEN TEST EVALUATION")
+    print("   SIGNATURE VMAKE v4 FINAL FROZEN TEST EVALUATION")
     print("   Cohort: CEDAR Writers 46-55 (Strictly Withheld)")
     print("==================================================")
     print(f"[*] Frozen Single-Pair Threshold (tau*)    : {tau_single:.4f}")
@@ -230,7 +230,7 @@ def evaluate_v4_test():
     plt.plot([0, 1], [0, 1], "k--", alpha=0.5)
     plt.xlabel("False Positive Rate (FAR)", fontsize=11)
     plt.ylabel("True Positive Rate (TAR)", fontsize=11)
-    plt.title("SYNAPSE v4 Frozen Test ROC: Single-Pair vs. Customer Gallery", fontsize=12, fontweight="bold")
+    plt.title("SIGNATURE VMAKE v4 Frozen Test ROC: Single-Pair vs. Customer Gallery", fontsize=12, fontweight="bold")
     plt.grid(True, alpha=0.3)
     plt.legend(loc="lower right", fontsize=10)
     plt.tight_layout()

@@ -32,11 +32,54 @@ class VerificationOutput:
     threshold_used: float
     reference_count: int = 1
     metadata: Dict[str, Any] = field(default_factory=dict)
+    embedding_a: Optional[List[float]] = None
+    embedding_b: Optional[List[float]] = None
+
+    @property
+    def is_match(self) -> bool:
+        return self.decision == "VERIFIED"
+
+    @property
+    def threshold(self) -> float:
+        return self.threshold_used
+
+    @property
+    def euclidean_distance(self) -> float:
+        return self.distance
+
+    def __getitem__(self, key: str) -> Any:
+        if key in ("euclidean_distance",):
+            return self.distance
+        if key in ("threshold", "threshold_used"):
+            return self.threshold_used
+        if key in ("is_match", "match"):
+            return self.is_match
+        if key == "embedding_a":
+            return self.embedding_a or []
+        if key == "embedding_b":
+            return self.embedding_b or []
+        if hasattr(self, key):
+            return getattr(self, key)
+        if key in self.metadata:
+            return self.metadata[key]
+        raise KeyError(key)
+
+    def __contains__(self, key: str) -> bool:
+        if key in ("euclidean_distance", "threshold", "is_match", "match", "embedding_a", "embedding_b"):
+            return True
+        return hasattr(self, key) or (key in self.metadata)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        try:
+            return self[key]
+        except KeyError:
+            return default
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        res = {
             "similarity_score": round(float(self.similarity_score), 4),
             "distance": round(float(self.distance), 4),
+            "euclidean_distance": round(float(self.distance), 4),
             "decision": self.decision,
             "confidence": round(float(self.confidence), 4),
             "model_name": self.model_name,
@@ -44,8 +87,14 @@ class VerificationOutput:
             "model_type": self.model_type,
             "threshold_used": round(float(self.threshold_used), 4),
             "reference_count": self.reference_count,
+            "is_match": self.is_match,
             "metadata": self.metadata,
         }
+        if self.embedding_a is not None:
+            res["embedding_a"] = self.embedding_a
+        if self.embedding_b is not None:
+            res["embedding_b"] = self.embedding_b
+        return res
 
 
 class SignatureVerificationModel(ABC):
@@ -54,6 +103,22 @@ class SignatureVerificationModel(ABC):
     Enforces a uniform lifecycle: feature extraction, metric computation,
     confidence calibration, and gallery evidence aggregation.
     """
+
+    def verify(
+        self,
+        reference_input: Optional[Union[str, Path, np.ndarray, Image.Image]] = None,
+        submitted_input: Optional[Union[str, Path, np.ndarray, Image.Image]] = None,
+        threshold: Optional[float] = None,
+        ref_image: Optional[Union[str, Path, np.ndarray, Image.Image]] = None,
+        query_image: Optional[Union[str, Path, np.ndarray, Image.Image]] = None,
+        **kwargs
+    ) -> VerificationOutput:
+        """Standard pairwise verification call returning VerificationOutput."""
+        r = reference_input if reference_input is not None else ref_image
+        q = submitted_input if submitted_input is not None else query_image
+        if r is None or q is None:
+            raise ValueError("Both reference and query/submitted images must be provided to verify().")
+        return self.verify_pair(r, q, threshold)
 
     def __init__(
         self,

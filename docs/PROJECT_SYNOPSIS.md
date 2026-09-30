@@ -4,7 +4,7 @@
 **AI-Based Signature Verification and Fraud Detection System for Banking Transactions**
 
 ## Proposed System Name
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 
 ---
 
@@ -24,7 +24,7 @@ Manual signature verification in banking workflows can be slow and difficult to 
 
 A robust automated system is required to compare signatures based on learned visual representations rather than relying only on pixel-level similarity.
 
-SYNAPSE aims to develop an intelligent signature verification platform that can:
+SIGNATURE VMAKE aims to develop an intelligent signature verification platform that can:
 * process handwritten signature images;
 * compare submitted signatures with registered signatures;
 * identify probable genuine and forged signatures;

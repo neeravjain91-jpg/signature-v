@@ -1,5 +1,5 @@
 # =============================================================================
-# SYNAPSE — Intelligent Signature Verification Platform Dockerfile
+# SIGNATURE VMAKE — Offline Signature Verification & Fraud Risk Assessment Platform
 # =============================================================================
 FROM python:3.11-slim
 

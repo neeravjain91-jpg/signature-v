@@ -1,5 +1,5 @@
 """
-Forgery-Aware Metric Loss for SYNAPSE v4.
+Forgery-Aware Metric Loss for SIGNATURE VMAKE v4.
 
 Specifically addresses the skilled-forgery false acceptance problem:
 1. Category-differentiated margins:

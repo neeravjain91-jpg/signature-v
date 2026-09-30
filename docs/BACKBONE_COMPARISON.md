@@ -1,5 +1,5 @@
 # BACKBONE ARCHITECTURE & EMBEDDING DIMENSION ABLATION
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Phase 9 & 10: Neural Backbone & Feature Vector Dimension Exploration*
 *Date: September 28, 2026 | Environment: Python 3.11.9, PyTorch 2.13.0+cpu*
 

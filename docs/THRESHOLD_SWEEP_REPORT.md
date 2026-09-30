@@ -1,5 +1,5 @@
 # THRESHOLD SWEEP VALIDATION REPORT
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Phase 2: Fine-Grained Operating Point Analysis on Validation Cohort*
 *Date: September 28, 2026 | Dataset: Validation Cohort (Writers 36–45, 1,200 pairs)*
 

@@ -1,5 +1,5 @@
 """
-Deterministic Retraining and Freezing Pipeline for the SYNAPSE Champion Siamese Verifier.
+Deterministic Retraining and Freezing Pipeline for the SIGNATURE VMAKE Champion Siamese Verifier.
 
 Executes:
 1. Pure training on Writers 1-35 only (zero leakage)
@@ -67,7 +67,7 @@ def train_champion_pipeline(
     device = torch.device("cpu")
 
     print("==================================================")
-    print("   SYNAPSE CHAMPION MODEL DETERMINISTIC TRAINING")
+    print("   SIGNATURE VMAKE CHAMPION MODEL DETERMINISTIC TRAINING")
     print("==================================================")
     print(f"[*] Training Cohort        : Writers 1-35 (data/pairs/train_pairs.csv)")
     print(f"[*] Validation Cohort      : Writers 36-45 (data/pairs/validation_pairs.csv)")
@@ -251,7 +251,7 @@ def train_champion_pipeline(
 
     # 8. Save Champion Config
     config_record = {
-        "model_name": "SYNAPSE Champion Siamese Verifier",
+        "model_name": "SIGNATURE VMAKE Champion Siamese Verifier",
         "model_version": "2.0.0-champion",
         "dataset": "CEDAR Offline Signature Benchmark",
         "train_writers": list(range(1, 36)),

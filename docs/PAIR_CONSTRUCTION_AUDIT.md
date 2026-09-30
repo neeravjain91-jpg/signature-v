@@ -1,5 +1,5 @@
 # DATASET AND PAIR-CONSTRUCTION AUDIT
-**SYNAPSE — Intelligent Signature Verification & Fraud Detection System**
+**SIGNATURE VMAKE — Intelligent Signature Verification & Fraud Detection System**
 *Phase 3: Formal Data & Pair Construction Verification*
 *Date: September 28, 2026 | Environment: Python 3.11.9, PyTorch 2.13.0+cpu*
 

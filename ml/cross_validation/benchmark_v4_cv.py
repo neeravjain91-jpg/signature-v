@@ -1,5 +1,5 @@
 """
-SYNAPSE v4: 5-Fold Writer-Disjoint Cross-Validation Runner.
+SIGNATURE VMAKE v4: 5-Fold Writer-Disjoint Cross-Validation Runner.
 
 Evaluates:
 1. Forgery-Aware Metric Learning (ResNet-18 + ForgeryAwareMetricLoss)
@@ -140,7 +140,7 @@ def run_all_v4_cv():
 
     all_fold_results = []
     print("=================================================================")
-    print("   SYNAPSE v4: 5-FOLD WRITER-DISJOINT CV BENCHMARK")
+    print("   SIGNATURE VMAKE v4: 5-FOLD WRITER-DISJOINT CV BENCHMARK")
     print("   (Comparing Single-Pair vs Customer Gallery across Folds)")
     print("=================================================================")
 

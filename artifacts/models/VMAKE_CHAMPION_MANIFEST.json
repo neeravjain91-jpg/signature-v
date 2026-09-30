@@ -1,0 +1,14 @@
+{
+  "manifest_version": "1.0.0",
+  "project": "SIGNATURE VMAKE",
+  "model_name": "SIGNATURE VMAKE Siamese Champion",
+  "model_version": "1.0.0-vmake-champion",
+  "creation_timestamp_utc": "2026-09-29T19:33:19.043171+00:00",
+  "cryptographic_signatures": {
+    "model_weights_sha256": "75debe10349d84c8222cd0a4b314fec5a8e70a4c7cc942bc610863b0700f7061",
+    "config_sha256": "94153c91502ffe063d23ae5062f9cf1ef9e69dd6ba370e27c19bff499959ccc9",
+    "threshold_sha256": "26a13f3616a675c13526b65e7cadb941134395255b2d50b0c9a5372824a36519"
+  },
+  "operating_threshold": 0.6053,
+  "protocol_integrity_attestation": "Model trained strictly on Writers 1-35. Threshold calibrated strictly on Writers 36-45. Zero test cohort exposure. 100% independent from legacy projects."
+}

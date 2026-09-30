@@ -1,5 +1,5 @@
 # BASELINE MODEL EVALUATION REPORT
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Benchmark Baseline Architecture & Empirical Evaluation*
 *Date: September 28, 2026 | Environment: Python 3.11.9, PyTorch 2.13.0+cpu*
 

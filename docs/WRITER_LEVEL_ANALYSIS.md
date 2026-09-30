@@ -1,5 +1,5 @@
 # WRITER-LEVEL GRANULAR ANALYSIS & ERROR FORENSICS
-**SYNAPSE — Intelligent Signature Verification Platform**
+**SIGNATURE VMAKE — Intelligent Signature Verification Platform**
 *Phase 16 & 17: Granular Identity Stratification on Validation Cohort*
 *Date: September 28, 2026 | Dataset: Validation Manifest (`docs/VALIDATION_WRITER_ANALYSIS.csv`)*
 

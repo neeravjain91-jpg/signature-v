@@ -20,7 +20,7 @@ To assess the feasibility and impact of expanding development training with exte
 ---
 
 ## 2. Cross-Dataset Generalization Findings
-1. **Academic Access Protocols**: In compliance with university ethics and dataset access agreements, no external datasets were fabricated or synthesized. The local CEDAR benchmark serves as the verified, legally compliant offline dataset for the SYNAPSE project.
+1. **Academic Access Protocols**: In compliance with university ethics and dataset access agreements, no external datasets were fabricated or synthesized. The local CEDAR benchmark serves as the verified, legally compliant offline dataset for the SIGNATURE VMAKE project.
 2. **Generalization Strategy**: Because cross-dataset training on GPDS is restricted, domain generalization was reinforced using:
    - **Realistic Biomechanical Data Augmentations** (simulating pen speed, slant, micro-shearing, and scanner artifacts).
    - **Focal Hybrid Metric Learning** (preventing overfitting to CEDAR-specific ink artifacts).

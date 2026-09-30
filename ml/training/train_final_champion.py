@@ -1,5 +1,5 @@
 """
-Deterministic Training & Calibration Pipeline for the SYNAPSE Final Champion Siamese Verifier.
+Deterministic Training & Calibration Pipeline for the SIGNATURE VMAKE Final Champion Siamese Verifier.
 
 Pipeline Architecture:
 - Backbone: SiameseResNet18 (256-D Hyperspherical Unit Embedding)
@@ -67,7 +67,7 @@ def train_and_freeze_final_champion(
     out_dir.mkdir(parents=True, exist_ok=True)
 
     print("==================================================")
-    print("   SYNAPSE FINAL CHAMPION DETERMINISTIC TRAINING")
+    print("   SIGNATURE VMAKE FINAL CHAMPION DETERMINISTIC TRAINING")
     print("==================================================")
     print(f"[*] Training Cohort        : Writers 1-35 ({train_pairs_path})")
     print(f"[*] Calibration Cohort     : Writers 36-45 ({val_pairs_path})")
@@ -196,7 +196,7 @@ def train_and_freeze_final_champion(
 
     # Export Config
     config_data = {
-        "model_name": "SYNAPSE Final Champion Verifier",
+        "model_name": "SIGNATURE VMAKE Final Champion Verifier",
         "model_version": "3.0.0-final-champion",
         "dataset": "CEDAR Offline Signature Benchmark",
         "train_writers": list(range(1, 36)),
@@ -248,7 +248,7 @@ def train_and_freeze_final_champion(
     # Export Cryptographic Manifest
     manifest = {
         "manifest_version": "1.0.0",
-        "model_name": "SYNAPSE Final Champion Verifier v3.0.0",
+        "model_name": "SIGNATURE VMAKE Final Champion Verifier v3.0.0",
         "creation_timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "cryptographic_signatures": {
             "model_weights_sha256": compute_sha256(model_path),
