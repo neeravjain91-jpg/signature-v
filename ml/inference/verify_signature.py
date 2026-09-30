@@ -258,28 +258,29 @@ class SignatureVerifier(SignatureVerificationModel):
 
 
 def get_model_verifier(
-    model_type: str = "siamese",
+    model_type: str = "transformer",
     checkpoint_path: Optional[str] = None,
     threshold: Optional[float] = None,
     device: Optional[str] = None
 ) -> SignatureVerificationModel:
     """
     Factory function returning a concrete SignatureVerificationModel instance.
-    Supports:
-    - 'siamese': Deep Siamese ResNet
-    - 'transformer': Hugging Face Vision Transformer
-    - 'sklearn' / 'classical': Classical SVM with 264-d HOG/morphological features
+    Supports VMAKE Dual-Track production architecture:
+    - 'transformer' / 'track_b': Hugging Face Vision Transformer (Default Production)
+    - 'sklearn' / 'classical' / 'track_a': Classical SVM with 264-d HOG/morphological features
+    - 'siamese' / 'track_c': Legacy Siamese ResNet (retained for backward compatibility)
     """
     m_type = model_type.lower()
-    if m_type in ("siamese", "resnet", "champion", "track_c", "neural"):
-        return SignatureVerifier(checkpoint_path=checkpoint_path, threshold=threshold, device=device)
-    elif m_type in ("transformer", "vit", "track_b"):
+    if m_type in ("transformer", "vit", "track_b"):
         from ml.models.transformer_signature_model import VisionTransformerVerifier
         ckpt = checkpoint_path or "artifacts/models/transformer_signature_model.pt"
         return VisionTransformerVerifier(checkpoint_path=ckpt, threshold=threshold or 0.7313, device=device)
     elif m_type in ("sklearn", "classical", "svm", "track_a"):
         from ml.baselines.classical_classifier import ClassicalSklearnVerifier
         ckpt = checkpoint_path or "artifacts/models/classical_svm_model.joblib"
-        return ClassicalSklearnVerifier(checkpoint_path=ckpt, threshold=threshold or 0.4265)
+        return ClassicalSklearnVerifier(checkpoint_path=ckpt, threshold=threshold or 0.3636)
+    elif m_type in ("siamese", "resnet", "champion", "track_c", "neural"):
+        return SignatureVerifier(checkpoint_path=checkpoint_path, threshold=threshold, device=device)
     else:
-        raise ValueError(f"Unknown model_type: '{model_type}'. Choose from 'siamese', 'transformer', 'sklearn', 'track_a', 'track_b', 'track_c'.")
+        raise ValueError(f"Unknown model_type: '{model_type}'. Choose from 'transformer' (Track B), 'sklearn' (Track A).")
+

@@ -49,7 +49,7 @@ def cache_image_features(image_paths: list, extractor: ClassicalFeatureExtractor
 
 
 def build_pair_matrix(df: pd.DataFrame, feature_cache: Dict[str, np.ndarray]) -> Tuple[np.ndarray, np.ndarray]:
-    """Constructs pairwise difference and product feature matrix."""
+    """Constructs unit-normalized pairwise difference, product, distance, and cosine feature matrix."""
     X_list = []
     y_list = []
     for _, row in df.iterrows():
@@ -60,9 +60,13 @@ def build_pair_matrix(df: pd.DataFrame, feature_cache: Dict[str, np.ndarray]) ->
         f2 = feature_cache.get(p2)
         if f1 is None or f2 is None:
             continue
-        diff = np.abs(f1 - f2)
-        prod = f1 * f2
-        pair_feat = np.concatenate([diff, prod])
+        n1 = f1 / (np.linalg.norm(f1) + 1e-8)
+        n2 = f2 / (np.linalg.norm(f2) + 1e-8)
+        diff = np.abs(n1 - n2)
+        prod = n1 * n2
+        d = float(np.linalg.norm(n1 - n2))
+        cos = float(np.dot(n1, n2))
+        pair_feat = np.concatenate([diff, prod, [d, cos]])
         X_list.append(pair_feat)
         y_list.append(label)
 
@@ -101,7 +105,7 @@ def train_and_evaluate(
     X_val_scaled = scaler.transform(X_val)
 
     if model_type == "svm":
-        base_clf = SVC(kernel="rbf", C=1.0, probability=True, random_state=42)
+        base_clf = SVC(kernel="linear", C=1.0, probability=True, random_state=42)
     elif model_type == "logistic":
         base_clf = LogisticRegression(max_iter=1000, random_state=42)
     elif model_type == "random_forest":

@@ -55,28 +55,50 @@ def seed_database(db_url: str = None) -> Session:
         print("[!] Demo data already seeded. Skipping.")
         return session
 
-    print("[*] Seeding Model Version...")
+    print("[*] Seeding Model Versions (VMAKE Dual-Track Production Architecture)...")
     model_v1 = ModelVersion(
         model_version_id=uuid.uuid4(),
-        model_name="SiameseSignatureNet",
+        model_name="HF_Vision_Transformer",
         version="v1.0.0",
-        architecture="Siamese-ResNet-Contrastive",
+        architecture="Vision Transformer (facebook/deit-tiny-patch16-224)",
         training_dataset="CEDAR (Writer-Independent 35-Writer Split)",
-        training_date=datetime(2026, 9, 28, tzinfo=timezone.utc),
-        threshold=Decimal("0.7691"),
+        training_date=datetime(2026, 9, 29, tzinfo=timezone.utc),
+        threshold=Decimal("0.7313"),
         performance_summary={
-            "eer": 0.3067,
-            "auc_roc": 0.7465,
-            "accuracy": 0.6900,
-            "far": 0.4667,
-            "frr": 0.1533,
-            "random_impostor_block_rate": 0.8375,
-            "eval_protocol": "writer_independent_open_set"
+            "eer": 0.2767,
+            "auc_roc": 0.7947,
+            "accuracy": 0.6450,
+            "far": 0.6717,
+            "frr": 0.0383,
+            "f1_score": 0.7304,
+            "eval_protocol": "writer_independent_open_set_held_out"
         },
-        artifact_reference="artifacts/models/best_siamese_model.pt",
+        artifact_reference="artifacts/models/transformer_signature_model.pt",
         status="PRODUCTION"
     )
-    session.add(model_v1)
+    model_v0 = ModelVersion(
+        model_version_id=uuid.uuid4(),
+        model_name="Classical_SVM_Baseline",
+        version="v1.0.0",
+        architecture="Linear SVM + 264-d HOG & Morphology",
+        training_dataset="CEDAR (Writer-Independent 35-Writer Split)",
+        training_date=datetime(2026, 9, 29, tzinfo=timezone.utc),
+        threshold=Decimal("0.3636"),
+        performance_summary={
+            "eer": 0.1900,
+            "auc_roc": 0.8574,
+            "accuracy": 0.7917,
+            "far": 0.2850,
+            "frr": 0.1317,
+            "f1_score": 0.8065,
+            "eval_protocol": "writer_independent_open_set_held_out"
+        },
+        artifact_reference="artifacts/models/classical_svm_model.joblib",
+        status="STAGING"
+    )
+
+    session.add_all([model_v1, model_v0])
+
 
     print("[*] Seeding System Users...")
     admin_user = User(
@@ -170,8 +192,9 @@ def seed_database(db_url: str = None) -> Session:
         model_version_id=model_v1.model_version_id,
         embedding_reference="vault://embeddings/DEMO-CUST-001/primary_specimen_v1.npy",
         embedding_hash="e4d3c2b1a0f9e8d7c6b5a4938271605f4e3d2c1b0a9f8e7d6c5b4a3928170615",
-        vector_dim=512
+        vector_dim=256
     )
+
     session.add(embed1)
 
     print("[*] Seeding Prototype Transactions & Verification Cycles...")

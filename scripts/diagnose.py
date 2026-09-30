@@ -84,11 +84,10 @@ def main():
         return f"CEDAR Benchmark ({org_c} genuine, {forg_c} forged)"
     all_passed &= check_status("Dataset Availability", check_data)
 
-    # 5. Checkpoints & Model Inference
+    # 5. Checkpoints & Model Inference (Dual-Track Architecture)
     models = [
-        ("Track A (Classical Sklearn)", "sklearn", "artifacts/models/classical_svm_model.joblib"),
-        ("Track B (HF Transformers)", "transformer", "artifacts/models/transformer_signature_model.pt"),
-        ("Track C (Siamese Champion)", "siamese", "artifacts/models/v4_champion_model.pt"),
+        ("Track A (Classical scikit-learn Baseline)", "sklearn", "artifacts/models/classical_svm_model.joblib"),
+        ("Track B (Hugging Face Vision Transformer - Production Default)", "transformer", "artifacts/models/transformer_signature_model.pt"),
     ]
     for label, track_id, ckpt_path in models:
         def check_model(t=track_id, ckpt=ckpt_path):

@@ -97,28 +97,30 @@ class SignaturePreprocessor:
 
     def binarize_image(self, image: np.ndarray) -> np.ndarray:
         """
-        Binarizes or enhances image based on self.binarization_method.
-        Methods:
-          - 'otsu': Otsu global thresholding.
-          - 'adaptive': Local Gaussian adaptive thresholding.
-          - 'morphology': Morphological illumination normalization + Otsu.
-          - 'none': Returns inverted grayscale without hard binarization.
+        Binarizes image with adaptive background polarity detection.
+        Ensures consistent stroke foreground (255) and background (0)
+        whether the input is a raw white scan or an already inverted processed image.
         """
+        is_light_bg = float(np.mean(image)) > 127.0
+
         if self.binarization_method == "adaptive":
-            flags = cv2.THRESH_BINARY_INV if self.invert_colors else cv2.THRESH_BINARY
+            flags = cv2.THRESH_BINARY_INV if (self.invert_colors and is_light_bg) else cv2.THRESH_BINARY
             return cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, flags, 21, 5)
         elif self.binarization_method == "morphology":
             kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (15, 15))
             bg = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
-            sub = cv2.subtract(bg, image) if self.invert_colors else cv2.subtract(image, bg)
+            sub = cv2.subtract(bg, image) if (self.invert_colors and is_light_bg) else cv2.subtract(image, bg)
             norm = cv2.normalize(sub, None, 0, 255, cv2.NORM_MINMAX)
             _, thresh = cv2.threshold(norm, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             return thresh
         elif self.binarization_method == "none":
-            return (255 - image) if self.invert_colors else image
+            return (255 - image) if (self.invert_colors and is_light_bg) else image
         else:
-            # Default 'otsu'
-            flags = cv2.THRESH_BINARY_INV if self.invert_colors else cv2.THRESH_BINARY
+            # Default 'otsu' with polarity awareness
+            if self.invert_colors:
+                flags = cv2.THRESH_BINARY_INV if is_light_bg else cv2.THRESH_BINARY
+            else:
+                flags = cv2.THRESH_BINARY if is_light_bg else cv2.THRESH_BINARY_INV
             _, thresh = cv2.threshold(image, 0, 255, flags + cv2.THRESH_OTSU)
             return thresh
 

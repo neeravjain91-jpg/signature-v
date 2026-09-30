@@ -139,6 +139,9 @@ class VisionTransformerVerifier(SignatureVerificationModel):
             if "model_version" in ckpt:
                 self.model_version = str(ckpt["model_version"])
 
+        self.default_threshold = self.threshold
+        self.gallery_threshold = round(min(1.0, self.threshold + 0.03), 4)
+
         self.model.to(self.device)
         self.model.eval()
 
@@ -162,6 +165,8 @@ class VisionTransformerVerifier(SignatureVerificationModel):
             emb = self.model.forward_once(tensor)
         return emb.cpu().squeeze(0).numpy()
 
+    extract_embedding = extract_features
+
     def compute_distance(self, feat1: np.ndarray, feat2: np.ndarray) -> float:
         """Computes Euclidean distance between L2-normalized embeddings."""
         return float(np.linalg.norm(feat1 - feat2))
@@ -173,3 +178,4 @@ class VisionTransformerVerifier(SignatureVerificationModel):
         Similarity = 1.0 - (D / 2.0).
         """
         return float(np.clip(1.0 - (distance / 2.0), 0.0, 1.0))
+

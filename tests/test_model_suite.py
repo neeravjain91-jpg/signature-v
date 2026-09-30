@@ -97,7 +97,7 @@ def test_model_verifier_factory():
 
 
 def test_multi_reference_gallery_verification():
-    verifier = get_model_verifier("siamese")
+    verifier = get_model_verifier("transformer")
     sample_refs = [
         "data/raw/signatures/full_org/original_46_1.png",
         "data/raw/signatures/full_org/original_46_3.png"

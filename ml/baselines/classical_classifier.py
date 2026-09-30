@@ -48,6 +48,9 @@ class ClassicalSklearnVerifier(SignatureVerificationModel):
         if self.checkpoint_path and self.checkpoint_path.exists():
             self._load_checkpoint()
 
+        self.default_threshold = self.threshold
+        self.gallery_threshold = round(min(1.0, self.threshold + 0.04), 4)
+
     def _load_checkpoint(self):
         """Loads trained scikit-learn pipeline from disk."""
         data = joblib.load(self.checkpoint_path)
@@ -63,16 +66,21 @@ class ClassicalSklearnVerifier(SignatureVerificationModel):
         """Extracts 264-d unit-normalized feature vector."""
         return self.feature_extractor.extract(image)
 
+    extract_embedding = extract_features
+
+
     def compute_distance(self, feat1: np.ndarray, feat2: np.ndarray) -> float:
-        """Computes Euclidean distance between feature vectors."""
-        return float(np.linalg.norm(feat1 - feat2))
+        """Computes Euclidean distance between unit-normalized feature vectors."""
+        n1 = feat1 / (np.linalg.norm(feat1) + 1e-8)
+        n2 = feat2 / (np.linalg.norm(feat2) + 1e-8)
+        return float(np.linalg.norm(n1 - n2))
 
     def compute_similarity(self, distance: float) -> float:
         """
-        Converts Euclidean distance into normalized similarity in [0.0, 1.0].
-        D = 0 -> S = 1.0; D >= 2.0 -> S <= 0.33.
+        Converts Euclidean distance on unit hypersphere (range [0.0, 2.0])
+        into normalized similarity in [0.0, 1.0].
         """
-        return float(1.0 / (1.0 + distance))
+        return float(np.clip(1.0 - (distance / 2.0), 0.0, 1.0))
 
     def predict_pair_probability(self, feat1: np.ndarray, feat2: np.ndarray) -> float:
         """
@@ -80,9 +88,13 @@ class ClassicalSklearnVerifier(SignatureVerificationModel):
         Otherwise falls back to compute_similarity(compute_distance).
         """
         if self.classifier is not None:
-            diff = np.abs(feat1 - feat2)
-            prod = feat1 * feat2
-            pair_feat = np.concatenate([diff, prod]).reshape(1, -1)
+            n1 = feat1 / (np.linalg.norm(feat1) + 1e-8)
+            n2 = feat2 / (np.linalg.norm(feat2) + 1e-8)
+            diff = np.abs(n1 - n2)
+            prod = n1 * n2
+            d = float(np.linalg.norm(n1 - n2))
+            cos = float(np.dot(n1, n2))
+            pair_feat = np.concatenate([diff, prod, [d, cos]]).reshape(1, -1)
             if self.scaler is not None:
                 pair_feat = self.scaler.transform(pair_feat)
 

@@ -29,7 +29,7 @@ from database.models import (
     ModelVersion, VerificationAttempt, RiskAssessment, ManualReview,
     AuditLog, User
 )
-from ml.inference.verify_signature import SignatureVerifier
+from ml.inference.verify_signature import get_model_verifier, SignatureVerifier
 from services.risk_engine import FraudRiskEngine
 
 
@@ -42,12 +42,16 @@ class BankingVerificationService:
         self,
         db_session: Session,
         checkpoint_path: Optional[str] = None,
-        verifier: Optional[SignatureVerifier] = None,
+        verifier: Optional[Any] = None,
         risk_engine: Optional[FraudRiskEngine] = None
     ):
         self.session = db_session
-        self.verifier = verifier or SignatureVerifier(checkpoint_path=checkpoint_path)
+        if verifier is not None:
+            self.verifier = verifier
+        else:
+            self.verifier = get_model_verifier("transformer", checkpoint_path=checkpoint_path)
         self.risk_engine = risk_engine or FraudRiskEngine()
+
 
         # Cache active production model version
         self.active_model = self.session.query(ModelVersion).filter_by(status="PRODUCTION").first()
@@ -145,8 +149,10 @@ class BankingVerificationService:
 
         # 2. Extract and create SignatureEmbedding
         if self.active_model:
-            embedding_vec = self.verifier.extract_embedding(str(vault_path))
+            extract_fn = getattr(self.verifier, "extract_embedding", getattr(self.verifier, "extract_features", None))
+            embedding_vec = extract_fn(str(vault_path))
             emb_hash = hashlib.sha256(embedding_vec.tobytes()).hexdigest()
+
             embed_ref = f"vault://embeddings/{customer.customer_reference}/sig_{signature.signature_id}_{self.active_model.version}.npy"
 
             embedding_record = SignatureEmbedding(
@@ -670,12 +676,7 @@ class BankingVerificationService:
             ref_count = 1
             verif_mode = "single"
 
-        # 5. Determine Verdict
-        is_match = bool(sim_score >= active_thresh)
-        user_verdict = "MATCH" if is_match else "NO MATCH"
-        db_decision = "VERIFIED" if is_match else "REJECTED"
-
-        # 6. Multi-Factor Fraud Risk Evaluation
+        # 5. Multi-Factor Fraud Risk Evaluation
         risk_res = self.risk_engine.evaluate(
             similarity_score=sim_score,
             model_threshold=active_thresh,
@@ -684,6 +685,17 @@ class BankingVerificationService:
             transaction_type="FORM_VERIFICATION",
             behavioral_score=0.02
         )
+
+        # 6. Determine Biometric Verdict & Operational Banking Decision
+        db_decision = risk_res["recommended_decision"]
+        is_match = bool(sim_score >= active_thresh)
+        if db_decision == "VERIFIED":
+            user_verdict = "MATCH"
+        elif db_decision == "MANUAL_REVIEW":
+            user_verdict = "BORDERLINE"
+        else:
+            user_verdict = "NO MATCH"
+
 
         # 7. Provision Financial Ledger Entities for Audit Compliance
         if not customer.accounts:

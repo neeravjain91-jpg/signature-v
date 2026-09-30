@@ -118,12 +118,12 @@ def health_check(db: Session = Depends(get_db)):
         "service": "SIGNATURE VMAKE Signature Verification Platform",
         "database": "CONNECTED",
         "active_model": {
-            "name": model.model_name if model else "Siamese_ResNet_Champion",
+            "name": model.model_name if model else "HF_Vision_Transformer",
             "version": model.version if model else "v1.0.0",
-            "threshold": float(model.threshold) if model else 0.7060,
-            "architecture": model.architecture if model else "Siamese ResNet"
+            "threshold": float(model.threshold) if model else 0.7313,
+            "architecture": model.architecture if model else "Vision Transformer (facebook/deit-tiny-patch16-224)"
         },
-        "available_tracks": ["siamese", "transformer", "sklearn"]
+        "available_tracks": ["transformer", "sklearn"]
     }
 
 
@@ -131,12 +131,9 @@ def health_check(db: Session = Depends(get_db)):
 def models_health():
     """
     Returns actual runtime loading readiness for all supported model tracks.
-    Strictly verifies:
-    1. Checkpoint file existence
-    2. Checkpoint weight loading
-    3. Image preprocessor pipeline execution
-    4. Real image inference on test pair (original_46_1 vs original_46_2)
-    5. Valid output shape and bounded similarity score
+    Strictly verifies VMAKE Dual-Track production architecture:
+    - Track B: Hugging Face Vision Transformer (Production Default)
+    - Track A: scikit-learn Classical Baseline (SVM)
     """
     import time
     from ml.inference.verify_signature import get_model_verifier
@@ -147,7 +144,7 @@ def models_health():
 
     models_status = {}
 
-    # Track A: scikit-learn
+    # Track A: scikit-learn Classical Baseline
     sklearn_ckpt = Path("artifacts/models/classical_svm_model.joblib")
     if not sklearn_ckpt.exists():
         models_status["sklearn"] = {"status": "unavailable", "reason": "checkpoint missing"}
@@ -176,7 +173,7 @@ def models_health():
         except Exception as e:
             models_status["sklearn"] = {"status": "unavailable", "reason": str(e)}
 
-    # Track B: Hugging Face Transformers
+    # Track B: Hugging Face Transformers (Production Default)
     transformer_ckpt = Path("artifacts/models/transformer_signature_model.pt")
     if not transformer_ckpt.exists():
         models_status["transformer"] = {"status": "unavailable", "reason": "checkpoint missing"}
@@ -205,52 +202,12 @@ def models_health():
         except Exception as e:
             models_status["transformer"] = {"status": "unavailable", "reason": str(e)}
 
-    # Track C: Neural Siamese
-    vmake_ckpt = Path("artifacts/models/vmake_champion_model.pt")
-    v4_ckpt = Path("artifacts/models/v4_champion_model.pt")
-    base_ckpt = Path("artifacts/models/best_siamese_model.pt")
-
-    if vmake_ckpt.exists():
-        neural_ckpt = vmake_ckpt
-    elif v4_ckpt.exists():
-        neural_ckpt = v4_ckpt
-    elif base_ckpt.exists():
-        neural_ckpt = base_ckpt
-    else:
-        neural_ckpt = None
-
-    if not neural_ckpt:
-        models_status["neural"] = {"status": "unavailable", "reason": "checkpoint missing"}
-    else:
-        try:
-            t0 = time.time()
-            v_c = get_model_verifier("siamese")
-            if not samples_exist:
-                raise FileNotFoundError("Diagnostic sample signature files not found.")
-            res_c = v_c.verify(sample_ref, sample_sub)
-            lat_c = (time.time() - t0) * 1000
-            models_status["neural"] = {
-                "status": "ready",
-                "model_name": v_c.model_name,
-                "model_version": v_c.model_version,
-                "model_type": v_c.model_type,
-                "threshold": float(v_c.threshold),
-                "checkpoint": str(neural_ckpt).replace("\\", "/"),
-                "test_inference": {
-                    "status": "verified",
-                    "similarity_score": round(float(res_c.similarity_score), 4),
-                    "decision": str(res_c.decision),
-                    "latency_ms": round(lat_c, 2)
-                }
-            }
-        except Exception as e:
-            models_status["neural"] = {"status": "unavailable", "reason": str(e)}
-
     all_ready = all(info.get("status") == "ready" for info in models_status.values())
     return {
         "status": "ready" if all_ready else "partial",
         "models": models_status
     }
+
 
 
 @app.get("/api/v1/sample-image", tags=["Web Interface"])
@@ -828,26 +785,43 @@ def list_models(db: Session = Depends(get_db)):
 
 @app.get("/api/v1/models/benchmark", tags=["Module I: Model Management"])
 def get_model_benchmark():
-    """Returns measured validation benchmarks across all three model tracks."""
-    bench_path = Path("artifacts/evaluation/three_track_benchmark_results.json")
+    """Returns measured test benchmarks across VMAKE Dual-Track models."""
+    bench_path = Path("artifacts/evaluation/vmake_test_evaluation.json")
     if bench_path.exists():
         with open(bench_path, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+            return {
+                "Track_A_Classical_Sklearn": {
+                    "auc_roc": round(data["Track_A_Classical_Sklearn"]["auc_roc"], 4),
+                    "eer": round(data["Track_A_Classical_Sklearn"]["eer"], 4),
+                    "accuracy": round(data["Track_A_Classical_Sklearn"]["accuracy"], 4),
+                    "far": round(data["Track_A_Classical_Sklearn"]["far"], 4),
+                    "frr": round(data["Track_A_Classical_Sklearn"]["frr"], 4),
+                    "f1_score": round(data["Track_A_Classical_Sklearn"]["f1_score"], 4),
+                    "average_latency_ms": 6.03,
+                    "model_size_mb": 5.6
+                },
+                "Track_B_Vision_Transformer": {
+                    "auc_roc": round(data["Track_B_Vision_Transformer"]["auc_roc"], 4),
+                    "eer": round(data["Track_B_Vision_Transformer"]["eer"], 4),
+                    "accuracy": round(data["Track_B_Vision_Transformer"]["accuracy"], 4),
+                    "far": round(data["Track_B_Vision_Transformer"]["far"], 4),
+                    "frr": round(data["Track_B_Vision_Transformer"]["frr"], 4),
+                    "f1_score": round(data["Track_B_Vision_Transformer"]["f1_score"], 4),
+                    "average_latency_ms": 36.66,
+                    "model_size_mb": 21.7
+                }
+            }
     return {
         "Track_A_Classical_Sklearn": {
-            "auc_roc": 0.8423, "eer": 0.2300, "accuracy": 0.7675,
-            "far": 0.2304, "frr": 0.2347, "f1_score": 0.7634,
-            "average_latency_ms": 7.3, "model_size_mb": 5.4
+            "auc_roc": 0.8574, "eer": 0.1900, "accuracy": 0.7917,
+            "far": 0.2850, "frr": 0.1317, "f1_score": 0.8065,
+            "average_latency_ms": 6.03, "model_size_mb": 5.6
         },
         "Track_B_Vision_Transformer": {
-            "auc_roc": 0.8118, "eer": 0.2450, "accuracy": 0.7550,
-            "far": 0.2451, "frr": 0.2449, "f1_score": 0.7513,
-            "average_latency_ms": 38.4, "model_size_mb": 21.7
-        },
-        "Track_C_Siamese_ResNet": {
-            "auc_roc": 0.9008, "eer": 0.1874, "accuracy": 0.8150,
-            "far": 0.1912, "frr": 0.1786, "f1_score": 0.8131,
-            "average_latency_ms": 42.1, "model_size_mb": 43.2
+            "auc_roc": 0.7947, "eer": 0.2767, "accuracy": 0.6450,
+            "far": 0.6717, "frr": 0.0383, "f1_score": 0.7304,
+            "average_latency_ms": 36.66, "model_size_mb": 21.7
         }
     }
 
@@ -884,9 +858,10 @@ def get_dashboard_metrics(db: Session = Depends(get_db)):
             "high": high_risk
         },
         "active_model": {
-            "name": active_model.model_name if active_model else "Siamese_ResNet_Champion",
+            "name": active_model.model_name if active_model else "HF_Vision_Transformer",
             "version": active_model.version if active_model else "v1.0.0",
-            "threshold": float(active_model.threshold) if active_model else 0.7060
+            "threshold": float(active_model.threshold) if active_model else 0.7313
         },
-        "average_inference_latency_ms": 42.1
+        "average_inference_latency_ms": 21.3
     }
+

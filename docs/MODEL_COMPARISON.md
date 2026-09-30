@@ -1,60 +1,103 @@
-# SIGNATURE VMAKE — Multi-Model Track Comparative Analysis & Selection Report
-
-**Document Version:** 1.0.0  
-**Project:** SIGNATURE VMAKE (`signature-vmake`)  
-**Evaluation Protocol:** Open-Set (Writer-Independent) on Validation Partition (Writers 36..45)  
-**Artifact:** `artifacts/evaluation/three_track_benchmark_results.json`  
+# Model Benchmark & Comparative Analysis Report
+## SIGNATURE VMAKE: Track A (scikit-learn) vs. Track B (Hugging Face Vision Transformer)
 
 ---
 
-## 1. Executive Summary & Scientific Purpose
+### 1. Executive Summary
 
-The core principle of SIGNATURE VMAKE is **empirical verification over architectural bias**. Rather than blindly deploying a Vision Transformer or assuming a deep neural network is universally superior, the platform implements, trains, and validates **three distinct technological tracks**:
+In strict compliance with the **SIGNATURE VMAKE** technology mandate, the platform evaluates two distinct paradigm architectures for offline banking signature verification:
+1. **Track A — Classical Machine Learning Baseline (`scikit-learn`)**:
+   - 264-dimensional handcrafted computer-vision features (Sobel HOG gradient histograms, 8x8 spatial grid stroke densities, horizontal/vertical projection profiles, morphological aspect ratio/occupancy invariants).
+   - Pairwise metric classifier: Support Vector Machine (Linear SVM with probability calibration).
+2. **Track B — Modern Vision Transformer (`Hugging Face Transformers`)**:
+   - Deep Computer-Vision Vision Transformer (`facebook/deit-tiny-patch16-224` backbone).
+   - Multi-head self-attention over $16 \times 16$ spatial stroke patches with a trained metric projection head mapping to a 256-dimensional unit hypersphere ($\|u\|_2 = 1.0$).
 
-1. **Track A (Classical Machine Learning):** scikit-learn Support Vector Machine with 264-d handcrafted HOG, projection, and morphological features.
-2. **Track B (Computer Vision Transformer):** Hugging Face Vision Transformer (`facebook/deit-tiny-patch16-224`) with multi-head self-attention and metric projection head.
-3. **Track C (Deep Siamese Neural Network):** Twin ResNet backbone with L2-normalized metric learning hypersphere embeddings.
-
----
-
-## 2. Quantitative Benchmark Results
-
-All three models were evaluated under identical conditions on 400 validation pairs drawn from the disjoint validation cohort (Writers `36` to `45`):
-
-| Evaluation Metric | Track A: Classical Sklearn (SVM) | Track B: HF Vision Transformer (ViT) | Track C: Siamese ResNet (Metric Learning) | Scientific Winner |
-| :--- | :---: | :---: | :---: | :---: |
-| **Area Under ROC (AUC-ROC)** | $0.8423$ | $0.8118$ | **$0.9008$** | **Track C (+0.0585)** |
-| **Equal Error Rate (EER)** | $23.00\%$ ($0.2300$) | $24.50\%$ ($0.2450$) | **$18.74\%$ ($0.1874$)** | **Track C (-4.26%)** |
-| **Validation Accuracy** | $76.75\%$ | $75.50\%$ | **$81.50\%$** | **Track C (+4.75%)** |
-| **False Acceptance Rate (FAR)** | $23.04\%$ | $24.51\%$ | **$19.12\%$** | **Track C (-3.92%)** |
-| **False Rejection Rate (FRR)** | $23.47\%$ | $24.49\%$ | **$17.86\%$** | **Track C (-5.61%)** |
-| **True Acceptance Rate (TAR)** | $76.53\%$ | $75.51\%$ | **$82.14\%$** | **Track C (+5.61%)** |
-| **F1 Score** | $0.7634$ | $0.7513$ | **$0.8131$** | **Track C (+0.0497)** |
-| **Inference Latency (CPU)** | **$7.3\text{ ms}$** | $38.4\text{ ms}$ | $42.1\text{ ms}$ | **Track A (5.7x faster)** |
-| **Model Disk Footprint** | **$5.4\text{ MB}$** | $21.7\text{ MB}$ | $43.2\text{ MB}$ | **Track A (8x smaller)** |
+> [!IMPORTANT]
+> **Strict Writer-Disjoint Open-Set Protocol:**
+> All models are trained on **Writers 1–35** (7,000 pairs), calibrated for operating threshold and EER on **Writers 36–45** (1,200 pairs), and evaluated on the strictly held-out test cohort of **Writers 46–55** (1,200 pairs). Zero writer overlap exists across any split ($\text{Train} \cap \text{Val} = \emptyset$, $\text{Train} \cap \text{Test} = \emptyset$, $\text{Val} \cap \text{Test} = \emptyset$).
 
 ---
 
-## 3. Explicit Model Selection Criteria
+### 2. Empirical Performance Comparison on Held-Out Test Cohort (Writers 46–55)
 
-In accordance with strict banking risk standards, the production model is selected via a deterministic, multi-criterion hierarchy:
+The table below presents the verified, reproducible test metrics evaluated on 1,200 test pairs:
 
-1. **Criterion 1 (Primary): Lowest False Acceptance Rate (FAR):** In high-value banking (cheques, counter withdrawals, high-value wire transfers), accepting a fraudulent forged signature costs orders of magnitude more than manual review escalation. Track C achieves the lowest FAR ($19.12\%$).
-2. **Criterion 2: Highest Area Under the Curve (AUC-ROC):** Track C leads with $\text{AUC} = 0.9008$, proving superior class separability across all possible operating thresholds.
-3. **Criterion 3: Lowest Equal Error Rate (EER):** Track C achieves an EER of $18.74\%$, surpassing both the Classical Baseline ($23.00\%$) and the Vision Transformer ($24.50\%$).
-4. **Criterion 4: Acceptable Operational Latency:** The production SLA requires transaction response times under $200\text{ ms}$. Track C executes in $42.1\text{ ms}$ on CPU, well within banking performance requirements.
-
-### Final Production Champion Selection
-$$\textbf{Selected Production Model:} \quad \text{Model Track C (Siamese ResNet Champion)}$$
+| Performance Metric | Track A: Classical `scikit-learn` SVM | Track B: `Hugging Face` Vision Transformer | Delta / Advantage |
+| :--- | :---: | :---: | :---: |
+| **Model Type** | Classical ML (HOG + Morphology) | Deep Vision Transformer (ViT) | Different Paradigms |
+| **Model Version** | `1.0.0-sklearn-svm` | `1.0.0-transformers-vit` | Independent Lineages |
+| **Checkpoint File** | `artifacts/models/classical_svm_model.joblib` | `artifacts/models/transformer_signature_model.pt` | Verified on Disk |
+| **Model Size** | **5.4 MB** | 21.7 MB | **Track A is 75% smaller** |
+| **Average Latency** | **6.03 ms** | 36.66 ms | **Track A is 6.1x faster** |
+| **Operating Threshold ($\tau^*$)** | **0.3636** | **0.7313** | Validation EER Calibrated |
+| **Area Under ROC (AUC-ROC)** | **0.8574** | 0.7947 | **Track A (+6.27%)** |
+| **Equal Error Rate (EER)** | **19.00%** | 27.67% | **Track A (+8.67% lower error)** |
+| **Classification Accuracy** | **79.17%** | 64.50% | **Track A (+14.67%)** |
+| **False Acceptance Rate (FAR)** | **28.50%** | 67.17% | **Track A (+38.67% lower)** |
+| **False Rejection Rate (FRR)** | 13.17% | **3.83%** | **Track B (+9.34% lower FRR)** |
+| **F1 Score** | **0.8065** | 0.7304 | **Track A (+0.076)** |
 
 ---
 
-## 4. Deep Architectural Insights
+### 3. Detailed Architectural Tradeoff Analysis
 
-### Why the Vision Transformer did not outperform the Siamese ResNet
-* **Inductive Bias:** Vision Transformers lack translation equivariance and local spatial inductive bias. Handwriting analysis relies heavily on micro-stroke continuity, pen-stop hesitation, and curvature gradients across small spatial neighborhoods.
-* **Data Scale:** ViT architectures excel when trained on tens of millions of samples (e.g. ImageNet-21k, JFT-300M). On smaller forensic datasets (CEDAR: 2,640 images), convolutional networks preserve local stroke topology much more effectively.
+```mermaid
+flowchart TD
+    subgraph TrackA["Track A: scikit-learn Classical Baseline"]
+        A1["Input Signatures<br/>(Ref & Query)"] --> A2["OpenCV Preprocessor<br/>(Denoise, Otsu, BBox Crop)"]
+        A2 --> A3["Feature Extractor<br/>(264-d HOG + Spatial Density)"]
+        A3 --> A4["Pairwise Matrix<br/>(|u-v|, u*v, dist, cos)"]
+        A4 --> A5["StandardScaler + Linear SVM<br/>artifacts/models/classical_svm_model.joblib"]
+        A5 --> A6["P(genuine) Output<br/>(Latency: 6.03ms, AUC: 0.8574)"]
+    end
 
-### The Value of the Classical scikit-learn Baseline
-* Track A demonstrates remarkable performance ($\text{AUC} = 0.8423$, Accuracy $76.75\%$) with near-zero latency ($7.3\text{ ms}$) and tiny memory overhead ($5.4\text{ MB}$).
-* It proves that engineered directional gradients (Sobel HOG) and projection profiles capture strong geometric discriminability, providing an ultra-lightweight fallback for edge or offline mobile devices.
+    subgraph TrackB["Track B: Hugging Face Vision Transformer"]
+        B1["Input Signatures<br/>(Ref & Query)"] --> B2["OpenCV Preprocessor<br/>(Centered 224x224 3-Ch)"]
+        B2 --> B3["ViT Backbone<br/>(facebook/deit-tiny-patch16-224)"]
+        B3 --> B4["Self-Attention Tokens<br/>([CLS] + 196 Patch Embeddings)"]
+        B4 --> B5["Metric Projection Head<br/>(256-d Unit Hypersphere)"]
+        B5 --> B6["Hypersphere Distance<br/>(Latency: 36.66ms, FRR: 3.83%)"]
+    end
+```
+
+#### 3.1 Track A (scikit-learn SVM)
+- **Strengths:**
+  - Exceptional CPU throughput (6.03 ms per verification), making it ideal for high-volume batch cheque clearing.
+  - Superior overall discrimination on skilled forgeries (AUC-ROC 0.8574, EER 19.00%) due to rigid spatial projection profiles and stroke density histograms.
+  - Very small memory footprint (5.4 MB).
+- **Tradeoffs:**
+  - Requires explicit handcrafted feature engineering.
+  - Higher False Rejection Rate (13.17%) when genuine customer signatures exhibit high intra-writer variation.
+
+#### 3.2 Track B (Hugging Face Vision Transformer)
+- **Strengths:**
+  - Exceptional genuine acceptance: False Rejection Rate is only **3.83%**, meaning legitimate bank customers almost never suffer false rejection.
+  - Dense spatial self-attention captures micro-stroke continuities and pen-lift stroke dynamics across image patches without manual feature engineering.
+  - Outputs a standardized 256-dimensional biometric embedding vector suitable for customer gallery vector search.
+- **Tradeoffs:**
+  - Higher latency (36.66 ms on CPU) due to 12 layers of multi-head self-attention.
+  - More permissive on skilled forgeries (FAR 67.17% at validation threshold), requiring tighter operating thresholds or manual review triggers.
+
+---
+
+### 4. Tri-State Banking Decision Boundaries
+
+To bridge biometric similarity scores with banking risk management, both models feed into the **Tri-State Decision Engine**:
+
+| Decision | Track A Condition | Track B Condition | Banking Action |
+| :--- | :--- | :--- | :--- |
+| **VERIFIED** | Score $\ge 0.3636$ | Score $\ge 0.7313$ | Automated straight-through transaction processing. Clear genuine signature. |
+| **MANUAL REVIEW** | $0.3036 \le \text{Score} < 0.3636$ | $0.6813 \le \text{Score} < 0.7313$ | Routed to Compliance Officer Queue. Signature is borderline or high intra-writer variance. |
+| **REJECTED** | Score $< 0.3036$ | Score $< 0.6813$ | Autonomous transaction block. Impostor or signature mismatch detected. |
+
+---
+
+### 5. Provenance & Artifact Verification
+
+- **Evaluation Script:** [`ml/evaluation/evaluate_vmake_test.py`](../ml/evaluation/evaluate_vmake_test.py)
+- **Evaluation Output Manifest:** [`artifacts/evaluation/vmake_test_evaluation.json`](../artifacts/evaluation/vmake_test_evaluation.json)
+- **Model Checkpoints:**
+  - Track A: [`artifacts/models/classical_svm_model.joblib`](../artifacts/models/classical_svm_model.joblib)
+  - Track B: [`artifacts/models/transformer_signature_model.pt`](../artifacts/models/transformer_signature_model.pt)
+- **Legacy Material Action:** Siamese ResNet networks and SYNAPSE-derived artifacts have been decommissioned from the production path.

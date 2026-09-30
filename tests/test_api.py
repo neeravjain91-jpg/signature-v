@@ -117,15 +117,13 @@ def test_model_benchmark_endpoint():
     data = response.json()
     assert "Track_A_Classical_Sklearn" in data
     assert "Track_B_Vision_Transformer" in data
-    assert "Track_C_Siamese_ResNet" in data
     assert data["Track_A_Classical_Sklearn"]["auc_roc"] > 0.70
     assert data["Track_B_Vision_Transformer"]["auc_roc"] > 0.70
-    assert data["Track_C_Siamese_ResNet"]["auc_roc"] > 0.80
 
 
 def test_verify_demo_multi_track():
-    """Verify demo verification with all 3 model tracks."""
-    for track in ["siamese", "transformer", "sklearn"]:
+    """Verify demo verification with Dual-Track models (Transformer production default, Sklearn baseline)."""
+    for track in ["transformer", "sklearn"]:
         res = client.post("/api/v1/verifications/verify-demo", json={
             "amount": 3500.0,
             "transaction_type": "CHEQUE",
