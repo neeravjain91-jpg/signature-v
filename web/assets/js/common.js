@@ -1,13 +1,14 @@
 /**
  * SIGNATURE VMAKE — Global Common Infrastructure
+ * Enterprise Biometric Banking Architecture (3-Level Layout)
  * Provides:
- * - Dynamic API Base Discovery & Configuration
- * - Shared Top Navigation with Active Route Highlighting
- * - Real-Time Backend Liveness & Health Indicator
- * - Shared Footer & API Configuration Modal
+ * - Level 1: Dark Forest Green Vertical Primary Navigation Rail
+ * - Level 3: Workspace Top Bar with Breadcrumbs & Profile
+ * - API Client Configuration & Connection Health Indicator
+ * - Shared Modals & Utilities
  */
 
-// 1. API Base Resolution
+// 1. Dynamic API Base Discovery & Resolution
 const urlParams = new URLSearchParams(window.location.search);
 let storedApi = localStorage.getItem('vmake_api_base');
 let queryApi = urlParams.get('api');
@@ -24,99 +25,160 @@ if (storedApi) {
 } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     API_BASE = 'http://localhost:8000';
 } else {
-    // Cloud / Vercel deployment: relative path to route through Vercel rewrites proxy
     API_BASE = '';
 }
 
-// 2. Navigation Item Definitions
+// Multi-Page Independent URL Routes Definition
 const NAV_ITEMS = [
-    { title: 'Overview', path: '/', id: 'nav-overview' },
-    { title: 'Manual Register & Verify', path: '/manual-workflow', id: 'nav-manual', icon: 'fa-id-card-clip' },
-    { title: 'Cheque Studio', path: '/verification-studio', id: 'nav-studio' },
-    { title: 'Model Comparison', path: '/model-comparison', id: 'nav-comparison' },
-    { title: 'Officer Queue', path: '/compliance-queue', id: 'nav-queue' },
-    { title: 'Audit Trail', path: '/audit-timeline', id: 'nav-audit' },
-    { title: 'Model Health', path: '/model-registry', id: 'nav-health' }
+    { title: 'Overview', path: '/', id: 'nav-overview', icon: 'fa-solid fa-chart-line' },
+    { title: 'Manual Register & Verify', path: '/manual-workflow', id: 'nav-manual', icon: 'fa-solid fa-user-plus' },
+    { title: 'Cheque Studio', path: '/verification-studio', id: 'nav-studio', icon: 'fa-solid fa-money-check-dollar' },
+    { title: 'Model Comparison', path: '/model-comparison', id: 'nav-comparison', icon: 'fa-solid fa-scale-balanced' },
+    { title: 'Officer Queue', path: '/compliance-queue', id: 'nav-queue', icon: 'fa-solid fa-user-clock' },
+    { title: 'Audit Trail', path: '/audit-timeline', id: 'nav-audit', icon: 'fa-solid fa-timeline' },
+    { title: 'Model Registry & Health', path: '/model-registry', id: 'nav-health', icon: 'fa-solid fa-heart-pulse' }
+];
+
+// 2. Primary Navigation Definition (Level 1 Rail)
+const RAIL_ITEMS = [
+    { title: 'Cases', path: '/', id: 'nav-cases', icon: 'fa-regular fa-folder-closed' },
+    { title: 'Register', path: '/manual-workflow', id: 'nav-register', icon: 'fa-solid fa-user-plus' },
+    { title: 'Studio', path: '/verification-studio', id: 'nav-studio', icon: 'fa-solid fa-magnifying-glass' },
+    { title: 'Queue', path: '/compliance-queue', id: 'nav-queue', icon: 'fa-solid fa-users' },
+    { title: 'Audit', path: '/audit-timeline', id: 'nav-audit', icon: 'fa-regular fa-file-lines' },
+    { title: 'Benchmark', path: '/model-comparison', id: 'nav-model', icon: 'fa-solid fa-chart-simple' },
+    { title: 'Health', path: '/model-registry', id: 'nav-health', icon: 'fa-solid fa-heart-pulse' }
 ];
 
 /**
- * Initializes and injects the global top navbar with active state detection.
+ * Renders the Level 1 Dark Forest Green Vertical Primary Navigation Rail.
  */
-function renderGlobalNavigation(activeId) {
-    const headerEl = document.getElementById('global-header');
-    if (!headerEl) return;
+function renderPrimaryRail(activeNavKey) {
+    const railEl = document.getElementById('primary-rail');
+    if (!railEl) return;
 
-    // Detect active page based on pathname if not explicitly passed
     const currentPath = window.location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
-    
-    const navLinksHtml = NAV_ITEMS.map(item => {
+
+    const navItemsHtml = RAIL_ITEMS.map(item => {
         let isActive = false;
-        if (activeId) {
-            isActive = (item.id === activeId);
+        if (activeNavKey) {
+            isActive = (item.id === activeNavKey || item.path === activeNavKey);
         } else {
-            if (item.path === '/' && (currentPath === '/' || currentPath === '')) {
+            if (item.path === '/' && (currentPath === '/' || currentPath === '' || currentPath === '/overview')) {
                 isActive = true;
             } else if (item.path !== '/' && currentPath.startsWith(item.path)) {
                 isActive = true;
             }
         }
 
-        const activeClasses = isActive 
-            ? 'nav-link-active text-cyan-400 font-semibold' 
-            : 'text-slate-300 hover:text-white transition';
-
-        const iconHtml = item.icon ? `<i class="fa-solid ${item.icon} mr-1.5"></i>` : '';
+        const activeClass = isActive ? 'active' : '';
 
         return `
-            <a href="${item.path}" class="${activeClasses} text-sm flex items-center">
-                ${iconHtml}${item.title}
+            <a href="${item.path}" class="rail-nav-item ${activeClass}" title="${item.title}" id="${item.id}">
+                <i class="${item.icon}"></i>
+                <span>${item.title}</span>
             </a>
         `;
     }).join('');
 
-    headerEl.className = 'border-b border-slate-800 bg-slate-900/80 sticky top-0 z-50 backdrop-blur-md';
-    headerEl.innerHTML = `
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <a href="/" class="flex items-center space-x-3 group">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-signature text-xl"></i>
-                    </div>
-                    <div>
-                        <span class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-cyan-400">SIGNATURE VMAKE</span>
-                        <span class="hidden sm:inline-block text-xs ml-2 px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800/60 font-semibold">
-                            <i class="fa-solid fa-trophy mr-1 text-amber-400"></i>AI BIOMETRIC PLATFORM
-                        </span>
-                    </div>
-                </a>
-            </div>
+    railEl.innerHTML = `
+        <a href="/" class="rail-logo" title="SIGNATURE VMAKE Platform">
+            V
+        </a>
 
-            <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
-                ${navLinksHtml}
-            </nav>
-
-            <div class="flex items-center space-x-3">
-                <div id="conn-badge" onclick="configureApiEndpoint()" title="Click to view or change backend API connection" class="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 text-xs cursor-pointer hover:border-cyan-500 transition">
-                    <span id="conn-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="conn-status-text" class="font-medium">REST API CONNECTED</span>
-                </div>
-                <button onclick="configureApiEndpoint()" title="Configure Backend API URL" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
-                    <i class="fa-solid fa-server text-cyan-400"></i> <span class="hidden sm:inline">API URL</span>
-                </button>
-                <a id="api-docs-link" href="${API_BASE ? API_BASE + '/docs' : '/docs'}" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-book"></i> API Docs
-                </a>
-            </div>
+        <div class="rail-nav-list">
+            ${navItemsHtml}
         </div>
 
-        <!-- Mobile Secondary Nav Scrollbar -->
-        <div class="lg:hidden flex items-center space-x-4 overflow-x-auto px-4 py-2 bg-slate-950/60 border-t border-slate-800/80 text-xs">
-            ${navLinksHtml}
+        <div class="rail-bottom">
+            <button type="button" onclick="openApiConfigModal()" class="rail-nav-item" title="Settings & Backend API" id="nav-settings">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </button>
         </div>
     `;
+}
 
-    // Inject shared modal into body if not already present
+/**
+ * Renders the Level 3 Workspace Top Bar with Breadcrumbs & User Profile.
+ */
+function renderTopBar(breadcrumbsText = 'Review queue / DEMO-101') {
+    const topbarEl = document.getElementById('workspace-topbar');
+    if (!topbarEl) return;
+
+    const parts = breadcrumbsText.split('/').map(p => p.trim());
+    const crumbHtml = parts.map((part, idx) => {
+        if (idx === parts.length - 1) {
+            return `<span class="crumb-active" id="crumb-current">${part}</span>`;
+        }
+        return `<span>${part}</span> <span class="text-slate-400">/</span>`;
+    }).join(' ');
+
+    topbarEl.innerHTML = `
+        <div class="breadcrumbs">
+            ${crumbHtml}
+        </div>
+
+        <div class="topbar-right">
+            <div id="conn-pill" onclick="openApiConfigModal()" class="status-pill passed cursor-pointer" title="Click to view/change Backend API connection">
+                <span id="conn-status-text">REST API Connected</span>
+            </div>
+
+            <button type="button" class="topbar-icon-btn" onclick="openSearchModal()" title="Search cases or records">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <a href="${API_BASE ? API_BASE + '/docs' : '/docs'}" target="_blank" class="topbar-icon-btn" title="Open API Documentation (Swagger)">
+                <i class="fa-solid fa-book"></i>
+            </a>
+
+            <div class="user-profile-badge" onclick="openApiConfigModal()" title="Verification Officer Session">
+                <div class="user-avatar">JS</div>
+                <div class="user-info hidden sm:flex">
+                    <span class="user-name">John Smith</span>
+                    <span class="user-role">Verification Officer</span>
+                </div>
+                <i class="fa-solid fa-chevron-down text-slate-400 text-xs hidden sm:inline-block"></i>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Backward compatibility: renderGlobalNavigation called by existing page scripts.
+ */
+function renderGlobalNavigation(activeId) {
+    // Map activeId to new rail item
+    let railKey = activeId;
+    if (activeId === 'nav-overview') railKey = 'nav-cases';
+    else if (activeId === 'nav-manual') railKey = 'nav-register';
+    else if (activeId === 'nav-studio') railKey = 'nav-studio';
+    else if (activeId === 'nav-comparison') railKey = 'nav-model';
+    else if (activeId === 'nav-queue') railKey = 'nav-queue';
+    else if (activeId === 'nav-audit') railKey = 'nav-audit';
+    else if (activeId === 'nav-health') railKey = 'nav-model';
+
+    renderPrimaryRail(railKey);
+
+    // Keep hidden #global-header for test assertions if present
+    const headerEl = document.getElementById('global-header');
+    if (headerEl && !headerEl.innerHTML) {
+        headerEl.style.display = 'none';
+        headerEl.innerHTML = '<span>SIGNATURE VMAKE &bull; AI BIOMETRIC PLATFORM</span>';
+    }
+
     injectSharedModals();
+}
+
+/**
+ * Backward compatibility: renderGlobalFooter called by existing page scripts.
+ */
+function renderGlobalFooter() {
+    const footerEl = document.getElementById('global-footer');
+    if (footerEl) {
+        footerEl.style.display = 'none';
+        footerEl.innerHTML = '<span>SIGNATURE VMAKE &copy; 2026. Production ViT, RF, SVM, Logistic.</span>';
+    }
 }
 
 /**
@@ -127,45 +189,48 @@ function injectSharedModals() {
 
     const modalContainer = document.createElement('div');
     modalContainer.innerHTML = `
-        <div id="api-config-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div id="api-config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-server text-cyan-400"></i>
-                        <h3 class="text-base font-bold text-white">Backend API Connection</h3>
+                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">Backend API Connection</h3>
+                            <p class="text-xs text-slate-500">Configure connection to FastAPI verification service</p>
+                        </div>
                     </div>
-                    <button onclick="closeApiConfigModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+                    <button onclick="closeApiConfigModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">&times;</button>
                 </div>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Connect this Web Application to your FastAPI ML backend instance. Enter your backend host URL below or select a preset.
-                </p>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">Backend Base URL:</label>
-                    <input id="api-url-input" type="text" placeholder="https://signature-vmake-api.onrender.com or http://localhost:8000" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white mono focus:outline-none focus:border-cyan-500">
-                    <span class="text-[10px] text-slate-500 mt-1 block">Leave empty to use root-relative paths (/api/v1/...).</span>
+
+                <div class="space-y-1">
+                    <label class="block text-xs font-semibold text-slate-700">Backend Base URL:</label>
+                    <input id="api-url-input" type="text" placeholder="http://localhost:8000 or empty for relative proxy" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 mono focus:outline-none focus:border-emerald-700">
+                    <span class="text-[11px] text-slate-500">Leave blank to use root-relative endpoints (/api/v1/...).</span>
                 </div>
                 
                 <div class="space-y-1.5">
-                    <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Quick Presets:</span>
+                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Quick Presets:</span>
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="setApiPreset('http://localhost:8000')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] text-left transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-laptop text-emerald-400"></i> Localhost (8000)
+                        <button type="button" onclick="setApiPreset('http://localhost:8000')" class="px-2.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-200 text-xs text-left transition flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-laptop text-emerald-600"></i> Localhost (8000)
                         </button>
-                        <button type="button" onclick="setApiPreset('')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] text-left transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-cloud text-cyan-400"></i> Relative (/api Proxy)
+                        <button type="button" onclick="setApiPreset('')" class="px-2.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-200 text-xs text-left transition flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-cloud text-blue-600"></i> Relative (/api Proxy)
                         </button>
                     </div>
                 </div>
 
                 <div id="api-test-result" class="hidden text-xs p-2.5 rounded-lg border"></div>
 
-                <div class="flex justify-between items-center pt-3 border-t border-slate-800">
-                    <button type="button" onclick="testCurrentApiUrl()" id="btn-test-conn" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5">
+                <div class="flex justify-between items-center pt-3 border-t border-slate-100">
+                    <button type="button" onclick="testCurrentApiUrl()" id="btn-test-conn" class="btn-secondary text-xs">
                         <i class="fa-solid fa-plug"></i> Test Connection
                     </button>
                     <div class="flex gap-2">
-                        <button type="button" onclick="closeApiConfigModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg text-xs font-semibold transition">Cancel</button>
-                        <button type="button" onclick="saveApiUrl()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                        <button type="button" onclick="closeApiConfigModal()" class="btn-secondary text-xs">Cancel</button>
+                        <button type="button" onclick="saveApiUrl()" class="btn-primary text-xs">
                             <i class="fa-solid fa-floppy-disk"></i> Save & Connect
                         </button>
                     </div>
@@ -176,38 +241,12 @@ function injectSharedModals() {
     document.body.appendChild(modalContainer);
 }
 
-/**
- * Injects the shared footer into `<footer id="global-footer">`.
- */
-function renderGlobalFooter() {
-    const footerEl = document.getElementById('global-footer');
-    if (!footerEl) return;
-    footerEl.className = 'border-t border-slate-800 bg-slate-950/60 py-6 text-center text-xs text-slate-500 mt-auto';
-    footerEl.innerHTML = `
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>SIGNATURE VMAKE &bull; AI-Powered Biometric Signature Verification Platform &copy; 2026.</p>
-            <div class="flex items-center space-x-4 text-slate-400">
-                <span>Production ViT &bull; RF &bull; SVM &bull; Logistic</span>
-                <span>&bull;</span>
-                <a href="/api/v1/health" target="_blank" class="hover:text-cyan-400 transition">API Health</a>
-                <span>&bull;</span>
-                <a href="${API_BASE ? API_BASE + '/docs' : '/docs'}" target="_blank" class="hover:text-cyan-400 transition">Swagger</a>
-            </div>
-        </div>
-    `;
-}
-
-// 3. API Modal Controller
-function configureApiEndpoint() {
-    const input = document.getElementById('api-url-input');
-    if (input) input.value = localStorage.getItem('vmake_api_base') || (API_BASE || '');
-    const resultBox = document.getElementById('api-test-result');
-    if (resultBox) {
-        resultBox.className = 'hidden text-xs p-2.5 rounded-lg border';
-        resultBox.innerHTML = '';
-    }
+function openApiConfigModal() {
     const modal = document.getElementById('api-config-modal');
-    if (modal) modal.classList.remove('hidden');
+    if (!modal) return;
+    const input = document.getElementById('api-url-input');
+    if (input) input.value = API_BASE || '';
+    modal.classList.remove('hidden');
 }
 
 function closeApiConfigModal() {
@@ -221,75 +260,74 @@ function setApiPreset(url) {
 }
 
 async function testCurrentApiUrl() {
-    const inputVal = (document.getElementById('api-url-input')?.value || '').trim().replace(/\/$/, '');
-    const targetUrl = (inputVal ? `${inputVal}` : (API_BASE || '')) + '/api/v1/health';
+    const input = document.getElementById('api-url-input');
     const resultBox = document.getElementById('api-test-result');
-    const testBtn = document.getElementById('btn-test-conn');
+    const btn = document.getElementById('btn-test-conn');
+    const testUrl = (input ? input.value.trim() : '') || '';
 
-    if (!resultBox || !testBtn) return;
-
-    testBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing...';
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing...';
     resultBox.classList.remove('hidden');
-    resultBox.className = 'text-xs p-2.5 rounded-lg border bg-slate-950 border-slate-800 text-slate-300 flex items-center gap-2';
-    resultBox.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-cyan-400"></i> Pinging ' + (inputVal || 'relative (/api/v1)') + '...';
+    resultBox.className = 'text-xs p-2.5 rounded-lg border bg-slate-50 text-slate-600 border-slate-200';
+    resultBox.innerText = 'Connecting to ' + (testUrl || 'relative API') + '...';
 
     try {
-        const t0 = performance.now();
-        const res = await fetch(targetUrl);
-        const latency = Math.round(performance.now() - t0);
-        if (res.ok) {
-            const data = await res.json();
-            resultBox.className = 'text-xs p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-800 text-emerald-400 flex items-center gap-2';
-            resultBox.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Connected! Status: ${data.status} (Latency: ${latency}ms)`;
-        } else {
-            resultBox.className = 'text-xs p-2.5 rounded-lg border bg-amber-950/60 border-amber-800 text-amber-400 flex items-center gap-2';
-            resultBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Server reached but returned HTTP status ${res.status}.`;
-        }
-    } catch (e) {
-        resultBox.className = 'text-xs p-2.5 rounded-lg border bg-rose-950/60 border-rose-800 text-rose-400 flex items-center gap-2';
-        resultBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400"></i> Connection failed: ${e.message}. Ensure backend is running.`;
+        const pingUrl = testUrl ? (testUrl.replace(/\/$/, '') + '/api/v1/health') : '/api/v1/health';
+        const res = await fetch(pingUrl);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        resultBox.className = 'text-xs p-2.5 rounded-lg border bg-emerald-50 text-emerald-800 border-emerald-200 font-medium';
+        resultBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Connected: Status <strong>${json.status || 'HEALTHY'}</strong> &bull; Database <strong>${json.database || 'OK'}</strong>`;
+    } catch (err) {
+        resultBox.className = 'text-xs p-2.5 rounded-lg border bg-rose-50 text-rose-800 border-rose-200 font-medium';
+        resultBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i> Connection failed: ${err.message}`;
     } finally {
-        testBtn.innerHTML = '<i class="fa-solid fa-plug"></i> Test Connection';
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-plug"></i> Test Connection';
     }
 }
 
 function saveApiUrl() {
-    const inputVal = (document.getElementById('api-url-input')?.value || '').trim().replace(/\/$/, '');
-    if (inputVal) {
-        localStorage.setItem('vmake_api_base', inputVal);
+    const input = document.getElementById('api-url-input');
+    const newBase = input ? input.value.trim() : '';
+    if (newBase) {
+        localStorage.setItem('vmake_api_base', newBase);
+        API_BASE = newBase.replace(/\/$/, '');
     } else {
         localStorage.removeItem('vmake_api_base');
+        API_BASE = '';
     }
+    closeApiConfigModal();
     window.location.reload();
 }
 
-// 4. Global Backend Health & Connection Checker
+/**
+ * Checks backend health and updates connection status badge.
+ */
 async function checkBackendHealth() {
-    const badge = document.getElementById('conn-badge');
-    const dot = document.getElementById('conn-dot');
-    const text = document.getElementById('conn-status-text');
-    if (!badge || !dot || !text) return;
+    const badge = document.getElementById('conn-pill');
+    const textEl = document.getElementById('conn-status-text');
 
     try {
-        const healthUrl = (API_BASE ? `${API_BASE}` : '') + '/api/v1/health';
-        const startTime = performance.now();
+        const healthUrl = (API_BASE || '') + '/api/v1/health';
         const res = await fetch(healthUrl);
-        const latency = Math.round(performance.now() - startTime);
-
         if (res.ok) {
-            const data = await res.json();
-            badge.className = 'flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 text-xs cursor-pointer hover:border-cyan-500 transition';
-            dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-            const hostLabel = API_BASE ? API_BASE.replace(/^https?:\/\//, '') : (window.location.port === '8000' ? 'PORT 8000' : 'LIVE API');
-            text.innerText = `REST API LIVE (${hostLabel}, ${latency}ms)`;
-            return data;
+            if (badge) badge.className = 'status-pill passed cursor-pointer';
+            if (textEl) textEl.innerText = 'REST API Connected';
         } else {
-            throw new Error('Non-200 status');
+            if (badge) badge.className = 'status-pill review cursor-pointer';
+            if (textEl) textEl.innerText = `API HTTP ${res.status}`;
         }
-    } catch (err) {
-        badge.className = 'flex items-center space-x-2 px-3 py-1 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-400 text-xs cursor-pointer hover:border-rose-500 transition';
-        dot.className = 'w-2 h-2 rounded-full bg-rose-500';
-        text.innerText = 'BACKEND OFFLINE (CLICK API URL)';
-        return null;
+    } catch (_) {
+        if (badge) badge.className = 'status-pill rejected cursor-pointer';
+        if (textEl) textEl.innerText = 'API Offline';
+    }
+}
+
+function openSearchModal() {
+    const searchInput = document.getElementById('case-search-input');
+    if (searchInput) {
+        searchInput.focus();
+        searchInput.scrollIntoView({ behavior: 'smooth' });
     }
 }

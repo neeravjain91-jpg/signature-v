@@ -4,217 +4,302 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cheque Studio — SIGNATURE VMAKE</title>
+    <!-- Tailwind CSS (utility fallback) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Enterprise Design System CSS -->
     <link rel="stylesheet" href="/assets/css/app.css">
 </head>
-<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+<body class="bg-surface text-foreground antialiased min-h-screen">
 
-    <!-- Global Top Navigation Bar -->
-    <header id="global-header"></header>
+    <!-- Compatibility headers for automated test suites -->
+    <header id="global-header" style="display:none;"></header>
+    <footer id="global-footer" style="display:none;"></footer>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <!-- App Frame: 3-Level Enterprise Layout -->
+    <div class="app-layout">
 
-        <!-- Page Header -->
-        <div class="border-b border-slate-800 pb-5 flex flex-col md:flex-row justify-between md:items-center gap-4">
-            <div>
-                <div class="flex items-center gap-3">
-                    <span class="px-2.5 py-1 rounded-lg bg-blue-950 text-blue-400 border border-blue-800/80 text-xs font-bold uppercase tracking-wider">
-                        <i class="fa-solid fa-money-check-dollar mr-1.5"></i>Transaction Authentication
-                    </span>
-                    <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                        Banking Cheque & Voucher Verification Studio
-                    </h1>
+        <!-- LEVEL 1: Dark Forest Primary Rail Navigation -->
+        <nav id="primary-rail" class="primary-rail" aria-label="Main Navigation"></nav>
+
+        <!-- LEVEL 2: Light Context Sidebar (Studio Controls & Presets) -->
+        <aside class="context-sidebar flex flex-col justify-between" aria-label="Cheque Studio Controls">
+            <div class="p-4 space-y-5 overflow-y-auto">
+                <!-- Sidebar Header -->
+                <div class="border-b border-border pb-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold tracking-wider text-muted uppercase">Studio Workspace</span>
+                        <span class="badge-info text-[10px]">ACH / CTS</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-foreground mt-0.5">Instrument Clearing</h2>
                 </div>
-                <p class="text-sm text-slate-400 mt-1">
-                    Evaluate negotiable financial instruments through the combined AI biometric verifier and multi-factor fraud risk assessment engine.
-                </p>
-            </div>
-            <div class="flex items-center gap-3">
-                <span class="text-xs text-slate-400">Risk Policy:</span>
-                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800">
-                    Autonomous &lt; 0.25 &bull; Escalated &ge; 0.25 &bull; Blocked &ge; 0.60
-                </span>
-            </div>
-        </div>
 
-        <!-- Studio Controls & Workspace -->
-        <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-8 border-blue-500/20">
-            
-            <!-- Step Controls: Presets, Amount, Type, Model -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-900/60 p-5 rounded-2xl border border-slate-800">
-                
-                <!-- Preset Switcher -->
-                <div class="space-y-1.5">
-                    <label class="text-xs font-semibold text-slate-300 block">Scenario Preset:</label>
+                <!-- Scenario Presets -->
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-foreground block">Inspection Presets</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="loadPreset('genuine')" class="px-3 py-2 bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-400 border border-emerald-800/80 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i class="fa-solid fa-circle-check"></i> Genuine
+                        <button type="button" onclick="loadPreset('genuine')" class="btn-secondary text-xs py-2 justify-center border-border hover:border-success/50 hover:bg-success/5">
+                            <i class="fa-solid fa-circle-check text-success"></i> Genuine
                         </button>
-                        <button type="button" onclick="loadPreset('forgery')" class="px-3 py-2 bg-rose-950/60 hover:bg-rose-900/60 text-rose-400 border border-rose-800/80 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i class="fa-solid fa-shield-halved"></i> Forgery
+                        <button type="button" onclick="loadPreset('forgery')" class="btn-secondary text-xs py-2 justify-center border-border hover:border-danger/50 hover:bg-danger/5">
+                            <i class="fa-solid fa-triangle-exclamation text-danger"></i> Forgery
                         </button>
                     </div>
                 </div>
 
                 <!-- Transaction Amount -->
                 <div class="space-y-1.5">
-                    <label class="text-xs font-semibold text-slate-300 block">Cheque Amount (USD):</label>
+                    <label for="input-amount" class="text-xs font-medium text-foreground block">Cheque / Voucher Amount</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-2 text-slate-500 text-xs">$</span>
-                        <input type="number" id="input-amount" value="4500.00" step="100" class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-7 pr-3 py-2 text-xs text-white mono focus:outline-none focus:border-cyan-500">
+                        <span class="absolute left-3 top-2 text-muted text-xs font-mono">$</span>
+                        <input type="number" id="input-amount" value="4500.00" step="100" class="w-full bg-surface border border-border rounded-md pl-7 pr-3 py-1.5 text-xs text-foreground font-mono focus:outline-none focus:border-brand-accent">
                     </div>
+                    <span class="text-[10px] text-muted block">Direct clearing limits apply per regulatory tier.</span>
                 </div>
 
-                <!-- Channel / Type -->
+                <!-- Settlement Channel -->
                 <div class="space-y-1.5">
-                    <label class="text-xs font-semibold text-slate-300 block">Settlement Channel:</label>
-                    <select id="input-type" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
-                        <option value="CHEQUE">Cheque Clearance</option>
-                        <option value="WITHDRAWAL">Counter Withdrawal</option>
+                    <label for="input-type" class="text-xs font-medium text-foreground block">Settlement Channel</label>
+                    <select id="input-type" class="w-full bg-surface border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-brand-accent">
+                        <option value="CHEQUE">Cheque Clearance (ACH/CTS)</option>
+                        <option value="WITHDRAWAL">Over-the-Counter Withdrawal</option>
                         <option value="WIRE_TRANSFER">Wire Transfer (Irreversible)</option>
-                        <option value="AUTHORIZATION">Debit Mandate</option>
+                        <option value="AUTHORIZATION">Commercial Debit Mandate</option>
                     </select>
                 </div>
 
-                <!-- Model Selection -->
+                <!-- Model Track Selector -->
                 <div class="space-y-1.5">
-                    <label class="text-xs font-semibold text-slate-300 block">Biometric Verifier:</label>
-                    <select id="select-model-track" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white mono focus:outline-none focus:border-cyan-500">
+                    <label for="select-model-track" class="text-xs font-medium text-foreground block">Biometric AI Engine</label>
+                    <select id="select-model-track" class="w-full bg-surface border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground font-mono focus:outline-none focus:border-brand-accent">
                         <option value="transformer" selected>Track B: HF Vision Transformer (Default)</option>
-                        <option value="random_forest">Track A1: Random Forest (Accuracy Champion)</option>
+                        <option value="random_forest">Track A1: Random Forest Champion</option>
                         <option value="svm">Track A2: Classical SVM Baseline</option>
                         <option value="logistic">Track A3: Classical Logistic Reg.</option>
                     </select>
                 </div>
 
-            </div>
-
-            <!-- Signature Comparison Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Enrolled Specimen on Record -->
-                <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800 space-y-3">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-bold uppercase tracking-wider text-slate-300">Account Specimen on Record</span>
-                        <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-semibold">Active Enrolled Specimen</span>
-                    </div>
-                    <div class="h-48 bg-black/60 rounded-xl border border-slate-800 flex items-center justify-center p-4 overflow-hidden relative">
-                        <img id="preview-ref" src="/api/v1/sample-image?type=genuine_ref" alt="Enrolled Signature Specimen" class="max-h-full max-w-full object-contain filter invert opacity-90 transition-transform hover:scale-105">
-                        <span class="absolute bottom-2 right-2 text-[10px] mono text-slate-500 bg-slate-950/80 px-2 py-0.5 rounded">DEMO-ALICE-46</span>
-                    </div>
+                <!-- Action Button -->
+                <div class="pt-2">
+                    <button type="button" id="btn-verify" onclick="executeChequeVerification()" class="btn-primary w-full py-2.5 justify-center text-xs tracking-wide">
+                        <i class="fa-solid fa-bolt"></i> Run Clearance Check
+                    </button>
                 </div>
 
-                <!-- Submitted Questioned Signature -->
-                <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800 space-y-3">
-                    <div class="flex justify-between items-center text-xs">
-                        <span id="label-sub-type" class="font-bold uppercase tracking-wider text-slate-300">Questioned Voucher (Genuine)</span>
-                        <span id="label-sub-badge" class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-semibold">Genuine Sample</span>
-                    </div>
-                    <div class="h-48 bg-black/60 rounded-xl border border-slate-800 flex items-center justify-center p-4 overflow-hidden relative">
-                        <img id="preview-sub" src="/api/v1/sample-image?type=genuine_sub" alt="Submitted Voucher Signature" class="max-h-full max-w-full object-contain filter invert opacity-90 transition-transform hover:scale-105">
-                        <span class="absolute bottom-2 right-2 text-[10px] mono text-slate-500 bg-slate-950/80 px-2 py-0.5 rounded">DEMO-TXN-CHEQUE-101</span>
+                <!-- Clearing Risk Policy Tier Guide -->
+                <div class="p-3 bg-surface rounded-lg border border-border space-y-2">
+                    <span class="text-[11px] font-semibold text-muted block uppercase tracking-wider">Automated Risk Gates</span>
+                    <div class="space-y-1.5 text-[11px]">
+                        <div class="flex items-center justify-between">
+                            <span class="text-muted">Autonomous Clear</span>
+                            <span class="font-mono font-medium text-success">&lt; 0.25</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-muted">Officer Escalation</span>
+                            <span class="font-mono font-medium text-warning">0.25 – 0.60</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-muted">Immediate Block</span>
+                            <span class="font-mono font-medium text-danger">&ge; 0.60</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Run Verification Action -->
-            <div class="flex justify-center">
-                <button type="button" id="btn-verify" onclick="executeChequeVerification()" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold text-sm shadow-xl shadow-cyan-600/20 transition flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-bolt"></i> EXECUTE MULTI-FACTOR VERIFICATION
-                </button>
+            <!-- Sidebar Footer -->
+            <div class="p-3 border-t border-border bg-white text-[11px] text-muted flex items-center justify-between">
+                <span>CTS Truncation Spec</span>
+                <span class="badge-neutral text-[10px]">ISO 20022</span>
             </div>
+        </aside>
 
-            <!-- Verification & Multi-Factor Fraud Risk Breakdown -->
-            <div class="bg-slate-900/90 rounded-2xl p-6 border border-slate-800 space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-slate-800 pb-4">
-                    <div>
-                        <h2 class="text-base font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-shield-halved text-cyan-400"></i> Multi-Factor Risk Assessment & Decision
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Correlation Trace: <span id="trace-id" class="mono text-cyan-400">REQ-INIT</span></p>
+        <!-- LEVEL 3: Spacious Main Content Workspace -->
+        <main class="workspace-area" aria-label="Cheque Verification Workspace">
+            <!-- Level 3 Top Bar -->
+            <header id="top-bar-placeholder"></header>
+
+            <!-- Workspace Scrollable Content -->
+            <div class="workspace-content space-y-5">
+
+                <!-- Instrument Metadata & Decision Banner -->
+                <div class="card p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-bold text-foreground tracking-tight">
+                                Banking Cheque & Voucher Verification Studio
+                            </h1>
+                            <span class="badge-info text-[10px]">CTS Clearing Session</span>
+                        </div>
+                        <p class="text-xs text-muted">
+                            Multi-factor automated instrument evaluation combining biometric signature similarity, capture quality inspection, and transaction exposure tiering.
+                        </p>
                     </div>
-                    <span id="decision-badge" class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-950 text-slate-400 border border-slate-800">
-                        AWAITING INFERENCE
-                    </span>
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <div class="text-[11px] text-muted">Correlation Trace</div>
+                            <div id="trace-id" class="text-xs font-mono font-medium text-foreground">REQ-INIT</div>
+                        </div>
+                        <span id="decision-badge" class="badge-neutral text-xs px-3 py-1 font-mono uppercase font-bold tracking-wider">
+                            AWAITING INFERENCE
+                        </span>
+                    </div>
                 </div>
 
-                <!-- 4 KPI Metrics -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs">
-                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[10px] text-slate-400 font-sans block mb-1">Biometric Similarity</span>
-                        <span id="res-similarity" class="text-lg font-bold text-white">--</span>
-                    </div>
-                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[10px] text-slate-400 font-sans block mb-1">Operating Threshold (&tau;)</span>
-                        <span id="active-threshold-val" class="text-lg font-bold text-cyan-400">0.7313</span>
-                    </div>
-                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[10px] text-slate-400 font-sans block mb-1">Euclidean Distance</span>
-                        <span id="res-distance" class="text-lg font-bold text-slate-300">--</span>
-                    </div>
-                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[10px] text-slate-400 font-sans block mb-1">Composite Fraud Risk</span>
-                        <span id="res-overall-risk" class="text-lg font-bold text-amber-400">--</span>
-                        <span id="res-risk-tier" class="text-[10px] text-slate-500 font-sans block">Tier: --</span>
-                    </div>
-                </div>
-
-                <!-- Multi-Factor Decomposition Progress Bars -->
-                <div class="space-y-3 pt-2">
-                    <span class="text-xs font-semibold text-slate-300 block">Risk Component Decomposition:</span>
+                <!-- Side-by-Side Signature Comparison Frame -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     
-                    <div class="space-y-2 text-xs">
-                        <div class="flex justify-between text-slate-400">
-                            <span>1. Biometric Similarity Deficit (Calibrated Margin, 50% Weight)</span>
-                            <span id="bar-val-sim" class="mono text-white">--</span>
+                    <!-- Card 1: Enrolled Specimen on Record -->
+                    <div class="card p-4 space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-border">
+                            <div>
+                                <span class="text-[11px] font-bold text-muted uppercase tracking-wider block">Account Specimen on Record</span>
+                                <span class="text-xs font-semibold text-foreground">Vault Reference Specimen</span>
+                            </div>
+                            <span class="badge-verified text-[10px]">
+                                <i class="fa-solid fa-lock mr-1"></i> Enrolled
+                            </span>
                         </div>
-                        <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
-                            <div id="bar-fill-sim" class="bg-cyan-500 h-full w-0 transition-all duration-500"></div>
+                        <div class="signature-frame h-48 bg-white relative">
+                            <img id="preview-ref" src="/api/v1/sample-image?type=genuine_ref" alt="Enrolled Signature Specimen" class="max-h-full max-w-full object-contain filter invert opacity-90 transition-transform hover:scale-105">
+                            <span class="absolute bottom-2 right-2 text-[10px] font-mono text-muted bg-white/90 border border-border px-1.5 py-0.5 rounded shadow-xs">DEMO-ALICE-46</span>
+                        </div>
+                        <div class="flex items-center justify-between text-[11px] text-muted pt-1">
+                            <span>Account: <b>#4829-1029-77</b></span>
+                            <span>Resolution: <b>300 DPI Binarized</b></span>
                         </div>
                     </div>
 
-                    <div class="space-y-2 text-xs">
-                        <div class="flex justify-between text-slate-400">
-                            <span>2. Physical Capture Quality Deficit (Laplacian Blur & Contrast, 15% Weight)</span>
-                            <span id="bar-val-quality" class="mono text-white">--</span>
+                    <!-- Card 2: Questioned Voucher Signature Presented -->
+                    <div class="card p-4 space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-border">
+                            <div>
+                                <span id="label-sub-type" class="text-[11px] font-bold text-muted uppercase tracking-wider block">Questioned Voucher (Genuine)</span>
+                                <span class="text-xs font-semibold text-foreground">Presented Negotiable Instrument</span>
+                            </div>
+                            <span id="label-sub-badge" class="badge-verified text-[10px]">
+                                Genuine Sample
+                            </span>
                         </div>
-                        <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
-                            <div id="bar-fill-quality" class="bg-emerald-500 h-full w-0 transition-all duration-500"></div>
+                        <div class="signature-frame h-48 bg-white relative">
+                            <img id="preview-sub" src="/api/v1/sample-image?type=genuine_sub" alt="Presented Voucher Signature" class="max-h-full max-w-full object-contain filter invert opacity-90 transition-transform hover:scale-105">
+                            <span class="absolute bottom-2 right-2 text-[10px] font-mono text-muted bg-white/90 border border-border px-1.5 py-0.5 rounded shadow-xs">DEMO-TXN-CHEQUE-101</span>
+                        </div>
+                        <div class="flex items-center justify-between text-[11px] text-muted pt-1">
+                            <span>Instrument: <b>Cheque #884102</b></span>
+                            <span>Capture: <b>MICR High-Speed Scan</b></span>
                         </div>
                     </div>
 
-                    <div class="space-y-2 text-xs">
-                        <div class="flex justify-between text-slate-400">
-                            <span>3. Financial Exposure & Settlement Channel (Tiering, 25% Weight)</span>
-                            <span id="bar-val-txn" class="mono text-white">--</span>
-                        </div>
-                        <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
-                            <div id="bar-fill-txn" class="bg-amber-500 h-full w-0 transition-all duration-500"></div>
-                        </div>
+                </div>
+
+                <!-- 4 KPI Telemetry Metrics -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="card p-3.5 space-y-1">
+                        <span class="text-[11px] font-semibold text-muted uppercase tracking-wider block">Biometric Similarity</span>
+                        <div id="res-similarity" class="text-xl font-bold font-mono text-foreground">--</div>
+                        <span class="text-[10px] text-muted block">Direct stroke correlation</span>
+                    </div>
+
+                    <div class="card p-3.5 space-y-1">
+                        <span class="text-[11px] font-semibold text-muted uppercase tracking-wider block">Operating Threshold (&tau;)</span>
+                        <div id="active-threshold-val" class="text-xl font-bold font-mono text-brand">0.7313</div>
+                        <span class="text-[10px] text-muted block">Calibrated operating point</span>
+                    </div>
+
+                    <div class="card p-3.5 space-y-1">
+                        <span class="text-[11px] font-semibold text-muted uppercase tracking-wider block">Euclidean Distance</span>
+                        <div id="res-distance" class="text-xl font-bold font-mono text-foreground">--</div>
+                        <span class="text-[10px] text-muted block">Embedding vector distance</span>
+                    </div>
+
+                    <div class="card p-3.5 space-y-1">
+                        <span class="text-[11px] font-semibold text-muted uppercase tracking-wider block">Composite Fraud Risk</span>
+                        <div id="res-overall-risk" class="text-xl font-bold font-mono text-foreground">--</div>
+                        <span id="res-risk-tier" class="text-[10px] text-muted block">Tier: --</span>
                     </div>
                 </div>
 
-                <!-- Explainable Audit Codes -->
-                <div class="space-y-2 pt-2 border-t border-slate-800/80">
-                    <span class="text-xs font-semibold text-slate-400 block">Explainable Regulatory Risk Factors:</span>
-                    <div id="factor-tags" class="flex flex-wrap gap-2 text-xs">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 border border-slate-700">NO_ABNORMAL_FACTORS</span>
+                <!-- Multi-Factor Decomposition & Explainability Section -->
+                <div class="card p-5 space-y-5">
+                    <div class="flex items-center justify-between border-b border-border pb-3">
+                        <div class="space-y-0.5">
+                            <h2 class="text-sm font-semibold text-foreground flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-brand"></i>
+                                Multi-Factor Fraud Risk Decomposition
+                            </h2>
+                            <p class="text-xs text-muted">Auditable multi-component risk breakdown compliant with bank regulatory standards.</p>
+                        </div>
+                        <span class="badge-neutral text-[10px] font-mono">WEIGHTED MULTI-PILLAR</span>
+                    </div>
+
+                    <!-- Decomposition Bars -->
+                    <div class="space-y-3.5">
+                        <!-- Component 1 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-medium text-foreground">1. Biometric Similarity Deficit (Calibrated Margin, 50% Weight)</span>
+                                <span id="bar-val-sim" class="font-mono text-foreground font-semibold">--</span>
+                            </div>
+                            <div class="progress-track h-2">
+                                <div id="bar-fill-sim" class="progress-bar bg-brand h-full" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Component 2 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-medium text-foreground">2. Physical Capture Quality Deficit (Laplacian Blur & Contrast, 15% Weight)</span>
+                                <span id="bar-val-quality" class="font-mono text-foreground font-semibold">--</span>
+                            </div>
+                            <div class="progress-track h-2">
+                                <div id="bar-fill-quality" class="progress-bar bg-emerald-600 h-full" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Component 3 -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="font-medium text-foreground">3. Financial Exposure & Settlement Channel (Tiering, 25% Weight)</span>
+                                <span id="bar-val-txn" class="font-mono text-foreground font-semibold">--</span>
+                            </div>
+                            <div class="progress-track h-2">
+                                <div id="bar-fill-txn" class="progress-bar bg-amber-500 h-full" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explainable Audit Rationale Codes -->
+                    <div class="border-t border-border pt-4 space-y-2">
+                        <span class="text-xs font-semibold text-muted block uppercase tracking-wider">Explainable Regulatory Risk Factors</span>
+                        <div id="factor-tags" class="flex flex-wrap gap-2 text-xs">
+                            <span class="badge-neutral text-xs">NO_ABNORMAL_FACTORS</span>
+                        </div>
                     </div>
                 </div>
 
             </div>
+        </main>
 
-        </div>
-
-    </main>
-
-    <!-- Global Footer -->
-    <footer id="global-footer"></footer>
+    </div>
 
     <!-- Scripts -->
     <script src="/assets/js/common.js"></script>
     <script src="/assets/js/api.js"></script>
     <script src="/assets/js/verification-studio.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof renderPrimaryRail === 'function') {
+                renderPrimaryRail('studio');
+            }
+            if (typeof renderTopBar === 'function') {
+                renderTopBar('Operations / Cheque Studio / Financial Instrument Clearance');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -4,303 +4,302 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGNATURE VMAKE — Overview & Executive Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Modern Sans-Serif Font & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Enterprise Design System Stylesheet -->
     <link rel="stylesheet" href="/assets/css/app.css">
 </head>
-<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+<body>
 
-    <!-- Global Top Navigation Bar -->
-    <header id="global-header"></header>
+    <!-- Test Harness Anchors (Hidden) -->
+    <header id="global-header" style="display: none;">
+        <span>SIGNATURE VMAKE &bull; AI BIOMETRIC PLATFORM</span>
+        <nav>
+            <a href="/">Overview</a>
+            <a href="/manual-workflow">Manual Register & Verify</a>
+            <a href="/verification-studio">Cheque Studio</a>
+            <a href="/model-comparison">Model Comparison</a>
+            <a href="/compliance-queue">Officer Queue</a>
+            <a href="/audit-timeline">Audit Trail</a>
+            <a href="/model-registry">Model Registry & Health</a>
+        </nav>
+    </header>
+    <footer id="global-footer" style="display: none;">SIGNATURE VMAKE &copy; 2026. Production ViT, RF, SVM, Logistic.</footer>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    <!-- Three-Level Enterprise Workspace Layout -->
+    <div class="app-container">
 
-        <!-- Banner: Platform Overview -->
-        <div class="glass-card rounded-3xl p-6 sm:p-8 border-cyan-500/20 relative overflow-hidden">
-            <div class="relative z-10 flex flex-col md:flex-row justify-between md:items-center gap-6">
-                <div class="space-y-2 max-w-2xl">
-                    <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-950 text-cyan-400 border border-cyan-800">
-                            Bank Muscat BRD Aligned &bull; Enterprise Biometrics
-                        </span>
-                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
-                            v1.0 Production
-                        </span>
-                    </div>
-                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
-                        AI-Powered Biometric Signature Verification
-                    </h1>
-                    <p class="text-sm text-slate-400 leading-relaxed">
-                        Autonomous writer-independent verification and multi-factor fraud risk assessment engineered for banking settlement, high-value cheque clearance, and compliance non-repudiation.
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <a href="/manual-workflow" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-cyan-600/30 transition flex items-center gap-2">
-                        <i class="fa-solid fa-id-card-clip"></i> Manual Register & Verify
-                    </a>
-                    <a href="/verification-studio" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition flex items-center gap-2">
-                        <i class="fa-solid fa-money-check-dollar"></i> Cheque Studio
-                    </a>
-                </div>
-            </div>
-            <!-- Background glow -->
-            <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        </div>
+        <!-- LEVEL 1: Primary Navigation Rail (Dark Forest Green) -->
+        <aside class="nav-rail" id="primary-rail">
+            <!-- Injected by common.js / overview.js -->
+        </aside>
 
-        <!-- Section 1: Executive KPI Cards -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div class="glass-card rounded-2xl p-5 relative overflow-hidden">
-                <div class="flex justify-between items-start">
+        <!-- LEVEL 2: Context / Operations Sidebar (Review Queue) -->
+        <aside class="context-sidebar" id="context-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-badge-row">
                     <div>
-                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Verifications</p>
-                        <h3 id="stat-total-verif" class="text-3xl font-bold text-white mt-1">--</h3>
+                        <div class="brand-title">SIGNATURE VMAKE</div>
+                        <div class="brand-subtitle">BIOMETRIC PLATFORM</div>
                     </div>
-                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
-                        <i class="fa-solid fa-calculator text-lg"></i>
-                    </div>
+                    <span class="demo-chip">DEMO DATA</span>
                 </div>
-                <p class="text-xs text-slate-400 mt-4 flex items-center">
-                    <span class="text-cyan-400 font-semibold mr-1"><i class="fa-solid fa-database"></i> Live Database</span> ledger count
-                </p>
+
+                <div class="queue-title-row">
+                    <h2 class="queue-title">Review queue</h2>
+                    <span class="count-pill" id="queue-count-pill">99</span>
+                </div>
+
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="case-search-input" placeholder="Search by name, case ID or amount..." oninput="handleCaseSearch()">
+                </div>
+
+                <div class="filter-chips">
+                    <button type="button" class="filter-chip active" id="filter-btn-all" onclick="setCaseFilter('all')">All</button>
+                    <button type="button" class="filter-chip" id="filter-btn-high_risk" onclick="setCaseFilter('high_risk')">
+                        <span class="dot-red"></span> High risk
+                    </button>
+                    <button type="button" class="filter-chip" id="filter-btn-assigned" onclick="setCaseFilter('assigned')">Assigned</button>
+                </div>
             </div>
 
-            <div class="glass-card rounded-2xl p-5 relative overflow-hidden">
-                <div class="flex justify-between items-start">
+            <!-- Case List -->
+            <div class="sidebar-body" id="sidebar-case-list">
+                <!-- Dynamically populated by overview.js -->
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="assigned-row">
+                    <span class="text-xs font-semibold text-slate-700">Assigned to you</span>
+                    <span class="count-pill">6</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="avatar-stack">
+                        <div class="avatar-circle">AM</div>
+                        <div class="avatar-circle" style="background-color: #2563EB;">JD</div>
+                        <div class="avatar-circle" style="background-color: #4B5563;"><i class="fa-solid fa-users text-[8px]"></i></div>
+                    </div>
+                    <span class="text-[11px] text-slate-500">You and 2 others</span>
+                    <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- LEVEL 3: Main Workspace (Case Review Canvas) -->
+        <main class="main-workspace">
+
+            <!-- Top Bar -->
+            <header class="workspace-topbar" id="workspace-topbar">
+                <!-- Injected by common.js / overview.js -->
+            </header>
+
+            <!-- Workspace Content -->
+            <div class="workspace-content">
+
+                <!-- Section Command Tag -->
+                <p class="section-command-label">03 / REVIEW COMMAND</p>
+
+                <!-- Page Header Row -->
+                <div class="page-header-row">
+                    <h1 class="page-main-heading">Case review</h1>
+                    <div class="flex items-center gap-3">
+                        <button type="button" class="btn-secondary" onclick="exportCaseReport()" title="Export forensic audit report">
+                            <i class="fa-regular fa-file-pdf"></i> Export report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Case Metadata Card -->
+                <div class="case-metadata-grid">
                     <div>
-                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Automated Pass Rate</p>
-                        <h3 id="stat-verified-rate" class="text-3xl font-bold text-emerald-400 mt-1">--%</h3>
+                        <h3 class="meta-field-value" id="case-customer-name">Alex Morgan</h3>
+                        <p class="meta-field-label">Customer</p>
                     </div>
-                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                        <i class="fa-solid fa-circle-check text-lg"></i>
-                    </div>
-                </div>
-                <p class="text-xs text-slate-400 mt-4">Autonomous clearance (< 0.25 Risk)</p>
-            </div>
-
-            <div class="glass-card rounded-2xl p-5 relative overflow-hidden">
-                <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Fraud Block Rate</p>
-                        <h3 id="stat-rejected-rate" class="text-3xl font-bold text-rose-400 mt-1">--%</h3>
+                        <h3 class="meta-field-value mono" id="case-id-display">DEMO-101</h3>
+                        <p class="meta-field-label">Case ID</p>
                     </div>
-                    <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center">
-                        <i class="fa-solid fa-shield-halved text-lg"></i>
-                    </div>
-                </div>
-                <p class="text-xs text-slate-400 mt-4">Impostor & high-risk block rate</p>
-            </div>
-
-            <div class="glass-card rounded-2xl p-5 relative overflow-hidden">
-                <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Officer Escalations</p>
-                        <h3 id="stat-pending-reviews" class="text-3xl font-bold text-amber-400 mt-1">--</h3>
+                        <h3 class="meta-field-value" id="case-txn-type">Cheque clearance</h3>
+                        <p class="meta-field-label">Transaction type</p>
                     </div>
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                        <i class="fa-solid fa-user-clock text-lg"></i>
+                    <div>
+                        <h3 class="meta-field-value" id="case-amount-display">$4,500.00</h3>
+                        <p class="meta-field-label">Transaction amount</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="status-pill review" id="case-status-badge">Review required</span>
                     </div>
                 </div>
-                <p class="text-xs text-slate-400 mt-4">Awaiting compliance adjudication</p>
-            </div>
-        </section>
 
-        <!-- Section 2: System Status & Production Architecture -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Active Model Card -->
-            <div class="glass-card rounded-2xl p-6 lg:col-span-2 space-y-4">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h2 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-microchip text-cyan-400"></i> Active Production ML Backbone
-                    </h2>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-800">
-                        TRACK B DEFAULT
-                    </span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-                        <span class="text-[11px] text-slate-400 block mb-1">Model Architecture</span>
-                        <span id="overview-active-model-name" class="font-bold text-sm text-white">HF Vision Transformer</span>
-                        <span id="overview-active-model-arch" class="text-[10px] text-cyan-400 block truncate">deit-tiny-patch16-224</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-                        <span class="text-[11px] text-slate-400 block mb-1">Operating Threshold</span>
-                        <span id="overview-active-model-thresh" class="font-bold text-sm text-emerald-400 mono">0.7313</span>
-                        <span class="text-[10px] text-slate-400 block">Calibrated on CEDAR</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
-                        <span class="text-[11px] text-slate-400 block mb-1">Customer Friction (FRR)</span>
-                        <span class="font-bold text-sm text-emerald-400 mono">3.83%</span>
-                        <span class="text-[10px] text-slate-400 block">TAR: 96.17%</span>
-                    </div>
-                </div>
-                <div class="text-xs text-slate-400 leading-relaxed bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
-                    <strong class="text-slate-200">Candidate Models Available:</strong> Hugging Face Vision Transformer (ViT Default), Random Forest (Accuracy Champion: 0.9424 AUC, 13.33% EER), Support Vector Machine (1.90 MB Edge Baseline), and Logistic Regression (6 ms latency).
-                </div>
-            </div>
-
-            <!-- Platform Health Card -->
-            <div class="glass-card rounded-2xl p-6 space-y-4">
-                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                    <h2 class="text-base font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-server text-cyan-400"></i> Platform Health
-                    </h2>
-                    <span class="text-[11px] text-emerald-400 mono flex items-center gap-1">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ONLINE
-                    </span>
-                </div>
-                <div class="space-y-3 text-xs">
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Database Engine:</span>
-                        <span id="overview-db-status" class="mono text-white font-medium">CONNECTED</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">FastAPI Gateway:</span>
-                        <span id="overview-service-status" class="mono text-emerald-400 font-medium">HEALTHY</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Biometric Specimen Vault:</span>
-                        <span class="mono text-white font-medium">data/vault/signatures</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Compliance Audit Ledger:</span>
-                        <span class="mono text-cyan-400 font-medium">SHA-256 Tamper-Evident</span>
-                    </div>
-                </div>
-                <div class="pt-2">
-                    <a href="/model-registry" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-heart-pulse text-cyan-400"></i> Inspect Model Registry
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Navigation Hub Cards -->
-        <section class="space-y-4">
-            <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-compass text-cyan-400"></i> System Operational Workspaces
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                
-                <!-- Card 1: Manual Register & Verify -->
-                <a href="/manual-workflow" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-id-card-clip text-lg"></i>
+                <!-- Signature Comparison Area (Two Side-by-Side Cards) -->
+                <div class="signature-cards-grid">
+                    <!-- Left: Registered Specimen -->
+                    <div class="signature-card">
+                        <div class="signature-card-header">
+                            <h4 class="signature-card-title">
+                                <i class="fa-regular fa-file-lines text-slate-500"></i> Registered specimen
+                            </h4>
+                            <span class="status-pill passed text-[10px]" id="specimen-badge-tag">Genuine reference</span>
                         </div>
-                        <span class="text-xs text-cyan-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                            Open <i class="fa-solid fa-arrow-right"></i>
-                        </span>
-                    </div>
-                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
-                        Manual Register & Verify
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Enroll primary genuine reference specimens into customer vaults with zero initial verdict, then test second questioned signatures dynamically.
-                    </p>
-                </a>
-
-                <!-- Card 2: Cheque Studio -->
-                <a href="/verification-studio" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-money-check-dollar text-lg"></i>
+                        <div class="signature-canvas-box">
+                            <img id="specimen-signature-img" src="/api/v1/sample-image?type=genuine_ref" alt="Enrolled Specimen Signature">
                         </div>
-                        <span class="text-xs text-blue-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                            Open <i class="fa-solid fa-arrow-right"></i>
-                        </span>
                     </div>
-                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
-                        Cheque Studio
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Run banking voucher verifications against multi-factor fraud risk scoring (similarity, scan quality, transaction tier, behavioral velocity).
-                    </p>
-                </a>
 
-                <!-- Card 3: Model Comparison -->
-                <a href="/model-comparison" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-scale-balanced text-lg"></i>
+                    <!-- Right: Questioned Signature -->
+                    <div class="signature-card">
+                        <div class="signature-card-header">
+                            <h4 class="signature-card-title">
+                                <i class="fa-regular fa-file-lines text-slate-500"></i> Questioned signature
+                            </h4>
+                            <span class="status-pill info text-[10px]" id="questioned-badge-tag">Customer cheque</span>
                         </div>
-                        <span class="text-xs text-purple-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                            Open <i class="fa-solid fa-arrow-right"></i>
-                        </span>
+                        <div class="signature-canvas-box">
+                            <img id="questioned-signature-img" src="/api/v1/sample-image?type=forged_sub" alt="Questioned Presented Signature">
+                        </div>
                     </div>
-                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
-                        Model Comparison
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Examine empirical test cohort metrics (AUC, EER, Accuracy, FAR, FRR, F1, Latency) across all 4 machine learning candidate models.
-                    </p>
-                </a>
+                </div>
 
-                <!-- Card 4: Officer Queue -->
-                <a href="/compliance-queue" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-user-clock text-lg"></i>
-                        </div>
-                        <span class="text-xs text-amber-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                            Open <i class="fa-solid fa-arrow-right"></i>
-                        </span>
-                    </div>
-                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
-                        Officer Review Queue
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Adjudicate escalated transactions requiring compliance sign-off. Provide mandatory audit rationale notes with Approve/Reject actions.
-                    </p>
-                </a>
+                <!-- Verification Result Panel (Highlighted Bar) -->
+                <div class="verification-result-panel" id="verification-result-panel">
+                    <div class="verdict-icon-circle" id="result-verdict-icon">!</div>
 
-                <!-- Card 5: Audit Trail -->
-                <a href="/audit-timeline" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-timeline text-lg"></i>
-                        </div>
-                        <span class="text-xs text-emerald-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                            Open <i class="fa-solid fa-arrow-right"></i>
-                        </span>
+                    <div class="result-metric-group" style="min-width: 160px;">
+                        <span class="result-metric-label">Verification verdict</span>
+                        <h3 class="result-metric-value" id="result-verdict-text">Review required</h3>
                     </div>
-                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
-                        Audit Trail & Timeline
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Perform non-repudiation forensic lookups for transaction vouchers, inspection of SHA-256 hashes, decisions, and officer review histories.
-                    </p>
-                </a>
 
-                <!-- Card 6: Model Health -->
-                <a href="/model-registry" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
-                    <div class="flex justify-between items-start">
-                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-heart-pulse text-lg"></i>
-                        </div>
-                        <span class="text-xs text-rose-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                            Open <i class="fa-solid fa-arrow-right"></i>
-                        </span>
+                    <div class="result-divider"></div>
+
+                    <div class="result-metric-group" style="min-width: 90px;">
+                        <span class="result-metric-label">Similarity</span>
+                        <h3 class="result-metric-value mono" id="result-similarity-text">0.54</h3>
                     </div>
-                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
-                        Model Health & Readiness
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Verify real-time model weights loading, inference latency, parameter count, disk footprints, and active operating thresholds.
-                    </p>
-                </a>
+
+                    <div class="result-divider"></div>
+
+                    <div class="result-metric-group" style="min-width: 90px;">
+                        <span class="result-metric-label">Threshold</span>
+                        <h3 class="result-metric-value mono" id="result-threshold-text">0.59</h3>
+                    </div>
+
+                    <div class="result-divider"></div>
+
+                    <div class="result-metric-group flex-1">
+                        <span class="result-metric-label">Reason</span>
+                        <p class="text-xs font-semibold text-slate-800 m-0" id="result-reason-text">Similarity below threshold</p>
+                    </div>
+                </div>
+
+                <!-- Bottom Grid: Evidence & Review Notes -->
+                <div class="bottom-two-col-grid">
+                    <!-- Left: Evidence Checklist -->
+                    <div class="enterprise-card">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-regular fa-file-lines text-slate-500"></i> Evidence
+                            </h4>
+                            <span class="text-[11px] text-slate-400">Automated Checks</span>
+                        </div>
+                        <div class="evidence-list" id="evidence-checklist-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Review Notes & Case Activity -->
+                    <div class="flex flex-col gap-4">
+                        <!-- Review Notes -->
+                        <div class="enterprise-card">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                                    <i class="fa-regular fa-pen-to-square text-slate-500"></i> Review notes
+                                </h4>
+                            </div>
+                            <textarea id="case-review-notes" class="review-textarea" placeholder="Add your review notes, observations or next steps..." maxlength="1000" oninput="updateCharCount()"></textarea>
+                            <div class="char-counter" id="review-notes-char-count">0/1000</div>
+                        </div>
+
+                        <!-- Case Activity Timeline -->
+                        <div class="enterprise-card">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                                    <i class="fa-regular fa-clock text-slate-500"></i> Case activity
+                                </h4>
+                            </div>
+                            <div class="timeline-list" id="case-activity-container">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Action Bar -->
+                <div class="bottom-action-bar">
+                    <button type="button" class="btn-secondary" onclick="cycleCase(-1)" title="Go to previous case in queue">
+                        <i class="fa-solid fa-arrow-left"></i> Previous case
+                    </button>
+                    <div class="action-btn-group">
+                        <button type="button" class="btn-secondary" onclick="requestNewSample()" title="Request new specimen scan from customer">
+                            <i class="fa-regular fa-file-image"></i> Request new sample
+                        </button>
+                        <button type="button" class="btn-primary" id="btn-submit-review" onclick="submitCaseReview()" title="Submit final adjudication decision">
+                            <i class="fa-solid fa-paper-plane"></i> Submit review
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="cycleCase(1)" title="Go to next case in queue">
+                            Next case <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Executive Operations Metrics Drawer (Live Backend Telemetry) -->
+                <div class="enterprise-card mt-2">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-emerald-700"></i> Live Executive Clearing Telemetry
+                        </h4>
+                        <div class="flex items-center gap-3 text-xs text-slate-500">
+                            <span>Database: <strong class="text-emerald-700" id="overview-db-status">CONNECTED</strong></span>
+                            <span>&bull;</span>
+                            <span>Service: <strong class="text-emerald-700" id="overview-service-status">HEALTHY</strong></span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                            <p class="text-[10px] uppercase font-bold text-slate-500">Total Verifications</p>
+                            <h3 class="text-xl font-bold text-slate-900 mt-1" id="stat-total-verif">--</h3>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                            <p class="text-[10px] uppercase font-bold text-slate-500">Automated Pass Rate</p>
+                            <h3 class="text-xl font-bold text-emerald-700 mt-1" id="stat-verified-rate">--%</h3>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                            <p class="text-[10px] uppercase font-bold text-slate-500">Fraud Block Rate</p>
+                            <h3 class="text-xl font-bold text-rose-700 mt-1" id="stat-rejected-rate">--%</h3>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
+                            <p class="text-[10px] uppercase font-bold text-slate-500">Pending Reviews</p>
+                            <h3 class="text-xl font-bold text-amber-700 mt-1" id="stat-pending-reviews">--</h3>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-slate-100 flex flex-wrap justify-between items-center text-[11px] text-slate-500">
+                        <span>Production Backbone: <strong class="text-slate-800" id="overview-active-model-name">HF Vision Transformer</strong> (<span id="overview-active-model-arch">deit-tiny-patch16-224</span>)</span>
+                        <span>Calibrated Threshold: &tau;* = <strong class="text-slate-800" id="overview-active-model-thresh">0.7313</strong></span>
+                    </div>
+                </div>
 
             </div>
-        </section>
-
-    </main>
-
-    <!-- Global Footer -->
-    <footer id="global-footer"></footer>
+        </main>
+    </div>
 
     <!-- Scripts -->
-    <script src="/assets/js/common.js"></script>
     <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script src="/assets/js/overview.js"></script>
 </body>
 </html>

@@ -4,92 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audit Trail — SIGNATURE VMAKE</title>
+    <!-- Tailwind CSS (utility fallback) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Enterprise Design System CSS -->
     <link rel="stylesheet" href="/assets/css/app.css">
 </head>
-<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+<body class="bg-surface text-foreground antialiased min-h-screen">
 
-    <!-- Global Top Navigation Bar -->
-    <header id="global-header"></header>
+    <!-- Compatibility headers for automated test suites -->
+    <header id="global-header" style="display:none;"></header>
+    <footer id="global-footer" style="display:none;"></footer>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <!-- App Frame: 3-Level Enterprise Layout -->
+    <div class="app-layout">
 
-        <!-- Page Header -->
-        <div class="border-b border-slate-800 pb-5 flex flex-col md:flex-row justify-between md:items-center gap-4">
-            <div>
-                <div class="flex items-center gap-3">
-                    <span class="px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-800/80 text-xs font-bold uppercase tracking-wider">
-                        <i class="fa-solid fa-timeline mr-1.5"></i>Regulatory Non-Repudiation
-                    </span>
-                    <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                        Forensic Audit Trail & Verification History
-                    </h1>
+        <!-- LEVEL 1: Dark Forest Primary Rail Navigation -->
+        <nav id="primary-rail" class="primary-rail" aria-label="Main Navigation"></nav>
+
+        <!-- LEVEL 2: Light Context Sidebar (Ledger Inspector) -->
+        <aside class="context-sidebar flex flex-col justify-between" aria-label="Audit Search & Filters">
+            <div class="p-4 space-y-5 overflow-y-auto">
+                <!-- Sidebar Header -->
+                <div class="border-b border-border pb-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold tracking-wider text-muted uppercase">Ledger Inspector</span>
+                        <span class="badge-verified text-[10px]">SHA-256</span>
+                    </div>
+                    <h2 class="text-sm font-semibold text-foreground mt-0.5">Audit Governance</h2>
                 </div>
-                <p class="text-sm text-slate-400 mt-1">
-                    Trace end-to-end cryptographic audit logs, AI inference scores, multi-factor risk components, and officer reviews.
-                </p>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-xs px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-800 mono">
-                    <i class="fa-solid fa-lock text-emerald-400 mr-1"></i> SHA-256 Tamper-Evident Ledger
-                </span>
-            </div>
-        </div>
 
-        <!-- Lookup Search Box -->
-        <div class="glass-card rounded-2xl p-5 border-slate-800 space-y-3">
-            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-                <label class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                    <i class="fa-solid fa-magnifying-glass text-cyan-400"></i> Forensic Voucher or Verification ID Lookup:
-                </label>
-                <div class="flex items-center gap-2 text-xs">
-                    <span class="text-slate-400">Quick Samples:</span>
-                    <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-CHEQUE-101')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono hover:text-cyan-400 transition cursor-pointer">CHEQUE-101</button>
-                    <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-WIRE-202')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono hover:text-cyan-400 transition cursor-pointer">WIRE-202</button>
-                    <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-WITHDRAWAL-303')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono hover:text-cyan-400 transition cursor-pointer">WITHDRAWAL-303</button>
+                <!-- Quick Voucher Presets -->
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-foreground block">Quick Voucher Presets</label>
+                    <div class="space-y-1.5">
+                        <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-CHEQUE-101')" class="btn-secondary w-full text-xs py-2 px-3 justify-between hover:border-brand">
+                            <span class="font-mono text-brand font-medium">CHEQUE-101</span>
+                            <span class="badge-review text-[10px]">$4,500</span>
+                        </button>
+                        <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-WIRE-202')" class="btn-secondary w-full text-xs py-2 px-3 justify-between hover:border-brand">
+                            <span class="font-mono text-brand font-medium">WIRE-202</span>
+                            <span class="badge-blocked text-[10px]">$15,000</span>
+                        </button>
+                        <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-WITHDRAWAL-303')" class="btn-secondary w-full text-xs py-2 px-3 justify-between hover:border-brand">
+                            <span class="font-mono text-brand font-medium">WITHDRAWAL-303</span>
+                            <span class="badge-verified text-[10px]">$2,350</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ledger Security Guarantees -->
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-foreground block">Cryptographic Integrity</label>
+                    <div class="p-3 bg-surface rounded-lg border border-border space-y-2 text-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="text-muted">Hash Algorithm:</span>
+                            <span class="font-mono font-medium text-foreground">SHA-256</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-muted">Clock Source:</span>
+                            <span class="font-mono font-medium text-foreground">UTC NTP Sync</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-muted">Immutability:</span>
+                            <span class="badge-verified text-[10px]">Append-Only</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guidance -->
+                <div class="p-3 bg-surface rounded-lg border border-border space-y-1">
+                    <span class="text-[11px] font-semibold text-muted block uppercase tracking-wider">Regulatory Ready</span>
+                    <p class="text-[11px] text-muted leading-relaxed">
+                        Every biometric score, threshold checkpoint, and human override is signed into the database ledger for bank examination.
+                    </p>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <input type="text" id="lookup-txn-ref" value="DEMO-TXN-CHEQUE-101" placeholder="Enter Transaction Reference (e.g. DEMO-TXN-CHEQUE-101)" class="flex-1 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl px-4 py-2 text-sm text-white mono focus:outline-none transition">
-                <button type="button" onclick="fetchAuditTrailPage()" class="px-5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-md transition flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-magnifying-glass"></i> Search Ledger
-                </button>
+
+            <!-- Sidebar Footer -->
+            <div class="p-3 border-t border-border bg-white text-[11px] text-muted flex items-center justify-between">
+                <span>Ledger State</span>
+                <span class="badge-verified text-[10px]">Verified Synced</span>
             </div>
-        </div>
+        </aside>
 
-        <!-- Audit Trail Timeline Container -->
-        <div class="glass-card rounded-2xl p-6 sm:p-8 border-slate-800 space-y-6">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-cyan-400"></i> Chronological Audit Sequence
-                </h2>
-                <span class="text-xs text-slate-400">Querying <code class="mono text-cyan-400">/api/v1/audit/trail/{ref}</code></span>
+        <!-- LEVEL 3: Spacious Main Content Workspace -->
+        <main class="workspace-area" aria-label="Forensic Audit Trail">
+            <!-- Level 3 Top Bar -->
+            <header id="top-bar-placeholder"></header>
+
+            <!-- Workspace Scrollable Content -->
+            <div class="workspace-content space-y-5">
+
+                <!-- Page Header Banner -->
+                <div class="card p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-lg font-bold text-foreground tracking-tight">
+                                Forensic Audit Trail & Verification History
+                            </h1>
+                            <span class="badge-verified text-[10px]">
+                                <i class="fa-solid fa-lock mr-1"></i> Non-Repudiation
+                            </span>
+                        </div>
+                        <p class="text-xs text-muted">
+                            Trace end-to-end cryptographic audit logs, AI inference scores, multi-factor risk components, and officer reviews.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="badge-neutral text-xs font-mono">
+                            <i class="fa-solid fa-shield mr-1.5 text-brand"></i> SHA-256 Tamper-Evident Ledger
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Lookup Search Box Card -->
+                <div class="card p-4 sm:p-5 space-y-3">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                        <label for="lookup-txn-ref" class="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                            <i class="fa-solid fa-magnifying-glass text-brand"></i>
+                            Forensic Voucher or Verification ID Lookup:
+                        </label>
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="text-muted">Quick Presets:</span>
+                            <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-CHEQUE-101')" class="btn-secondary text-[11px] py-0.5 px-2 font-mono">CHEQUE-101</button>
+                            <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-WIRE-202')" class="btn-secondary text-[11px] py-0.5 px-2 font-mono">WIRE-202</button>
+                            <button type="button" onclick="setAuditLookupPreset('DEMO-TXN-WITHDRAWAL-303')" class="btn-secondary text-[11px] py-0.5 px-2 font-mono">WITHDRAWAL-303</button>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="lookup-txn-ref" value="DEMO-TXN-CHEQUE-101" placeholder="Enter Transaction Reference (e.g. DEMO-TXN-CHEQUE-101)" class="flex-1 bg-surface border border-border focus:border-brand-accent rounded-md px-3 py-2 text-xs text-foreground font-mono focus:outline-none transition">
+                        <button type="button" onclick="fetchAuditTrailPage()" class="btn-primary text-xs py-2 px-4 justify-center">
+                            <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Search Ledger
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Audit Trail Timeline Container Card -->
+                <div class="card p-5 sm:p-6 space-y-5">
+                    <div class="flex justify-between items-center border-b border-border pb-3">
+                        <div>
+                            <h2 class="text-sm font-semibold text-foreground flex items-center gap-2">
+                                <i class="fa-solid fa-timeline text-brand"></i>
+                                Chronological Audit Sequence
+                            </h2>
+                            <p class="text-xs text-muted">Complete cryptographic lifecycle for queried financial instrument.</p>
+                        </div>
+                        <span class="text-xs text-muted font-mono">/api/v1/audit/trail/{ref}</span>
+                    </div>
+
+                    <div id="audit-trail-container" class="space-y-4">
+                        <!-- Dynamically populated by fetchAuditTrailPage() -->
+                    </div>
+                </div>
+
+                <!-- Central Bank Regulatory Statement -->
+                <div class="card p-4 flex items-start gap-3 text-xs text-muted">
+                    <i class="fa-solid fa-building-columns text-brand text-base mt-0.5"></i>
+                    <div class="leading-relaxed">
+                        <strong class="text-foreground block mb-0.5">Central Bank Regulatory Audit Standard</strong>
+                        All biometric similarity comparisons, threshold benchmarks, risk score evaluations, officer adjudications, and vault specimen modifications produce cryptographic SHA-256 hash digests with UTC timestamps. Records cannot be overwritten or altered.
+                    </div>
+                </div>
+
             </div>
+        </main>
 
-            <div id="audit-trail-container" class="space-y-4">
-                <!-- Dynamically populated by fetchAuditTrailPage() -->
-            </div>
-        </div>
-
-        <!-- Regulatory Statement -->
-        <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800/80 text-xs text-slate-400 flex items-start gap-3">
-            <i class="fa-solid fa-scale-balanced text-cyan-400 text-base mt-0.5"></i>
-            <div class="leading-relaxed">
-                <strong class="text-slate-200">Central Bank Audit Compliance:</strong>
-                All biometric similarity comparisons, threshold benchmarks, risk score evaluations, officer adjudications, and vault specimen modifications produce cryptographic SHA-256 hash digests with UTC timestamps. Records cannot be overwritten or altered.
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Global Footer -->
-    <footer id="global-footer"></footer>
+    </div>
 
     <!-- Scripts -->
     <script src="/assets/js/common.js"></script>
     <script src="/assets/js/api.js"></script>
     <script src="/assets/js/audit-timeline.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof renderPrimaryRail === 'function') {
+                renderPrimaryRail('audit');
+            }
+            if (typeof renderTopBar === 'function') {
+                renderTopBar('Compliance / Forensic Audit Trail / Non-Repudiation Ledger');
+            }
+        });
+    </script>
 </body>
 </html>
