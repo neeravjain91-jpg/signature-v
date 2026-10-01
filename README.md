@@ -12,19 +12,19 @@
 
 ---
 
-## 1. Web Application Pages (Multi-Page Architecture)
+## 1. Enterprise Multi-Page Banking Architecture
 
-SIGNATURE VMAKE features a modular, multi-page web application where each operational capability has its own dedicated URL, route, and DOM context:
+SIGNATURE VMAKE features a modular, 3-level enterprise banking operations platform with dedicated independent URL routes and DOM contexts:
 
 | Page | Route | Purpose |
 |---|---|---|
-| **Overview** | `/` | System dashboard & executive KPI cards |
-| **Manual Register & Verify** | `/manual-workflow` | Register first signature (reference only) and verify second signature |
-| **Cheque Studio** | `/verification-studio` | Banking transaction verification & multi-factor fraud risk decomposition |
-| **Model Comparison** | `/model-comparison` | Compare ML candidates (AUC, EER, Accuracy, Latency, Size) |
-| **Officer Queue** | `/compliance-queue` | Manual-review escalated cases & officer adjudication modal |
-| **Audit Trail** | `/audit-timeline` | Verification & non-repudiation regulatory audit history |
-| **Model Health** | `/model-registry` | Live model readiness, checkpoints, and real-time inference ping |
+| **Overview & Case Review** | `/` | 3-Level enterprise dashboard, interactive review queue, side-by-side specimen comparison, telemetry KPIs |
+| **Manual Register & Verify** | `/manual-workflow` | Customer Vault specimen enrollment (zero-verdict reference) and questioned verification |
+| **Cheque Studio** | `/verification-studio` | Negotiable instrument clearance, scenario presets, and 3-pillar fraud risk decomposition |
+| **Model Comparison** | `/model-comparison` | Empirical evaluation benchmark across CEDAR Writers 46–55 (AUC, EER, FAR, FRR, Latency) |
+| **Officer Queue** | `/compliance-queue` | Escalated transaction triage, SLA tracking, and Maker-Checker supervisory adjudication |
+| **Audit Trail** | `/audit-timeline` | Tamper-evident SHA-256 non-repudiation regulatory audit ledger and forensic lifecycle |
+| **Model Registry & Health** | `/model-registry` | Runtime health diagnostics, checkpoint validation, and polymorphic candidate self-tests |
 
 ---
 
@@ -201,3 +201,15 @@ uvicorn api.main:app --host 127.0.0.1 --port 8000 --reload
 - **Biometric Anti-Spoofing**: Image validation enforces strict MIME inspection, magic byte verification, dimension bounds, and Laplacian blur deficit calculation.
 - **Audit Ledger**: All verification attempts produce immutable, timestamped audit log entries with SHA-256 cryptographic hashes for regulatory non-repudiation.
 - **Detailed Forensic Documentation**: See [`docs/FINAL_PROJECT_STATUS.md`](docs/FINAL_PROJECT_STATUS.md), [`docs/MODEL_COMPARISON.md`](docs/MODEL_COMPARISON.md), and [`docs/SYNOPSIS_GAP_ANALYSIS.md`](docs/SYNOPSIS_GAP_ANALYSIS.md).
+
+---
+
+## 9. Academic Review & Project Deliverables
+
+For university review, viva voce examinations, and technical presentations, the repository includes the following complete deliverables:
+
+* **Study Guide (PDF)**: [`SIGNATURE_VMAKE_COMPLETE_PROJECT_STUDY_GUIDE.pdf`](SIGNATURE_VMAKE_COMPLETE_PROJECT_STUDY_GUIDE.pdf) (17-part academic manual structured according to IEEE 830 / B.Tech 3rd Year SRS standards).
+* **Study Guide (Word)**: [`SIGNATURE_VMAKE_COMPLETE_PROJECT_STUDY_GUIDE.docx`](SIGNATURE_VMAKE_COMPLETE_PROJECT_STUDY_GUIDE.docx).
+* **B.Tech 3rd Year Presentation Deck**: [`SIGNATURE_VMAKE_BTech_3rd_Year_Project_Presentation.pptx`](SIGNATURE_VMAKE_BTech_3rd_Year_Project_Presentation.pptx).
+* **Viva Voce Examination Notes**: [`docs/PRESENTATION_VIVA_NOTES.md`](docs/PRESENTATION_VIVA_NOTES.md).
+
