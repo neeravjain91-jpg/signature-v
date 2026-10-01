@@ -3,64 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIGNATURE VMAKE — Intelligent Signature Verification Platform</title>
+    <title>SIGNATURE VMAKE — Overview & Executive Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #0F172A; color: #F8FAFC; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-card:hover { border-color: rgba(56, 189, 248, 0.3); }
-        .accent-glow { box-shadow: 0 0 25px -5px rgba(14, 165, 233, 0.3); }
-    </style>
+    <link rel="stylesheet" href="/assets/css/app.css">
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-slate-800 bg-slate-900/80 sticky top-0 z-50 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-cyan-500/20">
-                    <i class="fa-solid fa-signature text-xl"></i>
-                </div>
-                <div>
-                    <span class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-cyan-400">SIGNATURE VMAKE</span>
-                    <span class="text-xs ml-2 px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800/60 font-semibold"><i class="fa-solid fa-trophy mr-1 text-amber-400"></i>AI BIOMETRIC PLATFORM</span>
-                </div>
-            </div>
-
-            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                <a href="#overview" class="text-slate-300 hover:text-white transition">Overview</a>
-                <a href="#manual-workflow" class="text-cyan-400 hover:text-white transition font-semibold flex items-center gap-1.5"><i class="fa-solid fa-id-card-clip"></i> Manual Register & Verify</a>
-                <a href="#verification-studio" class="text-slate-300 hover:text-white transition">Cheque Studio</a>
-                <a href="#model-comparison" class="text-slate-300 hover:text-white transition">Model Comparison</a>
-                <a href="#compliance-queue" class="text-slate-300 hover:text-white transition">Officer Queue</a>
-                <a href="#audit-timeline" class="text-slate-300 hover:text-white transition">Audit Trail</a>
-                <a href="#model-registry" class="text-slate-300 hover:text-white transition">Model Health</a>
-            </nav>
-
-            <div class="flex items-center space-x-3">
-                <div id="conn-badge" onclick="configureApiEndpoint()" title="Click to view or change backend API connection" class="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 text-xs cursor-pointer hover:border-cyan-500 transition">
-                    <span id="conn-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="conn-status-text" class="font-medium">REST API CONNECTED</span>
-                </div>
-                <button onclick="configureApiEndpoint()" title="Configure Backend API URL" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
-                    <i class="fa-solid fa-server text-cyan-400"></i> <span class="hidden sm:inline">API URL</span>
-                </button>
-                <a id="api-docs-link" href="/docs" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-book"></i> API Docs
-                </a>
-            </div>
-        </div>
-    </header>
+    <!-- Global Top Navigation Bar -->
+    <header id="global-header"></header>
 
     <!-- Main Content Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
 
+        <!-- Banner: Platform Overview -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 border-cyan-500/20 relative overflow-hidden">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between md:items-center gap-6">
+                <div class="space-y-2 max-w-2xl">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-950 text-cyan-400 border border-cyan-800">
+                            Bank Muscat BRD Aligned &bull; Enterprise Biometrics
+                        </span>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
+                            v1.0 Production
+                        </span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+                        AI-Powered Biometric Signature Verification
+                    </h1>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Autonomous writer-independent verification and multi-factor fraud risk assessment engineered for banking settlement, high-value cheque clearance, and compliance non-repudiation.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="/manual-workflow" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-cyan-600/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-id-card-clip"></i> Manual Register & Verify
+                    </a>
+                    <a href="/verification-studio" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-money-check-dollar"></i> Cheque Studio
+                    </a>
+                </div>
+            </div>
+            <!-- Background glow -->
+            <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        </div>
+
         <!-- Section 1: Executive KPI Cards -->
-        <section id="overview" class="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <div class="glass-card rounded-2xl p-5 relative overflow-hidden">
                 <div class="flex justify-between items-start">
                     <div>
@@ -116,1492 +105,202 @@
             </div>
         </section>
 
-        <!-- Section: Manual Signature Registration & AI Verification Workflow -->
-        <section id="manual-workflow" class="glass-card rounded-3xl p-6 sm:p-8 space-y-8 border-cyan-500/30">
-            <!-- Header -->
-            <div class="border-b border-slate-800 pb-5 flex flex-col md:flex-row justify-between md:items-center gap-4">
-                <div>
-                    <div class="flex items-center gap-3">
-                        <span class="px-2.5 py-1 rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-800/80 text-xs font-bold uppercase tracking-wider">
-                            <i class="fa-solid fa-layer-group mr-1.5"></i>Production Workflow
-                        </span>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Manual Signature Registration & AI Verification</h2>
-                    </div>
-                    <p class="text-sm text-slate-400 mt-1">Enroll genuine reference specimens into the secure biometric vault, then verify questioned signatures with validation thresholds (&tau;* = 0.7313 for ViT, &tau;* = 0.3636 for SVM).</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-xs text-slate-400">Production Engine:</span>
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-900/40 text-cyan-300 border border-cyan-700/50">
-                        <i class="fa-solid fa-microchip mr-1"></i>Hugging Face Vision Transformer (ViT)
+        <!-- Section 2: System Status & Production Architecture -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Active Model Card -->
+            <div class="glass-card rounded-2xl p-6 lg:col-span-2 space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-microchip text-cyan-400"></i> Active Production ML Backbone
+                    </h2>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-950 text-cyan-400 border border-cyan-800">
+                        TRACK B DEFAULT
                     </span>
                 </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                        <span class="text-[11px] text-slate-400 block mb-1">Model Architecture</span>
+                        <span id="overview-active-model-name" class="font-bold text-sm text-white">HF Vision Transformer</span>
+                        <span id="overview-active-model-arch" class="text-[10px] text-cyan-400 block truncate">deit-tiny-patch16-224</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                        <span class="text-[11px] text-slate-400 block mb-1">Operating Threshold</span>
+                        <span id="overview-active-model-thresh" class="font-bold text-sm text-emerald-400 mono">0.7313</span>
+                        <span class="text-[10px] text-slate-400 block">Calibrated on CEDAR</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800">
+                        <span class="text-[11px] text-slate-400 block mb-1">Customer Friction (FRR)</span>
+                        <span class="font-bold text-sm text-emerald-400 mono">3.83%</span>
+                        <span class="text-[10px] text-slate-400 block">TAR: 96.17%</span>
+                    </div>
+                </div>
+                <div class="text-xs text-slate-400 leading-relaxed bg-slate-900/40 p-3 rounded-xl border border-slate-800/60">
+                    <strong class="text-slate-200">Candidate Models Available:</strong> Hugging Face Vision Transformer (ViT Default), Random Forest (Accuracy Champion: 0.9424 AUC, 13.33% EER), Support Vector Machine (1.90 MB Edge Baseline), and Logistic Regression (6 ms latency).
+                </div>
             </div>
 
+            <!-- Platform Health Card -->
+            <div class="glass-card rounded-2xl p-6 space-y-4">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-server text-cyan-400"></i> Platform Health
+                    </h2>
+                    <span class="text-[11px] text-emerald-400 mono flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> ONLINE
+                    </span>
+                </div>
+                <div class="space-y-3 text-xs">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Database Engine:</span>
+                        <span id="overview-db-status" class="mono text-white font-medium">CONNECTED</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">FastAPI Gateway:</span>
+                        <span id="overview-service-status" class="mono text-emerald-400 font-medium">HEALTHY</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Biometric Specimen Vault:</span>
+                        <span class="mono text-white font-medium">data/vault/signatures</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Compliance Audit Ledger:</span>
+                        <span class="mono text-cyan-400 font-medium">SHA-256 Tamper-Evident</span>
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <a href="/model-registry" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium border border-slate-700 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-heart-pulse text-cyan-400"></i> Inspect Model Registry
+                    </a>
+                </div>
+            </div>
+        </section>
 
-            <!-- 2-Column Grid: Registration on Left, Verification on Right -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Section 3: Navigation Hub Cards -->
+        <section class="space-y-4">
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-compass text-cyan-400"></i> System Operational Workspaces
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 
-                <!-- LEFT COLUMN: Step 1 Registration & Active Gallery (6 Cols) -->
-                <div class="lg:col-span-6 space-y-6">
-                    
-                    <!-- SECTION A: Customer ID Context -->
-                    <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-user-tag text-cyan-400"></i> Step 1A: Target Customer ID / Reference
-                            </label>
-                            <span class="text-[10px] text-slate-400">Vault customer silo</span>
+                <!-- Card 1: Manual Register & Verify -->
+                <a href="/manual-workflow" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-id-card-clip text-lg"></i>
                         </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="manual-customer-id" value="DEMO-CUST-001" placeholder="Enter Customer Reference (e.g. CUST-1001)" class="flex-1 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl px-3.5 py-2 text-sm text-white mono focus:outline-none transition">
-                            <button onclick="loadCustomerGallery()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-arrows-rotate"></i> Load
-                            </button>
-                        </div>
-                        <div class="flex items-center gap-2 text-xs text-slate-400">
-                            <span>Quick Select:</span>
-                            <button type="button" onclick="setCustomerId('DEMO-CUST-001')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-400 text-xs mono">DEMO-CUST-001</button>
-                            <button type="button" onclick="setCustomerId('DEMO-CUST-002')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-400 text-xs mono">DEMO-CUST-002</button>
-                            <button type="button" onclick="setRandomCustomer()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs">+ New Customer</button>
-                        </div>
+                        <span class="text-xs text-cyan-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Open <i class="fa-solid fa-arrow-right"></i>
+                        </span>
                     </div>
+                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
+                        Manual Register & Verify
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Enroll primary genuine reference specimens into customer vaults with zero initial verdict, then test second questioned signatures dynamically.
+                    </p>
+                </a>
 
-                    <!-- SECTION B: Upload Genuine Signature -->
-                    <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                                <i class="fa-solid fa-file-arrow-up"></i> Step 1B: Register Genuine Signature Specimen
-                            </label>
-                            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800/80">Vault Reference Only</span>
+                <!-- Card 2: Cheque Studio -->
+                <a href="/verification-studio" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-money-check-dollar text-lg"></i>
                         </div>
-                        
-                        <!-- File Drop / Select Area -->
-                        <div class="border-2 border-dashed border-slate-700 hover:border-cyan-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-950/40" onclick="document.getElementById('file-genuine-upload').click()">
-                            <input type="file" id="file-genuine-upload" accept="image/png,image/jpeg,image/tiff,image/bmp" class="hidden" onchange="handleGenuineFileSelect(event)">
-                            <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-500 mb-2"></i>
-                            <p id="genuine-file-label" class="text-xs text-slate-300 font-medium">Click to select genuine signature image (PNG, JPG, TIFF)</p>
-                            <p class="text-[10px] text-slate-500 mt-1">Max 5MB &bull; High resolution specimen &bull; Automatic Otsu binarization</p>
-                        </div>
-
-                        <!-- Preview thumbnail & validation status -->
-                        <div id="genuine-preview-container" class="hidden flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-                            <div class="flex items-center gap-3">
-                                <div class="h-12 w-24 bg-black rounded border border-slate-800 flex items-center justify-center overflow-hidden p-1">
-                                    <img id="genuine-thumb-preview" src="" alt="Thumbnail" class="max-h-full max-w-full object-contain filter invert opacity-90">
-                                </div>
-                                <div>
-                                    <span id="genuine-file-name" class="text-xs font-mono text-white block truncate max-w-[180px]">specimen.png</span>
-                                    <span id="genuine-file-size" class="text-[10px] text-slate-400 block">-- KB</span>
-                                </div>
-                            </div>
-                            <span id="genuine-file-valid-badge" class="px-2 py-1 rounded text-[10px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
-                                <i class="fa-solid fa-check mr-1"></i>Valid Image
-                            </span>
-                        </div>
-
-                        <!-- Registration Action Button -->
-                        <button onclick="registerGenuineSignature()" id="btn-register-sig" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition active:scale-[0.98]">
-                            <i class="fa-solid fa-fingerprint"></i> Enroll Genuine Signature Reference
-                        </button>
-                        <div id="enroll-alert" class="hidden text-xs p-3 rounded-xl border"></div>
+                        <span class="text-xs text-blue-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Open <i class="fa-solid fa-arrow-right"></i>
+                        </span>
                     </div>
+                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
+                        Cheque Studio
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Run banking voucher verifications against multi-factor fraud risk scoring (similarity, scan quality, transaction tier, behavioral velocity).
+                    </p>
+                </a>
 
-                    <!-- SECTION C: Customer Reference Gallery (Up to 3 Active References) -->
-                    <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-images text-cyan-400"></i> Step 1C: Active Enrolled Reference Gallery
-                            </label>
-                            <span id="gallery-count-badge" class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">0 Active Specimen(s)</span>
+                <!-- Card 3: Model Comparison -->
+                <a href="/model-comparison" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-scale-balanced text-lg"></i>
                         </div>
-                        
-                        <!-- Gallery Cards Grid -->
-                        <div id="gallery-cards-container" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div class="p-4 rounded-xl border border-slate-800 text-center col-span-3 text-xs text-slate-500">
-                                <i class="fa-solid fa-folder-open text-lg mb-1 block"></i>
-                                No registered signature specimens found. Enroll a genuine signature above.
-                            </div>
-                        </div>
+                        <span class="text-xs text-purple-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Open <i class="fa-solid fa-arrow-right"></i>
+                        </span>
                     </div>
+                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
+                        Model Comparison
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Examine empirical test cohort metrics (AUC, EER, Accuracy, FAR, FRR, F1, Latency) across all 4 machine learning candidate models.
+                    </p>
+                </a>
 
-                </div>
-
-                <!-- RIGHT COLUMN: Step 2 Questioned Verification & Live Results (6 Cols) -->
-                <div class="lg:col-span-6 space-y-6">
-                    
-                    <!-- SECTION D: Questioned Signature Input & Mode Selection -->
-                    <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
-                                <i class="fa-solid fa-magnifying-glass-chart"></i> Step 2A: Upload Questioned Signature
-                            </label>
-                            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/80">Query Verification</span>
+                <!-- Card 4: Officer Queue -->
+                <a href="/compliance-queue" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user-clock text-lg"></i>
                         </div>
-
-                        <!-- Model Track Selector -->
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">AI Inference Engine Track</label>
-                            <select id="select-manual-model-track" onchange="updateModeUI()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
-                                <option value="transformer" selected>Track B: Hugging Face Vision Transformer (ViT) [Production Default]</option>
-                                <option value="svm">Track A1: scikit-learn Support Vector Machine (SVM)</option>
-                                <option value="random_forest">Track A2: scikit-learn Random Forest (RF)</option>
-                                <option value="logistic">Track A3: scikit-learn Logistic Regression (LR)</option>
-                            </select>
-                        </div>
-
-                        <!-- Verification Mode Selector -->
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1.5">Biometric Verification Strategy</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-700 bg-slate-950 cursor-pointer hover:border-cyan-500 text-xs">
-                                    <input type="radio" name="verif-mode" value="single" checked onchange="updateModeUI()" class="text-cyan-500 focus:ring-0">
-                                    <div>
-                                        <span class="font-semibold text-white block">Mode 1: Single Reference</span>
-                                        <span id="label-single-thresh" class="text-[10px] text-slate-400 block">Latest specimen (&tau;* = 0.7313)</span>
-                                    </div>
-                                </label>
-                                <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-700 bg-slate-950 cursor-pointer hover:border-cyan-500 text-xs">
-                                    <input type="radio" name="verif-mode" value="gallery" onchange="updateModeUI()" class="text-cyan-500 focus:ring-0">
-                                    <div>
-                                        <span class="font-semibold text-white block">Mode 2: Customer Gallery</span>
-                                        <span id="label-gallery-thresh" class="text-[10px] text-slate-400 block">Max similarity (&tau;<sub>gal</sub>* = 0.7600)</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-
-                        <!-- Query File Drop / Select Area -->
-                        <div class="border-2 border-dashed border-slate-700 hover:border-cyan-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-950/40" onclick="document.getElementById('file-query-upload').click()">
-                            <input type="file" id="file-query-upload" accept="image/png,image/jpeg,image/tiff,image/bmp" class="hidden" onchange="handleQueryFileSelect(event)">
-                            <i class="fa-solid fa-signature text-2xl text-cyan-400 mb-2"></i>
-                            <p id="query-file-label" class="text-xs text-slate-300 font-medium">Click to select questioned signature (e.g. cheque, slip)</p>
-                            <p class="text-[10px] text-slate-500 mt-1">Accepts questioned sample or suspected forgery image</p>
-                        </div>
-
-                        <!-- Query preview thumbnail -->
-                        <div id="query-preview-container" class="hidden flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800">
-                            <div class="flex items-center gap-3">
-                                <div class="h-12 w-24 bg-black rounded border border-slate-800 flex items-center justify-center overflow-hidden p-1">
-                                    <img id="query-thumb-preview" src="" alt="Thumbnail" class="max-h-full max-w-full object-contain filter invert opacity-90">
-                                </div>
-                                <div>
-                                    <span id="query-file-name" class="text-xs font-mono text-white block truncate max-w-[180px]">query.png</span>
-                                    <span id="query-file-size" class="text-[10px] text-slate-400 block">-- KB</span>
-                                </div>
-                            </div>
-                            <span class="px-2 py-1 rounded text-[10px] font-semibold bg-cyan-950 text-cyan-400 border border-cyan-800">
-                                <i class="fa-solid fa-check mr-1"></i>Ready to Verify
-                            </span>
-                        </div>
-
-                        <!-- Verification Action Button -->
-                        <button onclick="verifyQuestionedSignature()" id="btn-verify-manual" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 transition active:scale-[0.98]">
-                            <i class="fa-solid fa-shield-check"></i> Run AI Biometric Verification
-                        </button>
+                        <span class="text-xs text-amber-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Open <i class="fa-solid fa-arrow-right"></i>
+                        </span>
                     </div>
+                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
+                        Officer Review Queue
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Adjudicate escalated transactions requiring compliance sign-off. Provide mandatory audit rationale notes with Approve/Reject actions.
+                    </p>
+                </a>
 
-                    <!-- SECTION E: Real Verification Verdict & Metrics Card -->
-                    <div id="manual-verif-result-card" class="bg-slate-900/80 rounded-2xl p-6 border border-slate-800 space-y-5">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                            <div>
-                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Real-time Biometric Verdict</span>
-                                <span id="res-manual-mode-badge" class="text-[10px] mono text-cyan-400">Mode: Single Reference</span>
-                            </div>
-                            <div id="verdict-banner" class="px-4 py-1.5 rounded-full text-sm font-bold bg-slate-800 text-slate-300 border border-slate-700">
-                                AWAITING VERIFICATION
-                            </div>
+                <!-- Card 5: Audit Trail -->
+                <a href="/audit-timeline" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-timeline text-lg"></i>
                         </div>
-
-                        <!-- Metrics Triplets -->
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-center">
-                                <span class="text-[11px] text-slate-400 block mb-1">Similarity Score (S)</span>
-                                <span id="res-manual-similarity" class="text-2xl font-bold mono text-white">--</span>
-                                <span class="text-[10px] text-slate-400 block mt-0.5">Threshold: <span id="res-manual-threshold" class="mono text-cyan-400">0.5924</span></span>
-                            </div>
-
-                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-center">
-                                <span class="text-[11px] text-slate-400 block mb-1">Euclidean Distance (D)</span>
-                                <span id="res-manual-distance" class="text-2xl font-bold mono text-white">--</span>
-                                <span class="text-[10px] text-slate-400 block mt-0.5">Metric: <span class="mono text-slate-300">L2 Hypersphere</span></span>
-                            </div>
-
-                            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-center">
-                                <span class="text-[11px] text-slate-400 block mb-1">Composite Risk</span>
-                                <span id="res-manual-risk" class="text-2xl font-bold mono text-white">--</span>
-                                <span id="res-manual-tier" class="text-[10px] font-semibold text-slate-400 block mt-0.5">Tier: Pending</span>
-                            </div>
-                        </div>
-
-                        <!-- Details & Audit Metadata -->
-                        <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 space-y-1.5 text-xs">
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Verification ID:</span>
-                                <span id="res-manual-verif-id" class="mono text-cyan-400 text-[11px]">--</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">References Consulted:</span>
-                                <span id="res-manual-ref-count" class="mono text-slate-300 text-[11px]">--</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Timestamp:</span>
-                                <span id="res-manual-timestamp" class="mono text-slate-300 text-[11px]">--</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Audit Status:</span>
-                                <span id="res-manual-audit" class="mono text-emerald-400 text-[11px]">Immutable Ledger Committed</span>
-                            </div>
-                        </div>
+                        <span class="text-xs text-emerald-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Open <i class="fa-solid fa-arrow-right"></i>
+                        </span>
                     </div>
+                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
+                        Audit Trail & Timeline
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Perform non-repudiation forensic lookups for transaction vouchers, inspection of SHA-256 hashes, decisions, and officer review histories.
+                    </p>
+                </a>
 
-                </div>
+                <!-- Card 6: Model Health -->
+                <a href="/model-registry" class="glass-card rounded-2xl p-5 hover:border-cyan-500/50 transition block group space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-heart-pulse text-lg"></i>
+                        </div>
+                        <span class="text-xs text-rose-400 font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                            Open <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </div>
+                    <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">
+                        Model Health & Readiness
+                    </h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Verify real-time model weights loading, inference latency, parameter count, disk footprints, and active operating thresholds.
+                    </p>
+                </a>
 
             </div>
         </section>
-
-        <!-- Section 2: Biometric Verification Studio -->
-        <section id="verification-studio" class="glass-card rounded-3xl p-6 sm:p-8">
-            <div class="border-b border-slate-800 pb-5 mb-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                <div>
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-microscope text-cyan-400"></i> AI Biometric Verification Studio
-                    </h2>
-                    <p class="text-sm text-slate-400 mt-0.5">Compare a questioned cheque signature against an enrolled specimen in real-time.</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs text-slate-400">Quick Preset:</span>
-                    <button onclick="loadPreset('genuine')" class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-900/50">Genuine Pair</button>
-                    <button onclick="loadPreset('forged')" class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-400 border border-rose-900/50">Forged Pair</button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Inputs Column (5 cols) -->
-                <div class="lg:col-span-5 space-y-5">
-                    <!-- Target Account & Txn Details -->
-                    <div class="bg-slate-900/80 rounded-xl p-4 border border-slate-800 space-y-3">
-                        <div class="flex justify-between items-center text-xs text-slate-400">
-                            <span class="font-semibold uppercase tracking-wider">Transaction Context</span>
-                            <div>
-                                <span class="mono text-cyan-400 font-semibold">DEMO-TXN-CHEQUE-101</span>
-                                <span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Synthetic Demo Txn</span>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3 text-sm">
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Customer Account</label>
-                                <select id="input-customer" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-500">
-                                    <option value="DEMO-CUST-001">Alice Walker (DEMO-CUST-001)</option>
-                                    <option value="DEMO-CUST-002">Robert Vance (DEMO-CUST-002)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs text-slate-400 mb-1">Transaction Type</label>
-                                <select id="input-type" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-500">
-                                    <option value="CHEQUE">Cheque Clearance</option>
-                                    <option value="WITHDRAWAL">Counter Withdrawal</option>
-                                    <option value="WIRE_TRANSFER">Wire Transfer</option>
-                                </select>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="block text-xs text-slate-400 mb-1">Transaction Amount ($ USD)</label>
-                                <input type="number" id="input-amount" value="4500.00" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white mono focus:outline-none focus:border-cyan-500">
-                            </div>
-                            <div class="col-span-2">
-                                <label class="block text-xs text-slate-400 mb-1">AI Inference Engine / Model Track</label>
-                                <select id="select-model-track" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-500">
-                                    <option value="transformer" selected>Track B: Hugging Face Vision Transformer (ViT) [Production Default]</option>
-                                    <option value="svm">Track A1: scikit-learn Support Vector Machine (SVM)</option>
-                                    <option value="random_forest">Track A2: scikit-learn Random Forest (RF)</option>
-                                    <option value="logistic">Track A3: scikit-learn Logistic Regression (LR)</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Side-by-Side Signature Specimen Visualizer -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Reference Specimen -->
-                        <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800 text-center">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-semibold text-slate-400">Registered Specimen</span>
-                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">CEDAR Enrolled</span>
-                            </div>
-                            <div class="h-28 bg-black/60 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden p-2">
-                                <img id="preview-ref" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='40'><text x='15' y='25' fill='%2364748b' font-family='sans-serif' font-size='12'>Loading...</text></svg>" alt="Enrolled Specimen" class="max-h-full max-w-full object-contain filter invert opacity-90">
-                            </div>
-                            <span class="text-[10px] text-slate-400 block mt-1.5">Vault ID: <span class="mono text-slate-300">sig_primary_v1 (w46)</span></span>
-                        </div>
-
-                        <!-- Submitted Signature -->
-                        <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800 text-center">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="text-xs font-semibold text-slate-400">Questioned Signature</span>
-                                <span id="label-sub-badge" class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">Genuine Sample</span>
-                            </div>
-                            <div class="h-28 bg-black/60 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden p-2">
-                                <img id="preview-sub" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='40'><text x='15' y='25' fill='%2364748b' font-family='sans-serif' font-size='12'>Loading...</text></svg>" alt="Questioned Signature" class="max-h-full max-w-full object-contain filter invert opacity-90">
-                            </div>
-                            <span class="text-[10px] text-slate-400 block mt-1.5">Specimen: <span id="label-sub-type" class="mono text-slate-300">Questioned (Genuine)</span></span>
-                        </div>
-                    </div>
-
-                    <!-- Action Button -->
-                    <button onclick="executeVerification()" id="btn-verify" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 transition active:scale-[0.98]">
-                        <i class="fa-solid fa-bolt"></i> Run AI Biometric Verification
-                    </button>
-                </div>
-
-                <!-- Live Results Panel (7 cols) -->
-                <div class="lg:col-span-7 bg-slate-900/60 rounded-2xl p-6 border border-slate-800 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-6">
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Verification Verdict</span>
-                                <span id="model-arch-badge" class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">Hugging Face ViT-Patch16</span>
-                            </div>
-                            <span id="decision-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">
-                                READY TO VERIFY
-                            </span>
-                        </div>
-
-                        <!-- Metrics Grid -->
-                        <div class="grid grid-cols-3 gap-4 mb-6">
-                            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 text-center">
-                                <span class="text-xs text-slate-400 block mb-1">Similarity Score</span>
-                                <span id="res-similarity" class="text-2xl font-bold mono text-white">--</span>
-                                <span class="text-[10px] text-slate-400 block mt-0.5">Threshold: <span id="active-threshold-val" class="mono text-cyan-400">0.7313</span></span>
-                            </div>
-
-
-                            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 text-center">
-                                <span class="text-xs text-slate-400 block mb-1">Euclidean Distance</span>
-                                <span id="res-distance" class="text-2xl font-bold mono text-white">--</span>
-                                <span class="text-[10px] text-slate-400 block mt-0.5">Formula: <span class="mono text-slate-300">S = 1 - D/2</span></span>
-                            </div>
-
-                            <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800 text-center">
-                                <span class="text-xs text-slate-400 block mb-1">Composite Fraud Risk</span>
-                                <span id="res-overall-risk" class="text-2xl font-bold mono text-white">--</span>
-                                <span id="res-risk-tier" class="text-[10px] font-semibold text-slate-400 block mt-0.5">Tier: Pending</span>
-                            </div>
-                        </div>
-
-                        <!-- Multi-Factor Risk Breakdown -->
-                        <div class="space-y-3 mb-6">
-                            <span class="text-xs font-semibold text-slate-400 block">Risk Component Decomposition:</span>
-                            
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-slate-400">Biometric Discrepancy (1 - S)</span>
-                                    <span id="bar-val-sim" class="mono text-white text-[11px]">0.00</span>
-                                </div>
-                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-fill-sim" class="bg-cyan-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-slate-400">Scan Blur & Contrast Degradation</span>
-                                    <span id="bar-val-quality" class="mono text-white text-[11px]">0.00</span>
-                                </div>
-                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-fill-quality" class="bg-blue-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between text-xs mb-1">
-                                    <span class="text-slate-400">Transaction Monetary & Channel Tier</span>
-                                    <span id="bar-val-txn" class="mono text-white text-[11px]">0.00</span>
-                                </div>
-                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                                    <div id="bar-fill-txn" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Explainable Factor Audit Tags -->
-                        <div>
-                            <span class="text-xs font-semibold text-slate-400 block mb-2">Audit Rationale Codes:</span>
-                            <div id="factor-tags" class="flex flex-wrap gap-2 text-xs">
-                                <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 border border-slate-700">Awaiting inference...</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px] text-slate-400">
-                        <span>Model: <span class="text-slate-300 font-medium">HF_Vision_Transformer (Calibrated 0.7313)</span></span>
-                        <span>Traceability ID: <span id="trace-id" class="mono text-cyan-400">N/A</span></span>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Compliance Officer Manual Review Queue -->
-        <section id="compliance-queue" class="glass-card rounded-3xl p-6 sm:p-8">
-            <div class="flex justify-between items-center mb-6">
-                <div>
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-clipboard-check text-amber-400"></i> Compliance Officer Review Queue
-                    </h2>
-                    <p class="text-sm text-slate-400 mt-0.5">High-value or borderline similarity cases routed for forensic human adjudication.</p>
-                </div>
-                <button onclick="loadPendingReviews()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
-                    <i class="fa-solid fa-rotate mr-1"></i> Refresh Queue
-                </button>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-300">
-                    <thead class="bg-slate-900/80 text-slate-400 uppercase font-semibold border-b border-slate-800">
-                        <tr>
-                            <th class="py-3 px-4">Transaction Ref</th>
-                            <th class="py-3 px-4">Customer</th>
-                            <th class="py-3 px-4">Amount</th>
-                            <th class="py-3 px-4">Similarity</th>
-                            <th class="py-3 px-4">Risk Score</th>
-                            <th class="py-3 px-4">Escalation Reason</th>
-                            <th class="py-3 px-4 text-right">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="queue-table-body" class="divide-y divide-slate-800/60">
-                        <tr>
-                            <td colspan="7" class="py-4 text-center text-slate-500">Loading pending reviews from database...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Section 4: Forensic Audit Trail & Non-Repudiation Lookup -->
-        <section id="audit-timeline" class="glass-card rounded-3xl p-6 sm:p-8">
-            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
-                <div>
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-fingerprint text-emerald-400"></i> Regulatory Audit & Traceability Timeline
-                    </h2>
-                    <p class="text-sm text-slate-400 mt-0.5">Unbroken non-repudiation chain: Customer &rarr; Account &rarr; Txn &rarr; ML Inference &rarr; Review &rarr; Settlement.</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <input type="text" id="lookup-txn-ref" value="DEMO-TXN-CHEQUE-101" placeholder="Enter Txn Reference..." class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white mono focus:outline-none focus:border-cyan-500">
-                    <button onclick="fetchAuditTrail()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition">Query Trail</button>
-                </div>
-            </div>
-
-            <div id="audit-trail-container" class="bg-slate-950/60 rounded-2xl p-6 border border-slate-800 space-y-4">
-                <div class="flex items-center space-x-3 text-sm">
-                    <span class="text-slate-400">Active Voucher:</span>
-                    <span class="mono font-bold text-white">DEMO-TXN-CHEQUE-101</span>
-                    <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-semibold">VERIFIED & SETTLED</span>
-                </div>
-                
-                <div class="border-l-2 border-slate-800 ml-4 pl-6 space-y-6 text-xs text-slate-300">
-                    <div class="relative">
-                        <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-cyan-500"></span>
-                        <p class="font-semibold text-white">1. Physical Signature Capture & Hash Generation</p>
-                        <p class="text-slate-400 mt-0.5">Specimen scanned at branch. SHA-256: <span class="mono text-slate-300">f0e1d2c3b4a5968778695a4b3c2d1e0fa1b2c3d4e5f60718293a4b5c6d7e8f90</span></p>
-                    </div>
-
-                    <div class="relative">
-                        <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-blue-500"></span>
-                        <p class="font-semibold text-white">2. Core Vision Transformer Inference</p>
-                        <p class="text-slate-400 mt-0.5">Model: <span class="mono text-slate-300">HF_Vision_Transformer v1.0.0</span> | Distance: <span class="mono text-cyan-400">0.1658</span> | Score: <span class="mono text-emerald-400">0.9171</span></p>
-                    </div>
-
-
-                    <div class="relative">
-                        <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-emerald-500"></span>
-                        <p class="font-semibold text-white">3. Multi-Factor Risk Assessment</p>
-                        <p class="text-slate-400 mt-0.5">Composite Score: <span class="mono text-emerald-400">0.1957 (LOW)</span> | Automated clearance policy executed.</p>
-                    </div>
-
-                    <div class="relative">
-                        <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-purple-500"></span>
-                        <p class="font-semibold text-white">4. Immutable Audit Ledger Logged</p>
-                        <p class="text-slate-400 mt-0.5">Action: <span class="mono text-purple-400">AUTOMATED_VERIFICATION_PASS</span> | Correlation Ref: <span class="mono text-slate-300">REQ-EC440A4C</span></p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 6: Model Track Comparative Benchmark -->
-        <section id="model-comparison" class="glass-card rounded-2xl p-6">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                <div>
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-scale-balanced text-cyan-400"></i> Dual-Track Model Comparative Benchmark
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Objective evaluation of scikit-learn Classical Baseline vs. Hugging Face Vision Transformer on locked test cohort (Writers 46–55, 1,200 pairs).</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs px-2.5 py-1 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-800/80 font-mono">Open-Set Protocol (CEDAR Held-Out Cohort)</span>
-                </div>
-            </div>
-
-            <!-- Comparative Benchmark Table -->
-            <div class="overflow-x-auto rounded-xl border border-slate-800 mb-6">
-                <table class="w-full text-xs text-left text-slate-300">
-                    <thead class="bg-slate-900/80 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
-                        <tr>
-                            <th class="px-4 py-3">Model Track</th>
-                            <th class="px-4 py-3">Architecture / Core Tech</th>
-                            <th class="px-3 py-3 text-center">AUC-ROC</th>
-                            <th class="px-3 py-3 text-center">EER</th>
-                            <th class="px-3 py-3 text-center">Accuracy</th>
-                            <th class="px-3 py-3 text-center">FAR</th>
-                            <th class="px-3 py-3 text-center">FRR</th>
-                            <th class="px-3 py-3 text-center">F1 Score</th>
-                            <th class="px-3 py-3 text-center">Latency</th>
-                            <th class="px-3 py-3 text-center">Size</th>
-                            <th class="px-4 py-3 text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="benchmark-table-body" class="divide-y divide-slate-800/60 font-mono">
-                        <tr class="bg-cyan-950/20">
-                            <td class="px-4 py-3 font-semibold text-cyan-300 flex items-center gap-1.5"><i class="fa-solid fa-microchip text-cyan-400"></i> Track B: HF Vision Transformer</td>
-                            <td class="px-4 py-3 text-slate-300 font-sans">ViT Patch16 Self-Attention + L2 Projection</td>
-                            <td class="px-3 py-3 text-center text-cyan-400 font-bold">0.7947</td>
-                            <td class="px-3 py-3 text-center">27.67%</td>
-                            <td class="px-3 py-3 text-center">64.50%</td>
-                            <td class="px-3 py-3 text-center text-rose-400">67.17%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">3.83%</td>
-                            <td class="px-3 py-3 text-center">0.7304</td>
-                            <td class="px-3 py-3 text-center">36.7 ms</td>
-                            <td class="px-3 py-3 text-center">21.7 MB</td>
-                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 text-[10px] font-bold border border-emerald-800">PRODUCTION</span></td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-white">Track A: Classical Sklearn</td>
-                            <td class="px-4 py-3 text-slate-400 font-sans">264-d HOG + Morphology + Linear SVM</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">0.8574</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">19.00%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">79.17%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">28.50%</td>
-                            <td class="px-3 py-3 text-center">13.17%</td>
-                            <td class="px-3 py-3 text-center font-bold">0.8065</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">6.0 ms</td>
-                            <td class="px-3 py-3 text-center">5.6 MB</td>
-                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] border border-slate-700">BASELINE / EDGE</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Selection Rationale Card -->
-            <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-800/80 text-xs space-y-2">
-                <div class="flex items-center gap-2 text-cyan-400 font-semibold">
-                    <i class="fa-solid fa-circle-info"></i> Deterministic Dual-Track Banking Rationale:
-                </div>
-                <p class="text-slate-300">
-                    <strong>Track B (Hugging Face Vision Transformer)</strong> is selected as the primary production engine for customer transactions due to its exceptionally low False Rejection Rate (<strong>3.83%</strong> FRR), ensuring legitimate banking clients rarely suffer embarrassing friction at teller windows or digital cheque deposit.
-                    <strong>Track A (scikit-learn Classical Baseline)</strong> serves as a lightning-fast (<strong>6.0 ms</strong>), ultra-compact (<strong>5.6 MB</strong>) baseline with high discriminative power (<strong>0.8574 AUC</strong>, <strong>19.00% EER</strong>) ideally suited for high-throughput batch screening, perimeter validation, and offline branch hardware.
-                </p>
-            </div>
-        </section>
-
 
     </main>
 
-    <!-- Modal for Officer Review -->
-    <div id="review-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="text-base font-bold text-white">Adjudicate Flagged Transaction</h3>
-                <button onclick="closeReviewModal()" class="text-slate-400 hover:text-white">&times;</button>
-            </div>
-            <div class="text-xs space-y-2">
-                <p><span class="text-slate-400">Voucher Ref:</span> <span id="modal-txn-ref" class="mono text-cyan-400 font-semibold"></span></p>
-                <p><span class="text-slate-400">Customer:</span> <span id="modal-cust-name" class="text-white font-medium"></span></p>
-                <p><span class="text-slate-400">Transaction Amount:</span> <span id="modal-amount" class="text-amber-400 mono font-semibold"></span></p>
-                <p><span class="text-slate-400">Similarity Score:</span> <span id="modal-sim" class="mono text-white"></span></p>
-            </div>
-            <div>
-                <label class="block text-xs text-slate-400 mb-1">Mandatory Officer Commentary & Rationale:</label>
-                <textarea id="modal-comment" rows="3" placeholder="Document contact with account holder or reason for forensic approval/rejection..." class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-cyan-500"></textarea>
-            </div>
-            <div class="flex justify-end gap-3 pt-2">
-                <button onclick="submitReview('REJECTED')" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold transition">Reject (Fraud Alert)</button>
-                <button onclick="submitReview('APPROVED')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold transition">Approve Transaction</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for API Endpoint Configuration (Vercel & Multi-Cloud) -->
-    <div id="api-config-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-server text-cyan-400"></i>
-                    <h3 class="text-base font-bold text-white">Backend API Connection</h3>
-                </div>
-                <button onclick="closeApiConfigModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
-            </div>
-            <p class="text-xs text-slate-400 leading-relaxed">
-                Connect this Vercel Web Studio to your FastAPI ML backend instance. Enter your backend host URL below or select a preset.
-            </p>
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1.5">Backend Base URL:</label>
-                <input id="api-url-input" type="text" placeholder="https://signature-vmake-api.onrender.com or http://localhost:8000" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white mono focus:outline-none focus:border-cyan-500">
-                <span class="text-[10px] text-slate-500 mt-1 block">Leave empty to use relative paths (Vercel rewrites to proxy).</span>
-            </div>
-            
-            <!-- Quick Presets -->
-            <div class="space-y-1.5">
-                <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Quick Presets:</span>
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="button" onclick="setApiPreset('http://localhost:8000')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] text-left transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-laptop text-emerald-400"></i> Localhost (8000)
-                    </button>
-                    <button type="button" onclick="setApiPreset('')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] text-left transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-cloud text-cyan-400"></i> Relative (/api Proxy)
-                    </button>
-                </div>
-            </div>
-
-            <!-- Test Connection Result -->
-            <div id="api-test-result" class="hidden text-xs p-2.5 rounded-lg border"></div>
-
-            <div class="flex justify-between items-center pt-3 border-t border-slate-800">
-                <button type="button" onclick="testCurrentApiUrl()" id="btn-test-conn" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-plug"></i> Test Connection
-                </button>
-                <div class="flex gap-2">
-                    <button type="button" onclick="closeApiConfigModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-lg text-xs font-semibold transition">Cancel</button>
-                    <button type="button" onclick="saveApiUrl()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-floppy-disk"></i> Save & Connect
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="border-t border-slate-800 bg-slate-950/60 py-6 text-center text-xs text-slate-500">
-        <p>SIGNATURE VMAKE Intelligent Signature Verification Platform &copy; 2026. Academic & Research Prototype for Banking Transactions.</p>
-    </footer>
-
-    <!-- Interactive Script -->
-    <script>
-        // Automatic API origin resolution: supports local ports (8000, 5173), Vercel, and custom cloud hosts
-        const urlParams = new URLSearchParams(window.location.search);
-        let storedApi = localStorage.getItem('vmake_api_base');
-        let queryApi = urlParams.get('api');
-        if (queryApi) {
-            localStorage.setItem('vmake_api_base', queryApi);
-            storedApi = queryApi;
-        }
-
-        let API_BASE = '';
-        if (storedApi) {
-            API_BASE = storedApi.replace(/\/$/, '');
-        } else if (window.location.port === '8000') {
-            API_BASE = '';
-        } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            API_BASE = 'http://localhost:8000';
-        } else {
-            // Cloud / Vercel deployment: relative path to route through Vercel rewrites proxy
-            API_BASE = '';
-        }
-
-        function configureApiEndpoint() {
-            const input = document.getElementById('api-url-input');
-            input.value = localStorage.getItem('vmake_api_base') || (API_BASE || '');
-            const resultBox = document.getElementById('api-test-result');
-            resultBox.className = 'hidden text-xs p-2.5 rounded-lg border';
-            resultBox.innerHTML = '';
-            document.getElementById('api-config-modal').classList.remove('hidden');
-        }
-
-        function closeApiConfigModal() {
-            document.getElementById('api-config-modal').classList.add('hidden');
-        }
-
-        function setApiPreset(url) {
-            document.getElementById('api-url-input').value = url;
-        }
-
-        async function testCurrentApiUrl() {
-            const inputVal = document.getElementById('api-url-input').value.trim().replace(/\/$/, '');
-            const targetUrl = (inputVal ? `${inputVal}` : (API_BASE || '')) + '/api/v1/health';
-            const resultBox = document.getElementById('api-test-result');
-            const testBtn = document.getElementById('btn-test-conn');
-
-            testBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing...';
-            resultBox.classList.remove('hidden');
-            resultBox.className = 'text-xs p-2.5 rounded-lg border bg-slate-950 border-slate-800 text-slate-300 flex items-center gap-2';
-            resultBox.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-cyan-400"></i> Pinging ' + (inputVal || 'relative (/api)') + '...';
-
-            try {
-                const t0 = performance.now();
-                const res = await fetch(targetUrl);
-                const latency = Math.round(performance.now() - t0);
-                if (res.ok) {
-                    const data = await res.json();
-                    resultBox.className = 'text-xs p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-800 text-emerald-400 flex items-center gap-2';
-                    resultBox.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Connected! Status: ${data.status} (Latency: ${latency}ms)`;
-                } else {
-                    resultBox.className = 'text-xs p-2.5 rounded-lg border bg-amber-950/60 border-amber-800 text-amber-400 flex items-center gap-2';
-                    resultBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Server reached but returned HTTP status ${res.status}.`;
-                }
-            } catch (e) {
-                resultBox.className = 'text-xs p-2.5 rounded-lg border bg-rose-950/60 border-rose-800 text-rose-400 flex items-center gap-2';
-                resultBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400"></i> Connection failed: ${e.message}. Ensure backend is running and CORS is enabled.`;
-            } finally {
-                testBtn.innerHTML = '<i class="fa-solid fa-plug"></i> Test Connection';
-            }
-        }
-
-        function saveApiUrl() {
-            const inputVal = document.getElementById('api-url-input').value.trim().replace(/\/$/, '');
-            if (inputVal) {
-                localStorage.setItem('vmake_api_base', inputVal);
-            } else {
-                localStorage.removeItem('vmake_api_base');
-            }
-            window.location.reload();
-        }
-
-        let currentVerificationId = null;
-        let currentPreset = 'genuine';
-
-        // 1. Health check & model metadata sync
-        async function checkBackendHealth() {
-            const badge = document.getElementById('conn-badge');
-            const dot = document.getElementById('conn-dot');
-            const text = document.getElementById('conn-status-text');
-            const docsLink = document.getElementById('api-docs-link');
-
-            const docsUrl = API_BASE ? `${API_BASE}/docs` : '/docs';
-            if (docsLink) {
-                docsLink.href = docsUrl;
-            }
-
-            try {
-                const healthUrl = (API_BASE ? `${API_BASE}` : '') + '/api/v1/health';
-                const startTime = performance.now();
-                const res = await fetch(healthUrl);
-                const latency = Math.round(performance.now() - startTime);
-
-                if (res.ok) {
-                    const data = await res.json();
-                    badge.className = 'flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-emerald-400 text-xs cursor-pointer hover:border-cyan-500 transition';
-                    dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-                    const hostLabel = API_BASE ? API_BASE.replace(/^https?:\/\//, '') : (window.location.port === '8000' ? 'PORT 8000' : 'VERCEL PROXY');
-                    text.innerText = `REST API LIVE (${hostLabel}, ${latency}ms)`;
-
-                    if (data.active_model && data.active_model.threshold) {
-                        const threshEl = document.getElementById('active-threshold-val');
-                        if (threshEl) threshEl.innerText = Number(data.active_model.threshold).toFixed(4);
-                    }
-                } else {
-                    throw new Error('Non-200 status');
-                }
-            } catch (err) {
-                badge.className = 'flex items-center space-x-2 px-3 py-1 rounded-full bg-rose-950/60 border border-rose-800/50 text-rose-400 text-xs cursor-pointer hover:border-rose-500 transition';
-                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
-                text.innerText = 'BACKEND OFFLINE (CLICK API URL)';
-            }
-        }
-
-        // 2. Real-time Dashboard KPI Metrics Loader
-        async function loadDashboardMetrics() {
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/dashboard/metrics`);
-                if (res.ok) {
-                    const data = await res.json();
-                    const s = data.summary;
-                    document.getElementById('stat-total-verif').innerText = s.total_verifications.toLocaleString();
-                    document.getElementById('stat-verified-rate').innerText = s.pass_rate_pct.toFixed(1) + '%';
-                    document.getElementById('stat-rejected-rate').innerText = s.rejection_rate_pct.toFixed(1) + '%';
-                    document.getElementById('stat-pending-reviews').innerText = s.manual_review_count;
-
-                    if (data.active_model && data.active_model.threshold) {
-                        const threshEl = document.getElementById('active-threshold-val');
-                        if (threshEl) threshEl.innerText = Number(data.active_model.threshold).toFixed(4);
-                    }
-                }
-            } catch (err) {
-                console.warn('Dashboard metrics fetch error:', err);
-            }
-        }
-
-        // 3. Preset Selector (Switching Genuine vs Forged Pair)
-        function loadPreset(type) {
-            currentPreset = type;
-            const amountInput = document.getElementById('input-amount');
-            const typeInput = document.getElementById('input-type');
-            const previewRef = document.getElementById('preview-ref');
-            const previewSub = document.getElementById('preview-sub');
-            const subBadge = document.getElementById('label-sub-badge');
-            const subType = document.getElementById('label-sub-type');
-
-            if (type === 'genuine') {
-                amountInput.value = '4500.00';
-                typeInput.value = 'CHEQUE';
-                previewRef.src = `${API_BASE}/api/v1/sample-image?type=genuine_ref`;
-                previewSub.src = `${API_BASE}/api/v1/sample-image?type=genuine_sub`;
-                if (subBadge) {
-                    subBadge.className = 'text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800';
-                    subBadge.innerText = 'Genuine Sample';
-                }
-                if (subType) subType.innerText = 'Questioned (Genuine)';
-            } else {
-                amountInput.value = '15000.00';
-                typeInput.value = 'WITHDRAWAL';
-                previewRef.src = `${API_BASE}/api/v1/sample-image?type=genuine_ref`;
-                previewSub.src = `${API_BASE}/api/v1/sample-image?type=forged_sub`;
-                if (subBadge) {
-                    subBadge.className = 'text-[9px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800';
-                    subBadge.innerText = 'Skilled Forgery';
-                }
-                if (subType) subType.innerText = 'Questioned (Forgery)';
-            }
-        }
-
-        // 4. End-to-End AI Biometric Verification (Calls Real Siamese Network via FastAPI)
-        async function executeVerification() {
-            const btn = document.getElementById('btn-verify');
-            const originalBtnHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running Transformer Inference...';
-            btn.disabled = true;
-
-            try {
-                const amount = parseFloat(document.getElementById('input-amount').value);
-                const txnType = document.getElementById('input-type').value;
-                const modelTrackEl = document.getElementById('select-model-track');
-                const modelTrack = modelTrackEl ? modelTrackEl.value : 'transformer';
-
-
-                const payload = {
-                    amount: amount,
-                    transaction_type: txnType,
-                    sample_type: currentPreset,
-                    transaction_reference: 'DEMO-TXN-CHEQUE-101',
-                    model_track: modelTrack
-                };
-
-                const res = await fetch(`${API_BASE}/api/v1/verifications/verify-demo`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    renderResults(data);
-                    // Refresh DB metrics and review queue
-                    loadDashboardMetrics();
-                    loadPendingReviews();
-                } else {
-                    const errDetail = await res.text();
-                    alert(`Verification Error (${res.status}): ${errDetail}`);
-                    const badge = document.getElementById('decision-badge');
-                    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800';
-                    badge.innerText = 'API ERROR (' + res.status + ')';
-                }
-            } catch (err) {
-                alert(`Backend Connection Failure: Unable to reach FastAPI at ${API_BASE}. Ensure "python -m uvicorn api.main:app --port 8000" is running.`);
-                const badge = document.getElementById('decision-badge');
-                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800';
-                badge.innerText = 'BACKEND OFFLINE';
-            } finally {
-                btn.innerHTML = originalBtnHtml;
-                btn.disabled = false;
-            }
-        }
-
-        // 5. Render ML Verification & Risk Assessment Results
-        function renderResults(data) {
-            document.getElementById('res-similarity').innerText = Number(data.similarity_score).toFixed(4);
-            document.getElementById('res-distance').innerText = Number(data.euclidean_distance).toFixed(4);
-            document.getElementById('res-overall-risk').innerText = Number(data.overall_risk_score).toFixed(4);
-            document.getElementById('res-risk-tier').innerText = `Tier: ${data.risk_level}`;
-            document.getElementById('trace-id').innerText = data.request_reference;
-
-            if (data.threshold_used) {
-                const threshEl = document.getElementById('active-threshold-val');
-                if (threshEl) threshEl.innerText = Number(data.threshold_used).toFixed(4);
-            }
-
-            const badge = document.getElementById('decision-badge');
-            if (data.decision === 'VERIFIED') {
-                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-800';
-                badge.innerText = 'VERIFIED (PASS)';
-            } else if (data.decision === 'MANUAL_REVIEW') {
-                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-950 text-amber-400 border border-amber-800';
-                badge.innerText = 'MANUAL REVIEW (ESCALATE)';
-            } else {
-                badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-950 text-rose-400 border border-rose-800';
-                badge.innerText = 'REJECTED (FRAUD BLOCKED)';
-            }
-
-            // Decomposition progress bars
-            const simComp = data.similarity_component !== undefined ? Number(data.similarity_component) : Math.max(0, 1 - Number(data.similarity_score));
-            const simPct = Math.min(100, Math.max(0, simComp * 100));
-            document.getElementById('bar-val-sim').innerText = simComp.toFixed(4);
-            document.getElementById('bar-fill-sim').style.width = simPct + '%';
-
-            const qualComp = data.image_quality_component !== undefined ? Number(data.image_quality_component) : 0.08;
-            const qualPct = Math.min(100, Math.max(0, qualComp * 100));
-            document.getElementById('bar-val-quality').innerText = qualComp.toFixed(4);
-            document.getElementById('bar-fill-quality').style.width = qualPct + '%';
-
-            const txnComp = data.transaction_risk_component !== undefined ? Number(data.transaction_risk_component) : 0.20;
-            const txnPct = Math.min(100, Math.max(0, txnComp * 100));
-            document.getElementById('bar-val-txn').innerText = txnComp.toFixed(4);
-            document.getElementById('bar-fill-txn').style.width = txnPct + '%';
-
-            // Explainable Audit Rationale Codes from Backend
-            const tagContainer = document.getElementById('factor-tags');
-            if (data.risk_factors && data.risk_factors.length > 0) {
-                tagContainer.innerHTML = data.risk_factors.map(f => {
-                    const isSevere = f.code.includes('SEVERE') || f.code.includes('POOR') || f.code.includes('FRAUD') || f.code.includes('IRREVERSIBLE');
-                    const isWarn = f.code.includes('BORDERLINE') || f.code.includes('HIGH_VALUE');
-                    const cls = isSevere ? 'bg-rose-950/80 text-rose-400 border-rose-800' :
-                                isWarn ? 'bg-amber-950/80 text-amber-400 border-amber-800' :
-                                'bg-emerald-950/80 text-emerald-400 border-emerald-800';
-                    return `<span title="${f.description}" class="px-2.5 py-1 rounded-md border text-xs cursor-help ${cls}">${f.code}</span>`;
-                }).join('');
-            } else if (data.decision === 'VERIFIED') {
-                tagContainer.innerHTML = '<span class="px-2.5 py-1 rounded-md bg-emerald-950/80 text-emerald-400 border border-emerald-800">AUTHENTIC_STROKE_CORRELATION</span>';
-            } else {
-                tagContainer.innerHTML = '<span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 border border-slate-700">NO_ABNORMAL_FACTORS</span>';
-            }
-        }
-
-        // 6. Officer Adjudication Queue
-        function openReviewModal(txnRef, custName, amount, sim, verifId) {
-            currentVerificationId = verifId;
-            document.getElementById('modal-txn-ref').innerText = txnRef;
-            document.getElementById('modal-cust-name').innerText = custName;
-            document.getElementById('modal-amount').innerText = '$' + Number(amount).toLocaleString('en-US', {minimumFractionDigits: 2});
-            document.getElementById('modal-sim').innerText = Number(sim).toFixed(4);
-            document.getElementById('modal-comment').value = '';
-            document.getElementById('review-modal').classList.remove('hidden');
-        }
-
-        function closeReviewModal() {
-            document.getElementById('review-modal').classList.add('hidden');
-        }
-
-        async function submitReview(decision) {
-            const comment = document.getElementById('modal-comment').value.trim();
-            if (!comment) {
-                alert('Mandatory compliance requirement: Please enter an officer justification comment.');
-                return;
-            }
-
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/verifications/${currentVerificationId}/adjudicate`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        reviewer_username: 'officer_marcus',
-                        decision: decision,
-                        review_comment: comment
-                    })
-                });
-
-                if (res.ok) {
-                    alert(`Transaction successfully adjudicated: ${decision}`);
-                    closeReviewModal();
-                    loadPendingReviews();
-                    loadDashboardMetrics();
-                } else {
-                    const err = await res.text();
-                    alert(`Adjudication error: ${err}`);
-                }
-            } catch(e) {
-                alert('Connection failure submitting officer adjudication.');
-            }
-        }
-
-        async function loadPendingReviews() {
-            const tableBody = document.getElementById('queue-table-body');
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/verifications/pending-reviews`);
-                if (res.ok) {
-                    const data = await res.json();
-                    document.getElementById('stat-pending-reviews').innerText = data.pending_reviews_count;
-
-                    if (!data.queue || data.queue.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="7" class="py-5 text-center text-slate-500 font-medium">No pending transactions requiring officer review.</td></tr>';
-                        return;
-                    }
-
-                    tableBody.innerHTML = data.queue.map(item => `
-                        <tr class="hover:bg-slate-800/40">
-                            <td class="py-3.5 px-4 mono text-cyan-400 font-medium">${item.transaction_reference}</td>
-                            <td class="py-3.5 px-4 text-white font-medium">${item.customer_name}</td>
-                            <td class="py-3.5 px-4 mono text-amber-400 font-semibold">$${Number(item.amount).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                            <td class="py-3.5 px-4 mono">${Number(item.similarity_score).toFixed(4)}</td>
-                            <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800">${Number(item.overall_risk_score || 0).toFixed(4)} (${item.risk_level || 'ESCALATED'})</span></td>
-                            <td class="py-3.5 px-4 text-slate-400">Escalated for biometric/financial compliance review</td>
-                            <td class="py-3.5 px-4 text-right">
-                                <button onclick="openReviewModal('${item.transaction_reference}', '${item.customer_name}', ${item.amount}, ${item.similarity_score}, '${item.verification_id}')" class="px-3 py-1 bg-cyan-600 hover:bg-cyan-500 text-white rounded font-medium transition">Adjudicate</button>
-                            </td>
-                        </tr>
-                    `).join('');
-                }
-            } catch (e) {
-                tableBody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-rose-400">Unable to load review queue: backend unavailable.</td></tr>';
-            }
-        }
-
-        // 7. Regulatory Non-Repudiation Audit Trail Lookup
-        async function fetchAuditTrail() {
-            const txnRef = document.getElementById('lookup-txn-ref').value.trim();
-            const container = document.getElementById('audit-trail-container');
-            if (!txnRef) return;
-
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/audit/trail/${encodeURIComponent(txnRef)}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    let historyHtml = '';
-                    if (data.verification_history && data.verification_history.length > 0) {
-                        historyHtml = data.verification_history.map((vh, i) => `
-                            <div class="relative pl-6 border-l-2 border-slate-800 ml-4 space-y-4">
-                                <div class="relative">
-                                    <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-cyan-500"></span>
-                                    <p class="font-semibold text-white">Verification Attempt #${i + 1} — Verdict: <span class="mono text-cyan-400">${vh.decision}</span></p>
-                                    <p class="text-slate-400 mt-0.5">Similarity: <span class="mono text-emerald-400">${Number(vh.similarity_score).toFixed(4)}</span> | Risk Score: <span class="mono text-amber-400">${vh.risk_assessment ? Number(vh.risk_assessment.overall_risk_score).toFixed(4) : 'N/A'}</span></p>
-                                </div>
-                                ${vh.manual_reviews && vh.manual_reviews.length > 0 ? vh.manual_reviews.map(mr => `
-                                <div class="relative">
-                                    <span class="absolute -left-[31px] top-0 w-3 h-3 rounded-full bg-amber-500"></span>
-                                    <p class="font-semibold text-white">Officer Adjudication: <span class="mono text-amber-400">${mr.decision}</span> by ${mr.reviewer}</p>
-                                    <p class="text-slate-400 mt-0.5">Comment: "${mr.comment}" (${new Date(mr.reviewed_at).toLocaleString()})</p>
-                                </div>
-                                `).join('') : ''}
-                            </div>
-                        `).join('');
-                    } else {
-                        historyHtml = '<p class="text-slate-500 pl-4">No verification history recorded for this voucher yet.</p>';
-                    }
-
-                    container.innerHTML = `
-                        <div class="flex items-center space-x-3 text-sm">
-                            <span class="text-slate-400">Active Voucher:</span>
-                            <span class="mono font-bold text-white">${data.transaction_reference}</span>
-                            <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-semibold">${data.current_status}</span>
-                            <span class="text-xs text-slate-400 font-mono">$${data.amount.toLocaleString()} ${data.currency} (${data.type})</span>
-                        </div>
-                        <div class="mt-4 space-y-4 text-xs text-slate-300">
-                            ${historyHtml}
-                        </div>
-                    `;
-                } else {
-                    alert(`Audit Trail Lookup Failed: Transaction "${txnRef}" not found.`);
-                }
-            } catch (e) {
-                alert('Connection error fetching audit trail.');
-            }
-        }
-
-        // 8. Fetch and populate Dual-Track Model Benchmark
-        async function loadModelBenchmark() {
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/models/benchmark`);
-                if (res.ok) {
-                    const data = await res.json();
-                    const tbody = document.getElementById('benchmark-table-body');
-                    if (!tbody) return;
-                    tbody.innerHTML = `
-                        <tr class="bg-cyan-950/20">
-                            <td class="px-4 py-3 font-semibold text-cyan-300 flex items-center gap-1.5"><i class="fa-solid fa-microchip text-cyan-400"></i> Track B: HF Vision Transformer</td>
-                            <td class="px-4 py-3 text-slate-300 font-sans">ViT Patch16 Self-Attention + L2 Projection</td>
-                            <td class="px-3 py-3 text-center text-cyan-400 font-bold">${data.Track_B_Vision_Transformer?.auc_roc?.toFixed(4) || '0.7947'}</td>
-                            <td class="px-3 py-3 text-center">${(data.Track_B_Vision_Transformer?.eer * 100)?.toFixed(2) || '27.67'}%</td>
-                            <td class="px-3 py-3 text-center">${(data.Track_B_Vision_Transformer?.accuracy * 100)?.toFixed(2) || '64.50'}%</td>
-                            <td class="px-3 py-3 text-center text-rose-400">${(data.Track_B_Vision_Transformer?.far * 100)?.toFixed(2) || '67.17'}%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_B_Vision_Transformer?.frr * 100)?.toFixed(2) || '3.83'}%</td>
-                            <td class="px-3 py-3 text-center">${data.Track_B_Vision_Transformer?.f1_score?.toFixed(4) || '0.7304'}</td>
-                            <td class="px-3 py-3 text-center">${data.Track_B_Vision_Transformer?.average_latency_ms?.toFixed(1) || '36.7'} ms</td>
-                            <td class="px-3 py-3 text-center">${data.Track_B_Vision_Transformer?.model_size_mb || '21.7'} MB</td>
-                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 text-[10px] font-bold border border-emerald-800">PRODUCTION</span></td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-white">Track A1: Classical SVM</td>
-                            <td class="px-4 py-3 text-slate-400 font-sans">264-d HOG + Morphology + Linear SVM</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Classical_Sklearn?.auc_roc?.toFixed(4) || '0.8574'}</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Classical_Sklearn?.eer * 100)?.toFixed(2) || '19.00'}%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Classical_Sklearn?.accuracy * 100)?.toFixed(2) || '79.17'}%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Classical_Sklearn?.far * 100)?.toFixed(2) || '28.50'}%</td>
-                            <td class="px-3 py-3 text-center">${(data.Track_A_Classical_Sklearn?.frr * 100)?.toFixed(2) || '13.17'}%</td>
-                            <td class="px-3 py-3 text-center font-bold">${data.Track_A_Classical_Sklearn?.f1_score?.toFixed(4) || '0.8065'}</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Classical_Sklearn?.average_latency_ms?.toFixed(1) || '6.0'} ms</td>
-                            <td class="px-3 py-3 text-center">${data.Track_A_Classical_Sklearn?.model_size_mb || '1.9'} MB</td>
-                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] border border-slate-700">BASELINE</span></td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-white">Track A2: Random Forest</td>
-                            <td class="px-4 py-3 text-slate-400 font-sans">264-d Features + 100 Decision Trees</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Random_Forest?.auc_roc?.toFixed(4) || '0.9424'}</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Random_Forest?.eer * 100)?.toFixed(2) || '13.33'}%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Random_Forest?.accuracy * 100)?.toFixed(2) || '82.92'}%</td>
-                            <td class="px-3 py-3 text-center">${(data.Track_A_Random_Forest?.far * 100)?.toFixed(2) || '30.33'}%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Random_Forest?.frr * 100)?.toFixed(2) || '3.83'}%</td>
-                            <td class="px-3 py-3 text-center font-bold">${data.Track_A_Random_Forest?.f1_score?.toFixed(4) || '0.8492'}</td>
-                            <td class="px-3 py-3 text-center">${data.Track_A_Random_Forest?.average_latency_ms?.toFixed(1) || '10.2'} ms</td>
-                            <td class="px-3 py-3 text-center">${data.Track_A_Random_Forest?.model_size_mb || '2.4'} MB</td>
-                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 text-[10px] border border-cyan-800">CHAMPION ML</span></td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 font-semibold text-white">Track A3: Logistic Regression</td>
-                            <td class="px-4 py-3 text-slate-400 font-sans">264-d Features + L2 Regularization</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Logistic_Regression?.auc_roc?.toFixed(4) || '0.8808'}</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Logistic_Regression?.eer * 100)?.toFixed(2) || '18.83'}%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Logistic_Regression?.accuracy * 100)?.toFixed(2) || '80.50'}%</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${(data.Track_A_Logistic_Regression?.far * 100)?.toFixed(2) || '27.00'}%</td>
-                            <td class="px-3 py-3 text-center">${(data.Track_A_Logistic_Regression?.frr * 100)?.toFixed(2) || '12.00'}%</td>
-                            <td class="px-3 py-3 text-center font-bold">${data.Track_A_Logistic_Regression?.f1_score?.toFixed(4) || '0.8186'}</td>
-                            <td class="px-3 py-3 text-center text-emerald-400 font-bold">${data.Track_A_Logistic_Regression?.average_latency_ms?.toFixed(1) || '6.0'} ms</td>
-                            <td class="px-3 py-3 text-center">${data.Track_A_Logistic_Regression?.model_size_mb || '0.02'} MB</td>
-                            <td class="px-4 py-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] border border-slate-700">LIGHTWEIGHT</span></td>
-                        </tr>
-                    `;
-                }
-            } catch (err) {
-                console.warn('Failed to load live model benchmark:', err);
-            }
-        }
-
-
-        // =====================================================================
-        // MANUAL REGISTRATION & VERIFICATION WORKFLOW
-        // =====================================================================
-        let selectedGenuineFile = null;
-        let selectedQueryFile = null;
-
-        function setCustomerId(id) {
-            document.getElementById('manual-customer-id').value = id;
-            loadCustomerGallery();
-        }
-
-        function setRandomCustomer() {
-            const randId = 'CUST-' + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('manual-customer-id').value = randId;
-            loadCustomerGallery();
-        }
-
-        function handleGenuineFileSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            selectedGenuineFile = file;
-
-            document.getElementById('genuine-file-name').innerText = file.name;
-            document.getElementById('genuine-file-size').innerText = (file.size / 1024).toFixed(1) + ' KB';
-            document.getElementById('genuine-file-label').innerText = 'Selected: ' + file.name;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('genuine-thumb-preview').src = e.target.result;
-                document.getElementById('genuine-preview-container').classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function handleQueryFileSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            selectedQueryFile = file;
-
-            document.getElementById('query-file-name').innerText = file.name;
-            document.getElementById('query-file-size').innerText = (file.size / 1024).toFixed(1) + ' KB';
-            document.getElementById('query-file-label').innerText = 'Selected: ' + file.name;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('query-thumb-preview').src = e.target.result;
-                document.getElementById('query-preview-container').classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function updateModeUI() {
-            const mode = document.querySelector('input[name="verif-mode"]:checked').value;
-            const modelTrackEl = document.getElementById('select-manual-model-track');
-            const modelTrack = modelTrackEl ? modelTrackEl.value : 'transformer';
-            const threshEl = document.getElementById('res-manual-threshold');
-            const modeBadge = document.getElementById('res-manual-mode-badge');
-            const singleThreshLabel = document.getElementById('label-single-thresh');
-            const galleryThreshLabel = document.getElementById('label-gallery-thresh');
-
-            let baseThresh = 0.7313;
-            let galThresh = 0.7600;
-            let modelLabel = 'ViT';
-
-            if (modelTrack === 'svm' || modelTrack === 'sklearn') {
-                baseThresh = 0.3636;
-                galThresh = 0.4000;
-                modelLabel = 'SVM';
-            } else if (modelTrack === 'random_forest') {
-                baseThresh = 0.4264;
-                galThresh = 0.4600;
-                modelLabel = 'Random Forest';
-            } else if (modelTrack === 'logistic') {
-                baseThresh = 0.2015;
-                galThresh = 0.2400;
-                modelLabel = 'Logistic Reg.';
-            }
-
-            if (singleThreshLabel) singleThreshLabel.innerText = `Latest specimen (\u03c4* = ${baseThresh.toFixed(4)})`;
-            if (galleryThreshLabel) galleryThreshLabel.innerText = `Max similarity (\u03c4_gal* = ${galThresh.toFixed(4)})`;
-
-            if (mode === 'gallery') {
-                threshEl.innerText = galThresh.toFixed(4);
-                modeBadge.innerText = `Mode 2: Customer Gallery Verification (Max-Sim, ${modelLabel})`;
-            } else {
-                threshEl.innerText = baseThresh.toFixed(4);
-                modeBadge.innerText = `Mode 1: Single Reference Verification (${modelLabel})`;
-            }
-        }
-
-
-        async function loadCustomerGallery() {
-            const custId = document.getElementById('manual-customer-id').value.trim();
-            if (!custId) return;
-
-            const container = document.getElementById('gallery-cards-container');
-            const badge = document.getElementById('gallery-count-badge');
-
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/customers/${encodeURIComponent(custId)}/signatures`);
-                if (res.ok) {
-                    const data = await res.json();
-                    badge.innerText = `${data.active_count || 0} Active Specimen(s)`;
-
-                    if (!data.signatures || data.signatures.length === 0) {
-                        container.innerHTML = `
-                            <div class="p-4 rounded-xl border border-slate-800 text-center col-span-3 text-xs text-slate-500">
-                                <i class="fa-solid fa-folder-open text-lg mb-1 block"></i>
-                                No registered signature specimens found for <strong>${custId}</strong>. Enroll a genuine signature above.
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    // Render gallery cards
-                    container.innerHTML = data.signatures.map((sig, idx) => {
-                        const isActive = sig.is_active;
-                        const statusClass = isActive ? 'bg-emerald-950 text-emerald-400 border-emerald-800' : 'bg-slate-800 text-slate-400 border-slate-700';
-                        const imgSrc = `${API_BASE}${sig.image_url}`;
-                        return `
-                            <div class="bg-slate-950 p-3 rounded-xl border ${isActive ? 'border-cyan-900/50' : 'border-slate-800 opacity-60'} flex flex-col justify-between space-y-2">
-                                <div class="flex justify-between items-center text-[10px]">
-                                    <span class="font-bold text-slate-300">Specimen #${idx + 1}</span>
-                                    <span class="px-1.5 py-0.5 rounded border ${statusClass} font-semibold uppercase">${sig.status}</span>
-                                </div>
-                                <div class="h-20 bg-black/80 rounded border border-slate-800 flex items-center justify-center overflow-hidden p-1">
-                                    <img src="${imgSrc}" alt="Specimen" class="max-h-full max-w-full object-contain filter invert opacity-90" onerror="this.onerror=null; this.src='${API_BASE}/api/v1/sample-image?type=genuine_ref';">
-                                </div>
-                                <div class="text-[10px] text-slate-400 space-y-0.5">
-                                    <div class="flex justify-between">
-                                        <span>Quality:</span>
-                                        <span class="mono text-cyan-400">${(sig.image_quality_score * 100).toFixed(1)}%</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span>ID:</span>
-                                        <span class="mono text-slate-300 truncate max-w-[90px]">${sig.signature_id.substring(0, 8)}...</span>
-                                    </div>
-                                </div>
-                                ${isActive ? `
-                                    <button onclick="deactivateSpecimen('${sig.signature_id}')" class="w-full py-1 text-[10px] rounded bg-slate-900 hover:bg-rose-950 hover:text-rose-400 text-slate-400 border border-slate-800 hover:border-rose-900 transition flex items-center justify-center gap-1">
-                                        <i class="fa-solid fa-ban"></i> Deactivate
-                                    </button>
-                                ` : `
-                                    <div class="py-1 text-[10px] text-center text-slate-500 font-mono">SUPERSEDED</div>
-                                `}
-                            </div>
-                        `;
-                    }).join('');
-                }
-            } catch (err) {
-                console.warn('Failed to load customer gallery:', err);
-            }
-        }
-
-        async function registerGenuineSignature() {
-            const custId = document.getElementById('manual-customer-id').value.trim();
-            const alertBox = document.getElementById('enroll-alert');
-            const btn = document.getElementById('btn-register-sig');
-
-            if (!custId) {
-                alertBox.className = 'text-xs p-3 rounded-xl border bg-rose-950/60 border-rose-800 text-rose-400 block';
-                alertBox.innerText = 'Please specify a Customer Reference before registering a signature.';
-                return;
-            }
-
-            if (!selectedGenuineFile) {
-                alertBox.className = 'text-xs p-3 rounded-xl border bg-rose-950/60 border-rose-800 text-rose-400 block';
-                alertBox.innerText = 'Please select a genuine signature image file to upload.';
-                return;
-            }
-
-            const origHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enrolling into Vault...';
-            btn.disabled = true;
-
-            const formData = new FormData();
-            formData.append('customer_reference', custId);
-            formData.append('signature_file', selectedGenuineFile);
-
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/signatures/enroll`, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    alertBox.className = 'text-xs p-3 rounded-xl border bg-emerald-950/60 border-emerald-800 text-emerald-400 block';
-                    alertBox.innerHTML = `<i class="fa-solid fa-circle-check mr-1.5"></i> <strong>Registered!</strong> Specimen ID: <span class="mono">${data.signature_id}</span> &bull; Quality Score: <strong>${(data.image_quality_score * 100).toFixed(1)}%</strong>`;
-                    
-                    // Reset selected file & re-fetch gallery
-                    selectedGenuineFile = null;
-                    document.getElementById('file-genuine-upload').value = '';
-                    document.getElementById('genuine-preview-container').classList.add('hidden');
-                    document.getElementById('genuine-file-label').innerText = 'Click to select genuine signature image (PNG, JPG, TIFF)';
-                    
-                    loadCustomerGallery();
-                    loadDashboardMetrics();
-                } else {
-                    const err = await res.json();
-                    alertBox.className = 'text-xs p-3 rounded-xl border bg-rose-950/60 border-rose-800 text-rose-400 block';
-                    alertBox.innerText = `Registration Failed (${res.status}): ${err.detail || 'Upload error'}`;
-                }
-            } catch (err) {
-                alertBox.className = 'text-xs p-3 rounded-xl border bg-rose-950/60 border-rose-800 text-rose-400 block';
-                alertBox.innerText = `Network Error: Could not connect to API server at ${API_BASE}.`;
-            } finally {
-                btn.innerHTML = origHtml;
-                btn.disabled = false;
-            }
-        }
-
-        async function deactivateSpecimen(sigId) {
-            if (!confirm('Are you sure you want to deactivate this signature reference? Historical audit logs will remain intact.')) {
-                return;
-            }
-
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/signatures/${sigId}/deactivate`, {
-                    method: 'POST'
-                });
-                if (res.ok) {
-                    loadCustomerGallery();
-                } else {
-                    const err = await res.json();
-                    alert(`Deactivation failed: ${err.detail}`);
-                }
-            } catch (err) {
-                alert(`Network error deactivating specimen: ${err}`);
-            }
-        }
-
-        async function verifyQuestionedSignature() {
-            const custId = document.getElementById('manual-customer-id').value.trim();
-            const btn = document.getElementById('btn-verify-manual');
-            const mode = document.querySelector('input[name="verif-mode"]:checked').value;
-
-            if (!custId) {
-                alert('Please specify a target Customer ID for verification.');
-                return;
-            }
-
-            if (!selectedQueryFile) {
-                alert('Please select a questioned signature image file to verify.');
-                return;
-            }
-
-            const origHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Running Biometric Inference...';
-            btn.disabled = true;
-
-            const modelTrackEl = document.getElementById('select-manual-model-track');
-            const modelTrack = modelTrackEl ? modelTrackEl.value : 'transformer';
-
-            const formData = new FormData();
-            formData.append('customer_reference', custId);
-            formData.append('submitted_signature', selectedQueryFile);
-            formData.append('mode', mode);
-            formData.append('model_track', modelTrack);
-
-            try {
-                const res = await fetch(`${API_BASE}/api/v1/verifications/verify`, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    renderManualVerificationResults(data);
-                    loadDashboardMetrics();
-                } else {
-                    const err = await res.json();
-                    alert(`Verification Error (${res.status}): ${err.detail || 'Inference error'}`);
-                    const banner = document.getElementById('verdict-banner');
-                    banner.className = 'px-4 py-1.5 rounded-full text-sm font-bold bg-rose-950 text-rose-400 border border-rose-800';
-                    banner.innerText = 'VERIFICATION FAILED';
-                }
-            } catch (err) {
-                alert(`Backend Connection Failure: Unable to reach FastAPI at ${API_BASE}.`);
-            } finally {
-                btn.innerHTML = origHtml;
-                btn.disabled = false;
-            }
-        }
-
-        function renderManualVerificationResults(data) {
-            const banner = document.getElementById('verdict-banner');
-            const simEl = document.getElementById('res-manual-similarity');
-            const distEl = document.getElementById('res-manual-distance');
-            const threshEl = document.getElementById('res-manual-threshold');
-            const riskEl = document.getElementById('res-manual-risk');
-            const tierEl = document.getElementById('res-manual-tier');
-            const verifIdEl = document.getElementById('res-manual-verif-id');
-            const refCountEl = document.getElementById('res-manual-ref-count');
-            const timeEl = document.getElementById('res-manual-timestamp');
-            const modeBadge = document.getElementById('res-manual-mode-badge');
-
-            simEl.innerText = Number(data.similarity_score).toFixed(4);
-            distEl.innerText = Number(data.euclidean_distance).toFixed(4);
-            threshEl.innerText = Number(data.threshold_used).toFixed(4);
-            riskEl.innerText = Number(data.overall_risk_score).toFixed(4);
-            tierEl.innerText = `Tier: ${data.risk_level || 'STANDARD'}`;
-            verifIdEl.innerText = data.verification_id;
-            refCountEl.innerText = `${data.reference_count || 1} Specimen(s)`;
-            timeEl.innerText = new Date(data.timestamp).toLocaleTimeString() + ' (' + new Date(data.timestamp).toLocaleDateString() + ')';
-            modeBadge.innerText = (data.mode === 'gallery') ? 'Mode 2: Customer Gallery Verification' : 'Mode 1: Single Reference Verification';
-
-            if (data.decision === 'VERIFIED') {
-                banner.className = 'px-4 py-1.5 rounded-full text-sm font-bold bg-emerald-950 text-emerald-400 border border-emerald-800 shadow-lg shadow-emerald-950/40 flex items-center gap-2';
-                banner.innerHTML = '<i class="fa-solid fa-circle-check"></i> VERIFIED &bull; BIOMETRIC MATCH';
-            } else if (data.decision === 'MANUAL_REVIEW') {
-                banner.className = 'px-4 py-1.5 rounded-full text-sm font-bold bg-amber-950 text-amber-400 border border-amber-800 shadow-lg shadow-amber-950/40 flex items-center gap-2';
-                banner.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> MANUAL REVIEW &bull; BORDERLINE';
-            } else {
-                banner.className = 'px-4 py-1.5 rounded-full text-sm font-bold bg-rose-950 text-rose-400 border border-rose-800 shadow-lg shadow-rose-950/40 flex items-center gap-2';
-                banner.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> REJECTED &bull; NO MATCH';
-            }
-        }
-
-
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            checkBackendHealth();
-            loadDashboardMetrics();
-            loadPendingReviews();
-            loadModelBenchmark();
-            loadPreset('genuine');
-            loadCustomerGallery();
-        });
-    </script>
+    <!-- Global Footer -->
+    <footer id="global-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/overview.js"></script>
 </body>
 </html>

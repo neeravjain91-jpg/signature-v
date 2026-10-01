@@ -97,16 +97,67 @@ class VerifyDemoRequest(BaseModel):
 
 
 # =============================================================================
-# FRONTEND DASHBOARD MOUNT
+# FRONTEND MULTI-PAGE APPLICATION ROUTES & STATIC ASSET MOUNT
 # =============================================================================
-@app.get("/", response_class=HTMLResponse, tags=["Web Interface"])
-def serve_dashboard():
-    """Serves the SIGNATURE VMAKE interactive banking verification dashboard."""
-    html_path = Path("web/index.html")
+assets_path = Path("web/assets")
+if assets_path.exists():
+    app.mount("/assets", StaticFiles(directory=str(assets_path)), name="assets")
+
+
+def _serve_page(filename: str) -> HTMLResponse:
+    html_path = Path("web") / filename
     if html_path.exists():
         with open(html_path, "r", encoding="utf-8") as f:
-            return f.read()
-    return "<h1>SIGNATURE VMAKE Platform API Live. Visit /docs for Swagger UI</h1>"
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content=f"<h1>Page {filename} not found</h1>", status_code=404)
+
+
+@app.get("/", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_overview():
+    """Serves the Overview & System Dashboard page."""
+    return _serve_page("index.html")
+
+
+@app.get("/overview", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_overview_alias():
+    """Alias for Overview page."""
+    return _serve_page("index.html")
+
+
+@app.get("/manual-workflow", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_manual_workflow():
+    """Serves the Manual Signature Registration & AI Verification page."""
+    return _serve_page("manual-workflow.html")
+
+
+@app.get("/verification-studio", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_verification_studio():
+    """Serves the Cheque & Voucher Verification Studio page."""
+    return _serve_page("verification-studio.html")
+
+
+@app.get("/model-comparison", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_model_comparison():
+    """Serves the Machine Learning Candidate Model Comparison page."""
+    return _serve_page("model-comparison.html")
+
+
+@app.get("/compliance-queue", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_compliance_queue():
+    """Serves the Compliance Officer Adjudication Queue page."""
+    return _serve_page("compliance-queue.html")
+
+
+@app.get("/audit-timeline", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_audit_timeline():
+    """Serves the Forensic Audit Trail & Regulatory Timeline page."""
+    return _serve_page("audit-timeline.html")
+
+
+@app.get("/model-registry", response_class=HTMLResponse, tags=["Web Interface"])
+def serve_model_registry():
+    """Serves the Model Registry & Live Health Diagnostics page."""
+    return _serve_page("model-registry.html")
 
 
 @app.get("/api/v1/health", tags=["System Diagnostics"])
@@ -504,6 +555,33 @@ def verify_demo(payload: VerifyDemoRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@app.get("/api/v1/verifications/pending-reviews", tags=["Module G: Manual Review Queue"])
+def list_pending_reviews(db: Session = Depends(get_db)):
+    """Retrieves all verifications flagged for compliance review."""
+    pending = db.query(VerificationAttempt).filter_by(decision="MANUAL_REVIEW").all()
+    results = []
+    for v in pending:
+        if not v.manual_reviews:
+            risk = v.risk_assessment
+            txn = v.transaction
+            cust = v.customer or (txn.account.customer if (txn and txn.account) else None)
+            cust_name = cust.full_name if cust else "Authorized Signer"
+            results.append({
+                "verification_id": str(v.verification_id),
+                "transaction_reference": txn.transaction_reference if txn else "FORM-CLEARANCE",
+                "amount": float(txn.amount) if txn else 0.0,
+                "currency": txn.currency if txn else "USD",
+                "transaction_type": txn.transaction_type if txn else "FORM_VERIFICATION",
+                "customer_name": cust_name,
+                "similarity_score": float(v.similarity_score),
+                "threshold_used": float(v.threshold_used),
+                "overall_risk_score": float(risk.overall_risk_score) if risk else None,
+                "risk_level": risk.risk_level if risk else None,
+                "created_at": v.created_at.isoformat()
+            })
+    return {"pending_reviews_count": len(results), "queue": results}
+
+
 @app.get("/api/v1/verifications/{verification_id}", tags=["Module D: Signature Verification"])
 def get_verification(verification_id: str, db: Session = Depends(get_db)):
     """Retrieves full details for a specific verification attempt."""
@@ -618,31 +696,6 @@ def create_transaction(payload: TransactionCreateRequest, db: Session = Depends(
 # =============================================================================
 # MODULE G: MANUAL REVIEW QUEUE
 # =============================================================================
-@app.get("/api/v1/verifications/pending-reviews", tags=["Module G: Manual Review Queue"])
-def list_pending_reviews(db: Session = Depends(get_db)):
-    """Retrieves all verifications flagged for compliance review."""
-    pending = db.query(VerificationAttempt).filter_by(decision="MANUAL_REVIEW").all()
-    results = []
-    for v in pending:
-        if not v.manual_reviews:
-            risk = v.risk_assessment
-            txn = v.transaction
-            results.append({
-                "verification_id": str(v.verification_id),
-                "transaction_reference": txn.transaction_reference,
-                "amount": float(txn.amount),
-                "currency": txn.currency,
-                "transaction_type": txn.transaction_type,
-                "customer_name": txn.account.customer.full_name,
-                "similarity_score": float(v.similarity_score),
-                "threshold_used": float(v.threshold_used),
-                "overall_risk_score": float(risk.overall_risk_score) if risk else None,
-                "risk_level": risk.risk_level if risk else None,
-                "created_at": v.created_at.isoformat()
-            })
-    return {"pending_reviews_count": len(results), "queue": results}
-
-
 @app.post("/api/v1/verifications/{verification_id}/adjudicate", tags=["Module G: Manual Review Queue"])
 def adjudicate_review(
     verification_id: str,

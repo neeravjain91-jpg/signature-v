@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Register & Verify — SIGNATURE VMAKE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+
+    <!-- Global Top Navigation Bar -->
+    <header id="global-header"></header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Page Header -->
+        <div class="border-b border-slate-800 pb-5 flex flex-col md:flex-row justify-between md:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-3">
+                    <span class="px-2.5 py-1 rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-800/80 text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-id-card-clip mr-1.5"></i>Primary Banking Workflow
+                    </span>
+                    <h1 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                        Manual Signature Registration & AI Verification
+                    </h1>
+                </div>
+                <p class="text-sm text-slate-400 mt-1">
+                    Enroll genuine reference specimens into customer vaults (reference only, zero initial verdict), then test questioned signatures with live dynamic AI inference.
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-slate-400">Production Engine:</span>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-900/40 text-cyan-300 border border-cyan-700/50">
+                    <i class="fa-solid fa-microchip mr-1"></i>Hugging Face Vision Transformer (ViT Default)
+                </span>
+            </div>
+        </div>
+
+        <!-- Customer Selection & Context Bar -->
+        <div class="glass-card rounded-2xl p-5 border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-tag text-cyan-400"></i> Target Customer Account Reference
+                </label>
+                <div class="flex items-center gap-2 text-xs">
+                    <span class="text-slate-400">Quick Test Signers:</span>
+                    <button type="button" onclick="setCustomerId('DEMO-ALICE-46')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono hover:text-cyan-400 transition cursor-pointer">ALICE-46</button>
+                    <button type="button" onclick="setCustomerId('DEMO-BOB-30')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono hover:text-cyan-400 transition cursor-pointer">BOB-30</button>
+                    <button type="button" onclick="setCustomerId('DEMO-CUST-001')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 mono hover:text-cyan-400 transition cursor-pointer">CUST-001</button>
+                    <button type="button" onclick="setRandomCustomer()" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-cyan-400 transition cursor-pointer">Random</button>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="manual-customer-id" value="DEMO-ALICE-46" placeholder="Enter Customer Reference (e.g. DEMO-ALICE-46)" class="flex-1 bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl px-4 py-2 text-sm text-white mono focus:outline-none transition">
+                <button type="button" onclick="loadCustomerGallery()" class="px-5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-md transition flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-arrows-rotate"></i> Load Vault
+                </button>
+            </div>
+        </div>
+
+        <!-- 2-Column Grid: Registration on Left, Verification on Right -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- LEFT COLUMN: Step 1 Registration & Active Gallery (6 Cols) -->
+            <div class="lg:col-span-6 space-y-6">
+                
+                <!-- Registration Box -->
+                <div class="glass-card rounded-2xl p-6 border-slate-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">1</span>
+                            Register Genuine Signature (Specimen #1)
+                        </h2>
+                        <span class="text-[10px] text-slate-400">Vault Enrollment</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-xs font-medium text-slate-400">Upload Genuine Reference Specimen:</label>
+                        <div class="relative border-2 border-dashed border-slate-700 hover:border-cyan-500/80 rounded-2xl p-5 text-center cursor-pointer transition bg-slate-950/40">
+                            <input type="file" id="file-genuine-upload" accept="image/png, image/jpeg, image/jpg, image/tiff" onchange="handleGenuineFileSelect(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="space-y-1">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-cyan-400"></i>
+                                <p id="genuine-file-label" class="text-xs text-slate-300 font-medium">Click to select genuine signature card (PNG, JPG, TIFF)</p>
+                                <p class="text-[10px] text-slate-500">Max size: 5MB &bull; 224x224 Bilateral Preprocessing</p>
+                            </div>
+                        </div>
+
+                        <!-- Preview Card -->
+                        <div id="genuine-preview-container" class="hidden p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-3">
+                            <img id="genuine-thumb-preview" src="" alt="Genuine Preview" class="w-16 h-12 object-contain bg-black/60 rounded border border-slate-800 filter invert">
+                            <div class="text-xs flex-1 truncate">
+                                <p id="genuine-file-name" class="font-medium text-white truncate"></p>
+                                <p id="genuine-file-size" class="text-[10px] text-slate-400"></p>
+                            </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800">Ready</span>
+                        </div>
+
+                        <button type="button" id="btn-register-sig" onclick="registerGenuineSignature()" class="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-file-signature"></i> Register Signature
+                        </button>
+
+                        <div id="enroll-alert" class="hidden text-xs p-3 rounded-xl border"></div>
+                    </div>
+                </div>
+
+                <!-- Enrolled Specimen Gallery -->
+                <div class="glass-card rounded-2xl p-6 border-slate-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-images text-cyan-400"></i>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Registered Reference Gallery</h3>
+                        </div>
+                        <span id="gallery-count-badge" class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-cyan-950 text-cyan-400 border border-cyan-800">
+                            Loading...
+                        </span>
+                    </div>
+
+                    <div id="gallery-cards-container" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Populated by loadCustomerGallery() -->
+                    </div>
+
+                    <p class="text-[11px] text-slate-400 leading-relaxed bg-slate-900/30 p-2.5 rounded-lg border border-slate-800/60">
+                        <i class="fa-solid fa-shield text-cyan-400 mr-1"></i> Customer Isolation Guarantee: Enrolled reference specimens are strictly segregated by customer UUID in the tamper-evident biometric vault.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Step 2 Verification (6 Cols) -->
+            <div class="lg:col-span-6 space-y-6">
+                
+                <div class="glass-card rounded-2xl p-6 border-slate-800 space-y-5">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">2</span>
+                            Verify Questioned Signature (Signature #2)
+                        </h2>
+                        <span class="text-[10px] text-emerald-400 mono">Dynamic Inference</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Mode Selector -->
+                        <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-wider text-slate-300 block">Verification Mode:</label>
+                            <div class="grid grid-cols-2 gap-3 text-xs">
+                                <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-cyan-500/50 transition">
+                                    <input type="radio" name="verif-mode" value="single" checked onchange="updateModeUI()" class="text-cyan-500 focus:ring-0">
+                                    <div>
+                                        <span class="font-semibold text-white block">Mode 1: Single Ref</span>
+                                        <span id="label-single-thresh" class="text-[10px] text-slate-400 block">&tau;* = 0.7313</span>
+                                    </div>
+                                </label>
+                                <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-950/80 border border-slate-800 cursor-pointer hover:border-cyan-500/50 transition">
+                                    <input type="radio" name="verif-mode" value="gallery" onchange="updateModeUI()" class="text-cyan-500 focus:ring-0">
+                                    <div>
+                                        <span class="font-semibold text-white block">Mode 2: Gallery</span>
+                                        <span id="label-gallery-thresh" class="text-[10px] text-slate-400 block">&tau;_gal* = 0.7600</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Model Track Selection -->
+                        <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                            <label class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center justify-between">
+                                <span>Machine Learning Candidate Model:</span>
+                                <span class="text-[10px] text-cyan-400">4 Candidates Live</span>
+                            </label>
+                            <select id="select-manual-model-track" onchange="updateModeUI()" class="w-full bg-slate-950 border border-slate-700 focus:border-cyan-500 rounded-xl px-3.5 py-2 text-xs text-white mono focus:outline-none transition">
+                                <option value="transformer" selected>Track B: Hugging Face Vision Transformer (ViT Default, &tau; = 0.7313)</option>
+                                <option value="random_forest">Track A1: Random Forest (Accuracy Champion: 0.9424 AUC, &tau; = 0.4264)</option>
+                                <option value="svm">Track A2: Classical SVM Baseline (1.90 MB, &tau; = 0.3636)</option>
+                                <option value="logistic">Track A3: Classical Logistic Regression (6 ms, &tau; = 0.2015)</option>
+                            </select>
+                        </div>
+
+                        <!-- Questioned File Upload -->
+                        <div class="space-y-2">
+                            <label class="block text-xs font-medium text-slate-400">Upload Questioned Signature #2:</label>
+                            <div class="relative border-2 border-dashed border-slate-700 hover:border-cyan-500/80 rounded-2xl p-5 text-center cursor-pointer transition bg-slate-950/40">
+                                <input type="file" id="file-query-upload" accept="image/png, image/jpeg, image/jpg, image/tiff" onchange="handleQueryFileSelect(event)" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                <div class="space-y-1">
+                                    <i class="fa-solid fa-magnifying-glass text-2xl text-cyan-400"></i>
+                                    <p id="query-file-label" class="text-xs text-slate-300 font-medium">Click to select questioned signature slip (PNG, JPG)</p>
+                                    <p class="text-[10px] text-slate-500">Evaluated against target customer's enrolled reference</p>
+                                </div>
+                            </div>
+
+                            <!-- Preview Card -->
+                            <div id="query-preview-container" class="hidden p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-3">
+                                <img id="query-thumb-preview" src="" alt="Query Preview" class="w-16 h-12 object-contain bg-black/60 rounded border border-slate-800 filter invert">
+                                <div class="text-xs flex-1 truncate">
+                                    <p id="query-file-name" class="font-medium text-white truncate"></p>
+                                    <p id="query-file-size" class="text-[10px] text-slate-400"></p>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-800">Questioned</span>
+                            </div>
+                        </div>
+
+                        <!-- Verify Button -->
+                        <button type="button" id="btn-verify-manual" onclick="verifyQuestionedSignature()" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-600/30 transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-circle-check"></i> VERIFY SIGNATURE
+                        </button>
+
+                        <!-- Live Results Card -->
+                        <div id="manual-results-panel" class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-4">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Biometric & Banking Verdict</span>
+                                <span id="res-manual-mode-badge" class="text-[10px] text-cyan-400 mono">Mode 1: Single Reference Verification</span>
+                            </div>
+
+                            <!-- Verdict Banner -->
+                            <div id="verdict-banner" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-950 text-slate-400 border border-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-hourglass-start text-slate-500"></i> Awaiting questioned signature verification...
+                            </div>
+
+                            <!-- 6-Metric Forensic Grid -->
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono text-xs">
+                                <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 font-sans block">Biometric Verdict</span>
+                                    <span id="res-manual-match-verdict" class="font-bold text-slate-400">--</span>
+                                </div>
+                                <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 font-sans block">Similarity Score</span>
+                                    <span id="res-manual-similarity" class="font-bold text-white">--</span>
+                                </div>
+                                <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 font-sans block">Operating Threshold (&tau;)</span>
+                                    <span id="res-manual-threshold" class="font-bold text-cyan-400">0.7313</span>
+                                </div>
+                                <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 font-sans block">Euclidean Distance</span>
+                                    <span id="res-manual-distance" class="text-slate-300">--</span>
+                                </div>
+                                <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 font-sans block">Composite Risk</span>
+                                    <span id="res-manual-risk" class="font-bold text-amber-400">--</span>
+                                    <span id="res-manual-tier" class="text-[9px] text-slate-400 block font-sans">Tier: --</span>
+                                </div>
+                                <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                    <span class="text-[10px] text-slate-400 font-sans block">References Evaluated</span>
+                                    <span id="res-manual-ref-count" class="text-slate-300">--</span>
+                                </div>
+                            </div>
+
+                            <!-- Audit Traceability Footer -->
+                            <div class="text-[10px] text-slate-400 space-y-1 pt-2 border-t border-slate-800/80">
+                                <div class="flex justify-between">
+                                    <span>Model Selected:</span>
+                                    <span id="res-manual-model-used" class="mono text-cyan-400">HF Vision Transformer</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Verification ID:</span>
+                                    <span id="res-manual-verif-id" class="mono text-slate-300 truncate max-w-[200px]">--</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Timestamp:</span>
+                                    <span id="res-manual-timestamp" class="mono text-slate-400">--</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer id="global-footer"></footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/manual-workflow.js"></script>
+</body>
+</html>

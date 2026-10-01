@@ -108,23 +108,34 @@ def main():
             return f"Loaded ({p.stat().st_size / (1024*1024):.2f} MB) | Inf Sim: {out.similarity_score:.4f} | Dec: {out.decision}"
         all_passed &= check_status(f"Model: {label}", check_model)
 
-    # 6. Frontend Files
+    # 6. Frontend Multi-Page Assets
     def check_web():
-        p = Path("web/index.html")
-        if not p.exists():
-            raise FileNotFoundError("web/index.html not found")
-        return f"{p.stat().st_size / 1024:.1f} KB"
-    all_passed &= check_status("Frontend UI Assets", check_web)
+        pages = [
+            "index.html", "manual-workflow.html", "verification-studio.html",
+            "model-comparison.html", "compliance-queue.html", "audit-timeline.html", "model-registry.html"
+        ]
+        missing = [p for p in pages if not (Path("web") / p).exists()]
+        if missing:
+            raise FileNotFoundError(f"Missing pages: {missing}")
+        if not Path("web/assets/css/app.css").exists() or not Path("web/assets/js/common.js").exists():
+            raise FileNotFoundError("Missing web/assets static files")
+        total_sz = sum((Path("web") / p).stat().st_size for p in pages) / 1024
+        return f"7/7 Independent Pages Verified ({total_sz:.1f} KB)"
+    all_passed &= check_status("Frontend Multi-Page Assets", check_web)
 
-    # 7. API Entrypoint
+    # 7. API Entrypoint & Page Routes
     def check_api():
         from api.main import app
         routes = [r.path for r in app.routes]
-        required = ["/api/v1/health", "/api/v1/models/health", "/api/v1/customers", "/api/v1/verifications/verify"]
+        required = [
+            "/", "/manual-workflow", "/verification-studio", "/model-comparison",
+            "/compliance-queue", "/audit-timeline", "/model-registry",
+            "/api/v1/health", "/api/v1/models/health", "/api/v1/customers", "/api/v1/verifications/verify"
+        ]
         missing = [r for r in required if r not in routes]
         if missing:
             raise ValueError(f"Missing routes: {missing}")
-        return f"{len(routes)} routes registered"
+        return f"{len(routes)} routes registered (all 7 page routes live)"
     all_passed &= check_status("FastAPI Application Entrypoint", check_api)
 
     print("-" * 65)

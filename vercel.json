@@ -1,14 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "name": "signature-vmake",
   "cleanUrls": true,
   "outputDirectory": "web",
   "framework": null,
   "buildCommand": null,
   "installCommand": null,
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+  "routes": [
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/manual-workflow", "dest": "/manual-workflow.html" },
+    { "src": "/verification-studio", "dest": "/verification-studio.html" },
+    { "src": "/model-comparison", "dest": "/model-comparison.html" },
+    { "src": "/compliance-queue", "dest": "/compliance-queue.html" },
+    { "src": "/audit-timeline", "dest": "/audit-timeline.html" },
+    { "src": "/model-registry", "dest": "/model-registry.html" },
+    { "src": "/overview", "dest": "/index.html" },
+    { "src": "/", "dest": "/index.html" }
   ]
 }

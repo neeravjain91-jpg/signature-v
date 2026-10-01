@@ -1,0 +1,73 @@
+/* SIGNATURE VMAKE — Unified Banking UI Stylesheet */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --bg-main: #0F172A;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(56, 189, 248, 0.3);
+    --accent-cyan: #38BDF8;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: #F8FAFC;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+    border-color: var(--border-hover);
+}
+
+.accent-glow {
+    box-shadow: 0 0 25px -5px rgba(14, 165, 233, 0.3);
+}
+
+/* Custom Scrollbar for banking log terminals */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #090D16;
+}
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* Nav Link Active Indicator */
+.nav-link-active {
+    color: #38BDF8 !important;
+    font-weight: 600;
+    position: relative;
+}
+.nav-link-active::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #38BDF8;
+    border-radius: 2px;
+    box-shadow: 0 0 8px #38BDF8;
+}

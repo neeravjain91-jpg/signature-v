@@ -5,14 +5,30 @@
 [![Hugging Face Transformers](https://img.shields.io/badge/Transformers-5.17+-yellow.svg)](https://huggingface.co/docs/transformers/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Production-green.svg)](https://fastapi.tiangolo.com/)
 [![Database](https://img.shields.io/badge/PostgreSQL%20%7C%20SQLite-3NF%20Audit-blue.svg)](database/schema.sql)
-[![Tests](https://img.shields.io/badge/pytest-43%20passed%20(100%25)-success.svg)](tests/)
+[![Tests](https://img.shields.io/badge/pytest-53%20passed%20(100%25)-success.svg)](tests/)
 [![Architecture](https://img.shields.io/badge/Architecture-Dual--Track%20Production-success.svg)](artifacts/models/)
 
 **SIGNATURE VMAKE** is an enterprise-grade, writer-independent biometric signature verification and multi-factor fraud risk assessment system engineered for banking workflows (cheque clearing, counter withdrawals, high-value wire transfers), strictly aligned with the **Bank Muscat Business Requirements Document (BRD) template** and approved project synopsis.
 
 ---
 
-## 1. System Architecture & Multi-Model ML Engine
+## 1. Web Application Pages (Multi-Page Architecture)
+
+SIGNATURE VMAKE features a modular, multi-page web application where each operational capability has its own dedicated URL, route, and DOM context:
+
+| Page | Route | Purpose |
+|---|---|---|
+| **Overview** | `/` | System dashboard & executive KPI cards |
+| **Manual Register & Verify** | `/manual-workflow` | Register first signature (reference only) and verify second signature |
+| **Cheque Studio** | `/verification-studio` | Banking transaction verification & multi-factor fraud risk decomposition |
+| **Model Comparison** | `/model-comparison` | Compare ML candidates (AUC, EER, Accuracy, Latency, Size) |
+| **Officer Queue** | `/compliance-queue` | Manual-review escalated cases & officer adjudication modal |
+| **Audit Trail** | `/audit-timeline` | Verification & non-repudiation regulatory audit history |
+| **Model Health** | `/model-registry` | Live model readiness, checkpoints, and real-time inference ping |
+
+---
+
+## 2. System Architecture & Multi-Model ML Engine
 
 SIGNATURE VMAKE operates on an approved **Dual-Track Machine Learning Architecture**, providing both a modern deep representation learning track and an interpretable classical classifier suite:
 
@@ -141,7 +157,7 @@ python scripts/diagnose.py
 ```
 
 ### 3. Run Test Suite
-Execute the full automated test suite (43 unit and integration tests):
+Execute the full automated test suite (53 unit, integration, and page routing tests):
 ```bash
 python -m pytest tests -v
 ```
