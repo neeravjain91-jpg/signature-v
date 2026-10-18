@@ -82,7 +82,7 @@ function renderPrimaryRail(activeNavKey) {
     }).join('');
 
     railEl.innerHTML = `
-        <a href="/" class="rail-logo" title="SYNAPSE Biometric Analysis Lab">
+        <a href="/" class="rail-logo" title="SIGNATURE VMAKE — AI Biometric Operations">
             <i class="fa-solid fa-signature"></i>
         </a>
 

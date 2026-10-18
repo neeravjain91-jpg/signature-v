@@ -54,6 +54,6 @@ jobs:
 
     - name: Run Pytest Test Suite
       env:
-        DATABASE_URL: sqlite:///database/banking_system_demo.db
+        DATABASE_URL: postgresql://vmake_test:vmake_test_password@localhost:5432/vmake_test_db
       run: |
         pytest -v tests/

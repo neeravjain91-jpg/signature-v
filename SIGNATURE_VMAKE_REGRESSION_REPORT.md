@@ -3,7 +3,7 @@
 > **System:** SIGNATURE VMAKE (AI-Powered Signature Verification & Banking Document Authentication System)  
 > **Repository:** `https://github.com/neeravjain91-jpg/signature-verification`  
 > **Governing Standards:** Approved SIGNATURE VMAKE Project Synopsis & Bank Muscat BRD Requirements Template  
-> **Test Status:** 100% Passed (53/53 Unit & Integration Tests, 8/8 Multipage E2E Tests)  
+> **Test Status:** 100% Passed (64/64 Automated Pytest Suite, 23/23 PostgreSQL Integration Tests, 8/8 Multipage E2E Tests)  
 > **Visual Status:** Zero Visual or Behavioral Regression across all 7 Interfaces  
 > **Date:** October 2026  
 
@@ -205,6 +205,43 @@ The audit examined how this requirement is legitimately satisfied in SIGNATURE V
      - Historical customer dispute velocity
 3. **Formal Resolution:**
    - No text NLP parser is required or appropriate for non-textual handwriting biometrics. The system fully complies with the curriculum intent through Vision Transformers and enterprise banking risk analytics.
+
+---
+
+## 6. Targeted Compliance Blocker Regression & PostgreSQL Evidence
+
+To permanently resolve the three technology-compliance blockers flagged by independent audit, a dedicated regression test suite (`tests/test_compliance_blockers.py`) was implemented and executed:
+
+```text
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
+collected 11 items
+
+tests/test_compliance_blockers.py::test_postgresql_url_normalization_with_detected_driver PASSED [  9%]
+tests/test_compliance_blockers.py::test_postgres_legacy_scheme_normalization PASSED [ 18%]
+tests/test_compliance_blockers.py::test_sqlite_url_preserved PASSED      [ 27%]
+tests/test_compliance_blockers.py::test_alembic_env_url_normalization PASSED [ 36%]
+tests/test_compliance_blockers.py::test_verification_service_default_is_transformer PASSED [ 45%]
+tests/test_compliance_blockers.py::test_get_model_verifier_default_and_types PASSED [ 54%]
+tests/test_compliance_blockers.py::test_health_endpoint_vmake_branding_and_active_model PASSED [ 63%]
+tests/test_compliance_blockers.py::test_models_diagnostics_endpoint PASSED [ 72%]
+tests/test_compliance_blockers.py::test_benchmark_endpoint_loads_empirical_data_and_rf_accuracy PASSED [ 81%]
+tests/test_compliance_blockers.py::test_benchmark_endpoint_returns_503_when_artifact_missing PASSED [ 90%]
+tests/test_compliance_blockers.py::test_dashboard_metrics_does_not_contain_hardcoded_latency PASSED [100%]
+
+============================= 11 passed in 13.36s =============================
+```
+
+### PostgreSQL Live Integration Results
+Tested directly against live PostgreSQL 18 instance running in WSL (`localhost:5432`, `vmake_test_db`):
+- `alembic upgrade head`: Successfully executed DDL migrations (`Context impl PostgresqlImpl. Will assume transactional DDL.`).
+- Integration tests with `DATABASE_URL=postgresql://...`: **23/23 PASSED** with zero SQLite fallback.
+
+### Comprehensive Test Suite Status
+- **Total Test Cases Executed:** 64
+- **Passed:** 64 (100%)
+- **Failed:** 0
+- **Errors:** 0
 
 ---
 

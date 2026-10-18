@@ -26,10 +26,10 @@ from ml.preprocessing.signature_preprocessor import SignaturePreprocessor
 from ml.models.siamese_network import SiameseSignatureNet
 
 
-class SignatureVerifier(SignatureVerificationModel):
+class LegacySiameseVerifier(SignatureVerificationModel):
     """
-    Production Siamese Deep Neural Verifier conforming to SignatureVerificationModel interface.
-    Backward-compatible with existing enrollment and verification services.
+    Historical / Secondary Siamese Neural Verifier conforming to SignatureVerificationModel interface.
+    Segregated for historical evaluation only. NOT used in active SIGNATURE VMAKE production paths.
     """
 
     def __init__(
@@ -45,80 +45,41 @@ class SignatureVerifier(SignatureVerificationModel):
 
         self.preprocessor = SignaturePreprocessor(target_size=(224, 224))
 
-        # 1. Resolve Checkpoint Priority: VMAKE Champion > v4 Champion > Final Champion > Champion > Baseline
-        vmake_path = Path("artifacts/models/vmake_champion_model.pt")
-        v4_path = Path("artifacts/models/v4_champion_model.pt")
-        final_champ_path = Path("artifacts/models/final_champion_model.pt")
-        champ_path = Path("artifacts/models/champion_siamese_model.pt")
+        # Resolve Historical Secondary Checkpoint: Baseline > Champion
         base_path = Path("artifacts/models/best_siamese_model.pt")
+        champ_path = Path("artifacts/models/champion_siamese_model.pt")
 
         if checkpoint_path is not None:
             self.checkpoint_path = Path(checkpoint_path)
-        elif v4_path.exists():
-            self.checkpoint_path = v4_path
-        elif vmake_path.exists():
-            self.checkpoint_path = vmake_path
-        elif final_champ_path.exists():
-            self.checkpoint_path = final_champ_path
-        elif champ_path.exists():
-            self.checkpoint_path = champ_path
         elif base_path.exists():
             self.checkpoint_path = base_path
+        elif champ_path.exists():
+            self.checkpoint_path = champ_path
         else:
-            raise FileNotFoundError("No Siamese model checkpoint found in artifacts/models/")
+            raise FileNotFoundError("No legacy Siamese model checkpoint found in artifacts/models/")
 
         checkpoint = torch.load(self.checkpoint_path, map_location=self.device)
         embedding_dim = checkpoint.get("embedding_dim", 256)
         backbone = checkpoint.get("backbone", "resnet18")
         model_arch = str(checkpoint.get("model_architecture", "")).lower()
 
-        # 2. Resolve Threshold and Model Version
-        resolved_threshold = 0.5924
-        self.gallery_threshold = 0.6312
-        model_version = "1.0.0-vmake-champion" if "vmake" in str(self.checkpoint_path).lower() else "4.0.0-champion"
-        vmake_thresh_file = Path("artifacts/models/vmake_champion_threshold.json")
-        v4_thresh_file = Path("artifacts/models/v4_champion_threshold.json")
-        final_config_file = Path("artifacts/models/final_champion_config.json")
+        # 2. Resolve Threshold and Model Version for Legacy Siamese
+        resolved_threshold = 0.7766
+        self.gallery_threshold = 0.7000
+        model_version = "1.0.0-legacy-siamese"
         champ_config_file = Path("artifacts/models/champion_config.json")
         calib_file = Path("artifacts/models/calibrated_threshold.json")
 
         if threshold is not None:
             resolved_threshold = float(threshold)
-        elif vmake_thresh_file.exists() and "vmake" in str(self.checkpoint_path).lower():
-            try:
-                with open(vmake_thresh_file, "r") as f:
-                    tdata = json.load(f)
-                    resolved_threshold = float(tdata.get("calibrated_threshold", 0.5924))
-                    self.gallery_threshold = float(tdata.get("gallery_threshold", resolved_threshold))
-                    model_version = tdata.get("model_version", "1.0.0-vmake-champion")
-            except Exception:
-                resolved_threshold = float(checkpoint.get("calibrated_threshold", 0.5924))
-                model_version = "1.0.0-vmake-champion"
-        elif v4_thresh_file.exists() and "v4" in str(self.checkpoint_path).lower():
-            try:
-                with open(v4_thresh_file, "r") as f:
-                    tdata = json.load(f)
-                    resolved_threshold = float(tdata.get("single_pair_threshold", 0.5924))
-                    self.gallery_threshold = float(tdata.get("gallery_threshold", 0.6312))
-                    model_version = "4.0.0-champion"
-            except Exception:
-                resolved_threshold = float(checkpoint.get("optimal_threshold", 0.5924))
-        elif final_config_file.exists() and "final_champion" in str(self.checkpoint_path).lower():
-            try:
-                with open(final_config_file, "r") as f:
-                    cdata = json.load(f)
-                    resolved_threshold = float(cdata.get("frozen_calibrated_threshold", cdata.get("frozen_threshold", 0.7060)))
-                    model_version = cdata.get("model_version", "3.0.0-final-champion")
-            except Exception:
-                resolved_threshold = float(checkpoint.get("calibrated_threshold", 0.7060))
         elif champ_config_file.exists() and "champion" in str(self.checkpoint_path).lower():
             try:
                 with open(champ_config_file, "r") as f:
                     cdata = json.load(f)
-                    resolved_threshold = float(cdata.get("frozen_threshold", 0.7382))
+                    resolved_threshold = float(cdata.get("frozen_threshold", cdata.get("frozen_calibrated_threshold", 0.7394)))
                     model_version = cdata.get("model_version", "2.0.0-champion")
             except Exception:
-                resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7382))
+                resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7394))
         elif calib_file.exists():
             try:
                 with open(calib_file, "r") as f:
@@ -126,13 +87,12 @@ class SignatureVerifier(SignatureVerificationModel):
             except Exception:
                 resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
         else:
-            resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7500))
+            resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7766))
 
-        chosen_model_name = "SYNAPSE_Siamese_ResNet18_Champion" if "v4" in str(self.checkpoint_path).lower() else ("VMAKE_Siamese_Champion" if "vmake" in str(self.checkpoint_path).lower() else "Siamese_ResNet_Champion")
         super().__init__(
-            model_name=chosen_model_name,
+            model_name="Legacy_Siamese_ResNet18",
             model_version=model_version,
-            model_type="SIAMESE_RESNET",
+            model_type="LEGACY_SIAMESE",
             threshold=resolved_threshold,
             review_margin=0.05
         )
@@ -257,6 +217,10 @@ class SignatureVerifier(SignatureVerificationModel):
 
 
 
+# Historical backwards compatibility alias
+SignatureVerifier = LegacySiameseVerifier
+
+
 def get_model_verifier(
     model_type: str = "transformer",
     checkpoint_path: Optional[str] = None,
@@ -266,11 +230,13 @@ def get_model_verifier(
     """
     Factory function returning a concrete SignatureVerificationModel instance.
     Supports VMAKE Dual-Track production architecture:
-    - 'transformer' / 'track_b': Hugging Face Vision Transformer (Default Production)
-    - 'sklearn' / 'classical' / 'track_a': Classical SVM with 264-d HOG/morphological features
-    - 'siamese' / 'track_c': Legacy Siamese ResNet (retained for backward compatibility)
+    - 'transformer' / 'vit' / 'track_b': Hugging Face Vision Transformer (Default Production)
+    - 'random_forest' / 'rf': Classical Random Forest (Track A1 Champion)
+    - 'svm' / 'classical_svm' / 'sklearn' / 'track_a': Classical SVM (Track A2 Champion)
+    - 'logistic' / 'lr': Classical Logistic Regression (Track A3 Baseline)
+    - 'legacy_siamese' / 'siamese': Legacy Siamese ResNet (Historical secondary only)
     """
-    m_type = model_type.lower()
+    m_type = (model_type or "transformer").lower()
     if m_type in ("transformer", "vit", "track_b"):
         from ml.models.transformer_signature_model import VisionTransformerVerifier
         ckpt = checkpoint_path or "artifacts/models/transformer_signature_model.pt"
@@ -287,8 +253,8 @@ def get_model_verifier(
         from ml.baselines.classical_classifier import ClassicalSklearnVerifier
         ckpt = checkpoint_path or "artifacts/models/classical_logistic_model.joblib"
         return ClassicalSklearnVerifier(checkpoint_path=ckpt, threshold=threshold or 0.2015)
-    elif m_type in ("siamese", "resnet", "champion", "track_c", "neural"):
-        return SignatureVerifier(checkpoint_path=checkpoint_path, threshold=threshold, device=device)
+    elif m_type in ("siamese", "resnet", "legacy_siamese", "track_c"):
+        return LegacySiameseVerifier(checkpoint_path=checkpoint_path, threshold=threshold, device=device)
     else:
-        raise ValueError(f"Unknown model_type: '{model_type}'. Choose from 'transformer', 'svm', 'random_forest', 'logistic'.")
+        raise ValueError(f"Unknown model_type: '{model_type}'. Choose from 'transformer', 'random_forest', 'svm', 'logistic'.")
 

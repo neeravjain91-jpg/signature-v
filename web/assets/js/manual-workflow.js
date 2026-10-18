@@ -79,36 +79,36 @@ function updateModeUI() {
     const modeEl = document.querySelector('input[name="verif-mode"]:checked');
     const mode = modeEl ? modeEl.value : 'single';
     const modelTrackEl = document.getElementById('select-manual-model-track');
-    const modelTrack = modelTrackEl ? modelTrackEl.value : 'siamese';
+    const modelTrack = modelTrackEl ? modelTrackEl.value : 'transformer';
     const threshEl = document.getElementById('res-manual-threshold');
     const modeBadge = document.getElementById('res-manual-mode-badge');
     const singleThreshLabel = document.getElementById('label-single-thresh');
     const galleryThreshLabel = document.getElementById('label-gallery-thresh');
 
-    let baseThresh = 0.5924;
-    let galThresh = 0.6312;
-    let modelLabel = 'SYNAPSE Siamese ResNet-18';
+    let baseThresh = 0.7313;
+    let galThresh = 0.7600;
+    let modelLabel = 'Vision Transformer (DeiT)';
 
-    if (modelTrack === 'siamese') {
-        baseThresh = 0.5924;
-        galThresh = 0.6312;
-        modelLabel = 'SYNAPSE Siamese ResNet-18 v4';
-    } else if (modelTrack === 'transformer') {
+    if (modelTrack === 'transformer') {
         baseThresh = 0.7313;
         galThresh = 0.7600;
-        modelLabel = 'Vision Transformer';
-    } else if (modelTrack === 'svm' || modelTrack === 'sklearn') {
-        baseThresh = 0.3636;
-        galThresh = 0.4000;
-        modelLabel = 'Classical SVM';
+        modelLabel = 'Vision Transformer (DeiT)';
     } else if (modelTrack === 'random_forest') {
         baseThresh = 0.4264;
         galThresh = 0.4600;
-        modelLabel = 'Random Forest';
+        modelLabel = 'Random Forest Classifier';
+    } else if (modelTrack === 'svm' || modelTrack === 'sklearn') {
+        baseThresh = 0.3636;
+        galThresh = 0.4000;
+        modelLabel = 'Classical SVM Baseline';
     } else if (modelTrack === 'logistic') {
         baseThresh = 0.2015;
         galThresh = 0.2400;
-        modelLabel = 'Logistic Reg.';
+        modelLabel = 'Logistic Regression';
+    } else if (modelTrack === 'legacy_siamese' || modelTrack === 'siamese') {
+        baseThresh = 0.7500;
+        galThresh = 0.7000;
+        modelLabel = 'Legacy Siamese ResNet-18';
     }
 
     if (singleThreshLabel) singleThreshLabel.innerText = `\u03c4* = ${baseThresh.toFixed(4)}`;
@@ -285,7 +285,7 @@ async function verifyQuestionedSignature() {
     btn.disabled = true;
 
     const modelTrackEl = document.getElementById('select-manual-model-track');
-    const modelTrack = modelTrackEl ? modelTrackEl.value : 'siamese';
+    const modelTrack = modelTrackEl ? modelTrackEl.value : 'transformer';
 
     const formData = new FormData();
     formData.append('customer_reference', custId);
@@ -358,7 +358,7 @@ function renderManualVerificationResults(data, latencyMs = '8.5') {
 
     // Model track name
     const modelTrackEl = document.getElementById('select-manual-model-track');
-    const selectedModelName = modelTrackEl ? modelTrackEl.options[modelTrackEl.selectedIndex].text : 'SYNAPSE Siamese ResNet-18';
+    const selectedModelName = modelTrackEl ? modelTrackEl.options[modelTrackEl.selectedIndex].text : 'Hugging Face Vision Transformer';
     if (modelUsedEl) modelUsedEl.innerText = selectedModelName;
 
     // Biometric Result: MATCH / NO MATCH

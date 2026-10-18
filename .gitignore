@@ -32,3 +32,6 @@ Desktop.ini
 # Runtime vault storage and scratch
 data/vault/
 scratch/
+*.pdf
+synopsis_extracted.txt
+SYNAPSE_UI_REDESIGN_REPORT.md

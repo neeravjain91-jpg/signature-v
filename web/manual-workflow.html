@@ -34,8 +34,8 @@
 <body class="bg-[#090D16] text-slate-100 min-h-screen">
 
     <!-- Compatibility Anchors for Automated Test Harness -->
-    <header id="global-header" style="display: none;">SYNAPSE &bull; SIGNATURE VMAKE BIOMETRIC ANALYSIS LAB</header>
-    <footer id="global-footer" style="display: none;">SYNAPSE &copy; 2026. Production Siamese ResNet-18 v4 Champion. SIGNATURE VMAKE Compatible.</footer>
+    <header id="global-header" style="display: none;">SIGNATURE VMAKE &bull; BIOMETRIC CASE REVIEW & OPERATIONS</header>
+    <footer id="global-footer" style="display: none;">SIGNATURE VMAKE &copy; 2026. Production Dual-Track Architecture.</footer>
 
     <div class="app-container">
 
@@ -50,7 +50,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-xs font-bold tracking-wider text-sky-400 flex items-center gap-1.5 uppercase">
-                            <i class="fa-solid fa-microchip"></i> SYNAPSE LAB
+                            <i class="fa-solid fa-signature"></i> SIGNATURE VMAKE
                         </div>
                         <div class="text-[10px] text-slate-400 font-mono">SPECIMEN VAULT &bull; 3NF</div>
                     </div>
@@ -121,13 +121,13 @@
                             <span class="text-xs text-slate-400 mono">WORKBENCH PROTOCOL: ZERO-LEAKAGE ENROLL & VERIFY</span>
                         </div>
                         <h1 class="text-xl md:text-2xl font-bold text-white tracking-tight">Manual Signature Registration & AI Verification</h1>
-                        <p class="text-xs text-slate-400 mt-1">Specialized Biometric Verification Laboratory: Siamese ResNet-18 Shared-Weight Representation & Metric Loss Analysis.</p>
+                        <p class="text-xs text-slate-400 mt-1">Bank Muscat Biometric Operations: Multi-Model AI Signature Verification & Specimen Enrollment.</p>
                     </div>
 
                     <div class="flex items-center gap-3">
                         <div class="flex flex-col text-right">
-                            <span class="text-[10px] text-slate-400 uppercase font-mono">FROZEN TEST THRESHOLD</span>
-                            <span class="text-sm font-bold text-emerald-400 mono">&tau;* = 0.5924 &bull; &tau;gal* = 0.6312</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-mono">PRODUCTION DEFAULT THRESHOLD</span>
+                            <span class="text-sm font-bold text-emerald-400 mono">&tau;* = 0.7313 (Track B ViT)</span>
                         </div>
                     </div>
                 </div>
@@ -234,11 +234,11 @@
                             <div class="bg-[#0C1322] p-3 rounded-lg border border-[#1E2D4A] space-y-1.5">
                                 <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Biometric Inference Model:</label>
                                 <select id="select-manual-model-track" onchange="updateModeUI()" class="w-full bg-[#080C14] border border-[#1E2D4A] rounded-lg px-3 py-1.5 text-xs text-sky-300 mono focus:outline-none focus:border-sky-500">
-                                    <option value="siamese" selected>SYNAPSE v4 Champion: Siamese ResNet-18 (&tau;* = 0.5924, AUC = 0.9308)</option>
-                                    <option value="transformer">Track B: Hugging Face Vision Transformer (ViT, &tau;* = 0.7313)</option>
-                                    <option value="random_forest">Track A1: Random Forest Classifier (&tau;* = 0.4264)</option>
-                                    <option value="svm">Track A2: Linear SVM Baseline (&tau;* = 0.3636)</option>
+                                    <option value="transformer" selected>Track B: Hugging Face Vision Transformer (ViT, &tau;* = 0.7313) — Production Default</option>
+                                    <option value="random_forest">Track A1: Random Forest Classifier (&tau;* = 0.4264) — Accuracy Champion</option>
+                                    <option value="svm">Track A2: Platt-Calibrated SVM Baseline (&tau;* = 0.3636)</option>
                                     <option value="logistic">Track A3: Logistic Regression (&tau;* = 0.2015)</option>
+                                    <option value="legacy_siamese" disabled>Track C: Legacy Siamese ResNet-18 (Historical Research Only)</option>
                                 </select>
                             </div>
 
@@ -370,7 +370,7 @@
                             <div class="space-y-1.5 text-slate-400 mono text-[11px]">
                                 <div class="flex justify-between">
                                     <span>Model Deployed:</span>
-                                    <span id="res-manual-model-used" class="text-sky-300">SYNAPSE Siamese ResNet-18 (v4 Champion)</span>
+                                    <span id="res-manual-model-used" class="text-sky-300">Hugging Face Vision Transformer (Track B)</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span>Enrolled References:</span>
@@ -415,7 +415,7 @@
 
             <!-- Global Footer -->
             <footer class="lab-footer" id="global-footer-bar">
-                <span>SYNAPSE Biometric Analysis Workstation &bull; ResNet-18 Siamese Deep Metric Learning</span>
+                <span>SIGNATURE VMAKE Biometric Operations &bull; Dual-Track Multi-Model Architecture</span>
                 <span class="mono">CONFIDENTIAL &bull; FORENSIC TRACEABILITY ENABLED</span>
             </footer>
 

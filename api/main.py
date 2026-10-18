@@ -47,6 +47,8 @@ from api.auth import (
 
 from database.session import get_db, engine
 
+EVAL_BENCHMARK_PATH = Path("artifacts/evaluation/vmake_test_evaluation.json")
+
 app = FastAPI(
     title="SIGNATURE VMAKE — Intelligent Signature Verification Platform",
     description="Enterprise AI-powered signature verification and multi-factor fraud risk assessment platform for banking workflows.",
@@ -93,7 +95,7 @@ class VerifyDemoRequest(BaseModel):
     transaction_type: str = Field("CHEQUE", examples=["CHEQUE"])
     sample_type: Optional[str] = Field(None, examples=["genuine", "forged"])
     transaction_reference: Optional[str] = Field("DEMO-TXN-CHEQUE-101", examples=["DEMO-TXN-CHEQUE-101"])
-    model_track: Optional[str] = Field(None, examples=["siamese", "transformer", "sklearn"])
+    model_track: Optional[str] = Field(None, examples=["transformer", "random_forest", "svm", "logistic"])
 
 
 # =============================================================================
@@ -164,19 +166,24 @@ def serve_model_registry():
 def health_check(db: Session = Depends(get_db)):
     """Verifies API status, active model version, and database connectivity."""
     model = db.query(ModelVersion).filter_by(status="PRODUCTION").first() or db.query(ModelVersion).first()
+    model_name = model.model_name if model else "HF_Vision_Transformer"
+    model_version = model.version if model else "v1.0.0"
+    threshold_val = float(model.threshold) if model else 0.7313
+    arch = model.architecture if model else "Vision Transformer (facebook/deit-tiny-patch16-224)"
+
     return {
         "status": "HEALTHY",
-        "service": "SYNAPSE Biometric Analysis Lab (SIGNATURE VMAKE Compatible Engine)",
+        "service": "SIGNATURE VMAKE — AI-Powered Signature Verification & Banking Document Authentication System",
         "database": "CONNECTED",
         "active_model": {
-            "name": "SYNAPSE_Siamese_ResNet18_Champion",
-            "version": "4.0.0-champion",
-            "threshold": 0.5924,
-            "single_pair_threshold": 0.5924,
-            "gallery_threshold": 0.6312,
-            "architecture": "Siamese ResNet-18 (Deep Metric Learning)"
+            "name": model_name,
+            "version": model_version,
+            "threshold": threshold_val,
+            "single_pair_threshold": threshold_val,
+            "architecture": arch,
+            "track": "Track B (Vision Transformer Production Default)"
         },
-        "available_tracks": ["siamese", "transformer", "svm", "random_forest", "logistic", "sklearn"]
+        "available_tracks": ["transformer", "random_forest", "svm", "logistic", "sklearn"]
     }
 
 
@@ -484,7 +491,7 @@ async def verify_signature(
     mode: Optional[str] = Form("single", examples=["single", "gallery"]),
     threshold: Optional[float] = Form(None),
     transaction_reference: Optional[str] = Form(None, examples=["DEMO-TXN-CHEQUE-101"]),
-    model_track: Optional[str] = Form(None, examples=["siamese", "transformer", "sklearn"]),
+    model_track: Optional[str] = Form(None, examples=["transformer", "random_forest", "svm", "logistic"]),
     request_reference: Optional[str] = Form(None),
     db: Session = Depends(get_db)
 ):
@@ -824,74 +831,45 @@ def list_models(db: Session = Depends(get_db)):
 @app.get("/api/v1/models/benchmark", tags=["Module I: Model Management"])
 def get_model_benchmark():
     """Returns measured test benchmarks across all synopsis candidate models on held-out test cohort."""
-    bench_path = Path("artifacts/evaluation/vmake_test_evaluation.json")
-    if bench_path.exists():
+    bench_path = EVAL_BENCHMARK_PATH
+    if not bench_path.exists():
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Empirical benchmark artifacts are unavailable. Run evaluation pipeline to generate metrics."
+        )
+
+    try:
         with open(bench_path, "r") as f:
             data = json.load(f)
-            return {
-                "Track_A_Classical_Sklearn": {
-                    "auc_roc": round(data.get("Track_A_Classical_Sklearn", {}).get("auc_roc", 0.8574), 4),
-                    "eer": round(data.get("Track_A_Classical_Sklearn", {}).get("eer", 0.1900), 4),
-                    "accuracy": round(data.get("Track_A_Classical_Sklearn", {}).get("accuracy", 0.7917), 4),
-                    "far": round(data.get("Track_A_Classical_Sklearn", {}).get("far", 0.2850), 4),
-                    "frr": round(data.get("Track_A_Classical_Sklearn", {}).get("frr", 0.1317), 4),
-                    "f1_score": round(data.get("Track_A_Classical_Sklearn", {}).get("f1_score", 0.8065), 4),
-                    "average_latency_ms": 6.03,
-                    "model_size_mb": 1.9
-                },
-                "Track_A_Random_Forest": {
-                    "auc_roc": round(data.get("Track_A_Random_Forest", {}).get("auc_roc", 0.9424), 4),
-                    "eer": round(data.get("Track_A_Random_Forest", {}).get("eer", 0.1333), 4),
-                    "accuracy": round(data.get("Track_A_Random_Forest", {}).get("accuracy", 0.8292), 4),
-                    "far": round(data.get("Track_A_Random_Forest", {}).get("far", 0.3033), 4),
-                    "frr": round(data.get("Track_A_Random_Forest", {}).get("frr", 0.0383), 4),
-                    "f1_score": round(data.get("Track_A_Random_Forest", {}).get("f1_score", 0.8492), 4),
-                    "average_latency_ms": 10.23,
-                    "model_size_mb": 2.39
-                },
-                "Track_A_Logistic_Regression": {
-                    "auc_roc": round(data.get("Track_A_Logistic_Regression", {}).get("auc_roc", 0.8808), 4),
-                    "eer": round(data.get("Track_A_Logistic_Regression", {}).get("eer", 0.1883), 4),
-                    "accuracy": round(data.get("Track_A_Logistic_Regression", {}).get("accuracy", 0.8050), 4),
-                    "far": round(data.get("Track_A_Logistic_Regression", {}).get("far", 0.2700), 4),
-                    "frr": round(data.get("Track_A_Logistic_Regression", {}).get("frr", 0.1200), 4),
-                    "f1_score": round(data.get("Track_A_Logistic_Regression", {}).get("f1_score", 0.8186), 4),
-                    "average_latency_ms": 6.00,
-                    "model_size_mb": 0.02
-                },
-                "Track_B_Vision_Transformer": {
-                    "auc_roc": round(data.get("Track_B_Vision_Transformer", {}).get("auc_roc", 0.7947), 4),
-                    "eer": round(data.get("Track_B_Vision_Transformer", {}).get("eer", 0.2767), 4),
-                    "accuracy": round(data.get("Track_B_Vision_Transformer", {}).get("accuracy", 0.6450), 4),
-                    "far": round(data.get("Track_B_Vision_Transformer", {}).get("far", 0.6717), 4),
-                    "frr": round(data.get("Track_B_Vision_Transformer", {}).get("frr", 0.0383), 4),
-                    "f1_score": round(data.get("Track_B_Vision_Transformer", {}).get("f1_score", 0.7304), 4),
-                    "average_latency_ms": 36.66,
-                    "model_size_mb": 21.7
-                }
-            }
-    return {
-        "Track_A_Classical_Sklearn": {
-            "auc_roc": 0.8574, "eer": 0.1900, "accuracy": 0.7917,
-            "far": 0.2850, "frr": 0.1317, "f1_score": 0.8065,
-            "average_latency_ms": 6.03, "model_size_mb": 1.9
-        },
-        "Track_A_Random_Forest": {
-            "auc_roc": 0.9424, "eer": 0.1333, "accuracy": 0.8292,
-            "far": 0.3033, "frr": 0.0383, "f1_score": 0.8492,
-            "average_latency_ms": 10.23, "model_size_mb": 2.39
-        },
-        "Track_A_Logistic_Regression": {
-            "auc_roc": 0.8808, "eer": 0.1883, "accuracy": 0.8050,
-            "far": 0.2700, "frr": 0.1200, "f1_score": 0.8186,
-            "average_latency_ms": 6.00, "model_size_mb": 0.02
-        },
-        "Track_B_Vision_Transformer": {
-            "auc_roc": 0.7947, "eer": 0.2767, "accuracy": 0.6450,
-            "far": 0.6717, "frr": 0.0383, "f1_score": 0.7304,
-            "average_latency_ms": 36.66, "model_size_mb": 21.7
-        }
-    }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Failed to parse benchmark artifact: {str(e)}"
+        )
+
+    # Validate that required candidate model tracks are present
+    if "Track_A_Classical_Sklearn" not in data or "Track_B_Vision_Transformer" not in data:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Benchmark artifact is incomplete. Required candidate tracks not found."
+        )
+
+    response = {}
+    for track_key in ["Track_A_Classical_Sklearn", "Track_A_Random_Forest", "Track_A_Logistic_Regression", "Track_B_Vision_Transformer"]:
+        track_info = data.get(track_key)
+        if not track_info or not isinstance(track_info, dict):
+            continue
+        entry = {}
+        for metric_name in ["auc_roc", "eer", "accuracy", "far", "frr", "f1_score"]:
+            if metric_name in track_info and track_info[metric_name] is not None:
+                entry[metric_name] = round(float(track_info[metric_name]), 4)
+        if "average_latency_ms" in track_info and track_info["average_latency_ms"] is not None:
+            entry["average_latency_ms"] = round(float(track_info["average_latency_ms"]), 2)
+        if "model_size_mb" in track_info and track_info["model_size_mb"] is not None:
+            entry["model_size_mb"] = round(float(track_info["model_size_mb"]), 2)
+        response[track_key] = entry
+
+    return response
 
 
 # =============================================================================
@@ -910,6 +888,19 @@ def get_dashboard_metrics(db: Session = Depends(get_db)):
     high_risk = db.query(RiskAssessment).filter_by(risk_level="HIGH").count()
 
     active_model = db.query(ModelVersion).filter_by(status="PRODUCTION").first() or db.query(ModelVersion).first()
+
+    # Retrieve measured latency from benchmark artifact if available (no hardcoded fallback)
+    measured_latency = None
+    bench_file = EVAL_BENCHMARK_PATH
+    if bench_file.exists():
+        try:
+            with open(bench_file, "r") as f:
+                bdata = json.load(f)
+                vit_data = bdata.get("Track_B_Vision_Transformer", {})
+                if "average_latency_ms" in vit_data:
+                    measured_latency = round(float(vit_data["average_latency_ms"]), 2)
+        except Exception:
+            measured_latency = None
 
     return {
         "summary": {
@@ -930,6 +921,6 @@ def get_dashboard_metrics(db: Session = Depends(get_db)):
             "version": active_model.version if active_model else "v1.0.0",
             "threshold": float(active_model.threshold) if active_model else 0.7313
         },
-        "average_inference_latency_ms": 21.3
+        "average_inference_latency_ms": measured_latency
     }
 

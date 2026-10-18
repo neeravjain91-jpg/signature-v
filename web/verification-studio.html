@@ -79,11 +79,11 @@
                 <div class="space-y-1.5">
                     <label for="select-model-track" class="text-xs font-medium text-foreground block">Biometric AI Engine</label>
                     <select id="select-model-track" class="w-full bg-surface border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground font-mono focus:outline-none focus:border-brand-accent">
-                        <option value="siamese" selected>SYNAPSE v4 Champion: Siamese ResNet-18 (&tau;* = 0.5924)</option>
-                        <option value="transformer">Track B: HF Vision Transformer (&tau;* = 0.7313)</option>
+                        <option value="transformer" selected>Track B: HF Vision Transformer (&tau;* = 0.7313) — Production Default</option>
                         <option value="random_forest">Track A1: Random Forest Champion (&tau;* = 0.4264)</option>
                         <option value="svm">Track A2: Classical SVM Baseline (&tau;* = 0.3636)</option>
                         <option value="logistic">Track A3: Classical Logistic Reg. (&tau;* = 0.2015)</option>
+                        <option value="legacy_siamese" disabled>Track C: Legacy Siamese ResNet-18 (Historical Research Only)</option>
                     </select>
                 </div>
 

@@ -49,7 +49,7 @@ class BankingVerificationService:
         if verifier is not None:
             self.verifier = verifier
         else:
-            self.verifier = get_model_verifier("siamese", checkpoint_path=checkpoint_path)
+            self.verifier = get_model_verifier("transformer", checkpoint_path=checkpoint_path)
         self.risk_engine = risk_engine or FraudRiskEngine()
 
 

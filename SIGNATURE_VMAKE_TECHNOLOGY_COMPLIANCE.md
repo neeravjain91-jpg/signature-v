@@ -17,7 +17,7 @@ In accordance with strict project instructions:
 2. **Authentic Technology Implementation:** Every required technology is verified to execute an authentic, non-trivial, runtime architectural role in the production pipeline (rather than being superficial dependencies in `requirements.txt`).
 3. **Strict Project Separation:** SIGNATURE VMAKE's documented machine learning architecture strictly consists of:
    - **Hugging Face Vision Transformer (ViT / DeiT `facebook/deit-tiny-patch16-224`)** — Track B Production Default
-   - **Random Forest Classifier (100 Decision Trees)** — Track A1 Accuracy Champion (96.88% Accuracy)
+   - **Random Forest Classifier (100 Decision Trees)** — Track A1 Accuracy Champion (82.92% Accuracy, 94.24% AUC-ROC)
    - **Platt-Calibrated Support Vector Classifier (`CalibratedClassifierCV`)** — Track A2 Calibration Champion (ECE: 0.0436)
    - **Logistic Regression Classifier** — Track A3 Interpretability Baseline (81.25% Accuracy)
    - **OpenCV Computer Vision Preprocessing Pipeline** (Binarization, noise filtering, contour isolation, resizing, Laplacian variance)
