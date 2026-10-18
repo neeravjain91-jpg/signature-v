@@ -11,6 +11,7 @@ let currentFilter = 'all';
 const DEMO_CASES = [
     {
         id: 'DEMO-101',
+        isDemo: true,
         customer: 'Alex Morgan',
         amount: 4500.00,
         currency: 'USD',
@@ -41,6 +42,7 @@ const DEMO_CASES = [
     },
     {
         id: 'DEMO-102',
+        isDemo: true,
         customer: 'Priya Sharma',
         amount: 12800.00,
         currency: 'USD',
@@ -71,6 +73,7 @@ const DEMO_CASES = [
     },
     {
         id: 'DEMO-103',
+        isDemo: true,
         customer: 'James Carter',
         amount: 2350.00,
         currency: 'USD',
@@ -101,6 +104,7 @@ const DEMO_CASES = [
     },
     {
         id: 'DEMO-104',
+        isDemo: true,
         customer: 'Maria Lopez',
         amount: 9900.00,
         currency: 'USD',
@@ -130,6 +134,7 @@ const DEMO_CASES = [
     },
     {
         id: 'DEMO-105',
+        isDemo: true,
         customer: 'Daniel Kim',
         amount: 7200.00,
         currency: 'USD',
@@ -176,6 +181,7 @@ async function initCaseReviewPage() {
         if (liveData && liveData.queue && liveData.queue.length > 0) {
             const liveCases = liveData.queue.map((item, idx) => ({
                 id: item.transaction_reference || `CASE-${1000 + idx}`,
+                isDemo: false,
                 customer: item.customer_name || 'Authorized Signer',
                 amount: item.amount || 4500.00,
                 currency: item.currency || 'USD',
@@ -260,6 +266,8 @@ function renderCaseSidebar() {
             badgeText = 'Passed';
         }
 
+        const demoTag = c.isDemo ? '<span class="demo-chip text-[9px] py-0 px-1 ml-1">DEMO</span>' : '<span class="status-pill passed text-[9px] py-0 px-1 ml-1">LIVE</span>';
+
         return `
             <div class="case-card ${activeClass}" onclick="displayCase(${originalIndex})">
                 <div class="case-card-header">
@@ -267,7 +275,7 @@ function renderCaseSidebar() {
                     <span class="case-time">${c.timeAgo}</span>
                 </div>
                 <div class="case-card-sub">
-                    <span class="case-meta">${c.id} &bull; ${formatCurrency(c.amount)}</span>
+                    <span class="case-meta">${c.id} ${demoTag} &bull; ${formatCurrency(c.amount)}</span>
                     <span class="status-pill ${badgeClass}">${badgeText}</span>
                 </div>
             </div>
@@ -289,12 +297,22 @@ function displayCase(index) {
     // 2. Case Metadata Bar
     const nameEl = document.getElementById('case-customer-name');
     const idEl = document.getElementById('case-id-display');
+    const demoBadgeEl = document.getElementById('case-demo-badge');
     const typeEl = document.getElementById('case-txn-type');
     const amtEl = document.getElementById('case-amount-display');
     const statusPillEl = document.getElementById('case-status-badge');
 
     if (nameEl) nameEl.innerText = c.customer;
     if (idEl) idEl.innerText = c.id;
+    if (demoBadgeEl) {
+        if (c.isDemo) {
+            demoBadgeEl.innerText = 'DEMO DATA';
+            demoBadgeEl.className = 'demo-chip';
+        } else {
+            demoBadgeEl.innerText = 'LIVE DB RECORD';
+            demoBadgeEl.className = 'status-pill passed text-[10px] font-mono';
+        }
+    }
     if (typeEl) typeEl.innerText = c.transactionType;
     if (amtEl) amtEl.innerText = formatCurrency(c.amount);
 
@@ -312,14 +330,26 @@ function displayCase(index) {
         statusPillEl.innerText = badgeText;
     }
 
-    // 3. Signature Cards
+    // 3. Signature Cards with error handlers
     const specImgEl = document.getElementById('specimen-signature-img');
     const quesImgEl = document.getElementById('questioned-signature-img');
     const specBadgeEl = document.getElementById('specimen-badge-tag');
     const quesBadgeEl = document.getElementById('questioned-badge-tag');
 
-    if (specImgEl) specImgEl.src = c.specimenImg;
-    if (quesImgEl) quesImgEl.src = c.questionedImg;
+    if (specImgEl) {
+        specImgEl.style.display = 'block';
+        specImgEl.src = c.specimenImg;
+        specImgEl.onerror = function() {
+            this.alt = 'Reference Specimen Image Unavailable';
+        };
+    }
+    if (quesImgEl) {
+        quesImgEl.style.display = 'block';
+        quesImgEl.src = c.questionedImg;
+        quesImgEl.onerror = function() {
+            this.alt = 'Questioned Signature Image Unavailable';
+        };
+    }
     if (specBadgeEl) specBadgeEl.innerText = c.specimenBadge || 'Genuine reference';
     if (quesBadgeEl) quesBadgeEl.innerText = c.questionedBadge || 'Customer cheque';
 
@@ -392,10 +422,11 @@ function displayCase(index) {
         `).join('');
     }
 
-    // 7. Reset Notes
+    // 7. Reset or Restore Notes from LocalStorage
     const notesInput = document.getElementById('case-review-notes');
     if (notesInput) {
-        notesInput.value = '';
+        const savedNote = localStorage.getItem('vmake_notes_' + c.id);
+        notesInput.value = savedNote || '';
         updateCharCount();
     }
 
@@ -441,6 +472,10 @@ function updateCharCount() {
     const counter = document.getElementById('review-notes-char-count');
     if (textarea && counter) {
         counter.innerText = `${textarea.value.length}/1000`;
+        const c = allCases[activeCaseIndex];
+        if (c && c.id) {
+            localStorage.setItem('vmake_notes_' + c.id, textarea.value);
+        }
     }
 }
 
@@ -470,6 +505,9 @@ async function submitCaseReview() {
                 decision: 'VERIFIED',
                 review_comment: notes
             });
+        }
+        if (c && c.id) {
+            localStorage.setItem('vmake_notes_' + c.id, notes);
         }
         
         c.status = 'PASSED';

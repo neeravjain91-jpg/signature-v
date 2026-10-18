@@ -1,14 +1,16 @@
-# SIGNATURE VMAKE — AI-Powered Signature Verification & Banking Document Authentication System
+# SYNAPSE — Intelligent Signature Verification & Fraud Risk Assessment System
+### Specialized Biometric Signature Verification, Multi-Reference Gallery & Forensic Analysis Platform
+*(SIGNATURE VMAKE Compatible Enterprise Deployment)*
 
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8+-orange.svg)](https://scikit-learn.org/)
-[![Hugging Face Transformers](https://img.shields.io/badge/Transformers-5.17+-yellow.svg)](https://huggingface.co/docs/transformers/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Production-green.svg)](https://fastapi.tiangolo.com/)
 [![Database](https://img.shields.io/badge/PostgreSQL%20%7C%20SQLite-3NF%20Audit-blue.svg)](database/schema.sql)
 [![Tests](https://img.shields.io/badge/pytest-53%20passed%20(100%25)-success.svg)](tests/)
-[![Architecture](https://img.shields.io/badge/Architecture-Dual--Track%20Production-success.svg)](artifacts/models/)
+[![Architecture](https://img.shields.io/badge/Architecture-ResNet18%20Siamese%20Champion-success.svg)](artifacts/models/)
 
-**SIGNATURE VMAKE** is an enterprise-grade, writer-independent biometric signature verification and multi-factor fraud risk assessment system engineered for banking workflows (cheque clearing, counter withdrawals, high-value wire transfers), strictly aligned with the **Bank Muscat Business Requirements Document (BRD) template** and approved project synopsis.
+**SYNAPSE** is an enterprise-grade, writer-independent biometric signature verification, forensic analysis, and multi-factor fraud risk assessment platform. Powered by **Siamese Deep Metric Learning (Torchvision ResNet-18 shared-weight representation)**, **`ForgeryAwareMetricLoss`**, and **Multi-Reference Customer Gallery Aggregation**, SYNAPSE operates with zero data leakage on unseen open-set signers (CEDAR held-out test cohort Writers 46–55). Fully backward-compatible with SIGNATURE VMAKE banking workflow specifications and BRD templates.
 
 ---
 

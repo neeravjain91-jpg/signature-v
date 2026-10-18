@@ -46,7 +46,7 @@ async function executeChequeVerification() {
         const amount = parseFloat(document.getElementById('input-amount').value);
         const txnType = document.getElementById('input-type').value;
         const modelTrackEl = document.getElementById('select-model-track');
-        const modelTrack = modelTrackEl ? modelTrackEl.value : 'transformer';
+        const modelTrack = modelTrackEl ? modelTrackEl.value : 'siamese';
 
         const payload = {
             amount: amount,

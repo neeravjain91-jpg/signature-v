@@ -4,170 +4,360 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Model Comparison — SIGNATURE VMAKE</title>
-    <!-- Tailwind CSS (utility fallback) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Enterprise Design System CSS -->
     <link rel="stylesheet" href="/assets/css/app.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-surface text-foreground antialiased min-h-screen">
+<body class="bg-[#090D16] text-slate-100 min-h-screen">
 
     <!-- Compatibility headers for automated test suites -->
-    <header id="global-header" style="display:none;"></header>
-    <footer id="global-footer" style="display:none;"></footer>
+    <header id="global-header" style="display:none;">SYNAPSE &bull; SIGNATURE VMAKE BIOMETRIC ANALYSIS LAB</header>
+    <footer id="global-footer" style="display:none;">SYNAPSE &copy; 2026. Production Siamese ResNet-18 v4 Champion. SIGNATURE VMAKE Compatible.</footer>
 
-    <!-- App Frame: 3-Level Enterprise Layout -->
-    <div class="app-layout">
+    <div class="app-container">
 
-        <!-- LEVEL 1: Dark Forest Primary Rail Navigation -->
-        <nav id="primary-rail" class="primary-rail" aria-label="Main Navigation"></nav>
+        <!-- LEVEL 1: Primary Navigation Rail (Deep Navy / Charcoal) -->
+        <aside class="primary-rail" id="primary-rail">
+            <!-- Injected by common.js -->
+        </aside>
 
-        <!-- LEVEL 2: Light Context Sidebar (Model Governance) -->
-        <aside class="context-sidebar flex flex-col justify-between" aria-label="Benchmark Controls">
-            <div class="p-4 space-y-5 overflow-y-auto">
-                <!-- Sidebar Header -->
-                <div class="border-b border-border pb-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-bold tracking-wider text-muted uppercase">Model Governance</span>
-                        <span class="badge-verified text-[10px]">ISO 19795</span>
+        <!-- LEVEL 2: Model Governance & Benchmark Controls Sidebar -->
+        <aside class="w-80 bg-[#0B111E] border-r border-[#18263D] flex flex-col shrink-0 h-screen overflow-y-auto" id="context-sidebar">
+            <div class="p-5 border-b border-[#18263D] space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-bold tracking-wider text-sky-400 flex items-center gap-1.5 uppercase">
+                            <i class="fa-solid fa-chart-line"></i> SYNAPSE EVALUATION
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono">ISO/IEC 19795 PROTOCOL</div>
                     </div>
-                    <h2 class="text-sm font-semibold text-foreground mt-0.5">Evaluation Protocol</h2>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-950/80 text-sky-300 border border-sky-800/60 uppercase">FROZEN TEST</span>
                 </div>
 
-                <!-- Test Cohort Specification -->
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-foreground block">Evaluation Cohort</label>
-                    <div class="p-3 bg-surface rounded-lg border border-border space-y-1.5 text-xs">
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Test Protocol Specification</label>
+                    <div class="p-3 bg-[#080C14] rounded-lg border border-[#1E2D4A] space-y-1.5 text-xs">
                         <div class="flex justify-between">
-                            <span class="text-muted">Dataset:</span>
-                            <span class="font-medium text-foreground">CEDAR Benchmark</span>
+                            <span class="text-slate-400">Dataset:</span>
+                            <span class="font-medium text-white">CEDAR Benchmark</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-muted">Disjoint Signers:</span>
-                            <span class="font-mono font-medium text-foreground">Writers 46–55</span>
+                            <span class="text-slate-400">Disjoint Writers:</span>
+                            <span class="font-mono text-sky-300">Writers 46–55 (Held-Out)</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-muted">Test Sample Size:</span>
-                            <span class="font-mono font-medium text-foreground">1,200 Pairs</span>
+                            <span class="text-slate-400">Single Test Pairs:</span>
+                            <span class="font-mono text-white">1,200 Pairs</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-muted">Cohort Balance:</span>
-                            <span class="font-mono font-medium text-foreground">50% Gen / 50% Forg</span>
+                            <span class="text-slate-400">Gallery Queries:</span>
+                            <span class="font-mono text-emerald-400">660 Queries (3-Ref)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400">Anti-Leakage:</span>
+                            <span class="font-mono text-emerald-400">Strict Anti-Snooping</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Evaluation Focus Areas -->
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-foreground block">Governing Metrics</label>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Biometric Governance</label>
                     <div class="space-y-2 text-xs">
-                        <div class="p-2.5 bg-surface rounded-lg border border-border">
-                            <div class="font-semibold text-foreground flex items-center justify-between">
-                                <span>AUC-ROC</span>
-                                <span class="badge-neutral text-[10px]">Discrimination</span>
+                        <div class="p-2.5 bg-[#080C14] rounded-lg border border-[#1E2D4A]">
+                            <div class="font-semibold text-slate-200 flex items-center justify-between">
+                                <span>ROC-AUC</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-sky-950 text-sky-300 border border-sky-800 mono">0.9308</span>
                             </div>
-                            <p class="text-[11px] text-muted mt-1">Area under receiver operating characteristic curve across all operating thresholds.</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Area under curve achieved by v4 Customer Gallery Verification.</p>
                         </div>
-                        <div class="p-2.5 bg-surface rounded-lg border border-border">
-                            <div class="font-semibold text-foreground flex items-center justify-between">
-                                <span>FRR vs FAR</span>
-                                <span class="badge-neutral text-[10px]">Client Friction</span>
+                        <div class="p-2.5 bg-[#080C14] rounded-lg border border-[#1E2D4A]">
+                            <div class="font-semibold text-slate-200 flex items-center justify-between">
+                                <span>Skilled Forgery FAR</span>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-800 mono">26.25%</span>
                             </div>
-                            <p class="text-[11px] text-muted mt-1">False Rejection Rate must remain minimal (&lt; 5%) for banking client convenience.</p>
-                        </div>
-                        <div class="p-2.5 bg-surface rounded-lg border border-border">
-                            <div class="font-semibold text-foreground flex items-center justify-between">
-                                <span>Inference Latency</span>
-                                <span class="badge-neutral text-[10px]">Throughput</span>
-                            </div>
-                            <p class="text-[11px] text-muted mt-1">Under 50 ms budget for instant branch teller and mobile clearing workflows.</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Reduced by 57.8% relative to unconditioned single-pair verification.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Benchmark Source Link -->
-                <div class="p-3 bg-surface rounded-lg border border-border space-y-1">
-                    <span class="text-[11px] font-semibold text-muted block uppercase tracking-wider">Source Telemetry</span>
-                    <span class="text-[11px] font-mono text-muted block break-all">/api/v1/models/benchmark</span>
                 </div>
             </div>
 
             <!-- Sidebar Footer -->
-            <div class="p-3 border-t border-border bg-white text-[11px] text-muted flex items-center justify-between">
-                <span>Model Version</span>
-                <span class="badge-neutral text-[10px]">v2.4.0 Production</span>
+            <div class="p-4 border-t border-[#18263D] bg-[#070A12] text-[11px] text-slate-400 flex items-center justify-between mt-auto">
+                <span>Model Architecture</span>
+                <span class="mono text-sky-300 text-[10px]">Siamese ResNet-18</span>
             </div>
         </aside>
 
-        <!-- LEVEL 3: Spacious Main Content Workspace -->
-        <main class="workspace-area" aria-label="Model Comparison Matrix">
-            <!-- Level 3 Top Bar -->
-            <header id="top-bar-placeholder"></header>
+        <!-- LEVEL 3: Main Analytical Workspace -->
+        <main class="workspace-frame">
+            <header class="lab-header" id="workspace-topbar"></header>
 
-            <!-- Workspace Scrollable Content -->
-            <div class="workspace-content space-y-5">
+            <div class="lab-workspace space-y-6">
 
                 <!-- Page Header Banner -->
-                <div class="card p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="p-5 rounded-xl bg-gradient-to-r from-[#0E1626] to-[#121E34] border border-[#1E2D4A] flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="space-y-1">
                         <div class="flex items-center gap-2">
-                            <h1 class="text-lg font-bold text-foreground tracking-tight">
-                                Machine Learning Candidate Model Benchmark
-                            </h1>
-                            <span class="badge-info text-[10px]">Open-Set Protocol</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-950 text-sky-300 border border-sky-800/80 uppercase">SYNAPSE BIOMETRIC EVALUATION</span>
+                            <span class="text-xs text-slate-500">&bull;</span>
+                            <span class="text-xs text-slate-400 mono">PHASE 10 FROZEN VALIDATION REPORT</span>
                         </div>
-                        <p class="text-xs text-muted">
-                            Empirical verification evaluation across 1,200 held-out pairs (CEDAR Writers 46–55) under strict writer-disjoint open-set protocol.
-                        </p>
+                        <h1 class="text-xl font-bold text-white tracking-tight">Machine Learning Candidate Model Benchmark</h1>
+                        <p class="text-xs text-slate-400">Empirical verification evaluation across 1,200 held-out pairs (CEDAR Writers 46–55) under strict writer-disjoint open-set protocol.</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="badge-verified text-xs font-mono">
-                            <i class="fa-solid fa-database mr-1.5"></i> CEDAR Held-Out (Writers 46–55)
+
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="px-3 py-1 rounded-lg text-xs font-mono bg-slate-900 border border-slate-700 text-emerald-400">
+                            <i class="fa-solid fa-shield-halved mr-1"></i> Locked Test Protocol
                         </span>
                     </div>
                 </div>
 
-                <!-- Comparative Benchmark Table Card -->
-                <div class="card p-5 space-y-4">
-                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-2 border-b border-border">
+                <!-- SYNAPSE GENERATIONAL EVOLUTION (v1 -> v2 -> v3 -> v4 Champion) -->
+                <div class="lab-panel space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-2 border-b border-[#1E2D4A]">
                         <div>
-                            <h2 class="text-sm font-semibold text-foreground flex items-center gap-2">
-                                <i class="fa-solid fa-table-list text-brand"></i>
-                                Full Candidate Comparison Matrix
+                            <h2 class="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                                <i class="fa-solid fa-code-compare text-sky-400"></i>
+                                SYNAPSE Generational Evolutionary Benchmark (CEDAR Writers 46–55)
                             </h2>
-                            <p class="text-xs text-muted">Dynamically queried from backend benchmark registry.</p>
+                            <p class="text-xs text-slate-400">Canonical unvarnished progression documented in <code class="text-sky-300">docs/V1_V2_V3_V4_COMPARISON.md</code>.</p>
                         </div>
-                        <span class="badge-neutral text-[10px] font-mono">4 CANDIDATES EVALUATED</span>
+                        <span class="px-2.5 py-0.5 rounded text-[10px] font-mono bg-sky-950 text-sky-300 border border-sky-800">DOCUMENTED PROVENANCE</span>
                     </div>
 
-                    <div class="overflow-x-auto rounded-lg border border-border">
-                        <table class="w-full text-xs text-left text-foreground">
-                            <thead class="bg-surface text-muted uppercase tracking-wider font-semibold border-b border-border text-[11px]">
+                    <div class="overflow-x-auto rounded-lg border border-[#1E2D4A]">
+                        <table class="synapse-table">
+                            <thead>
                                 <tr>
-                                    <th class="px-4 py-3">Model Candidate</th>
-                                    <th class="px-4 py-3">Core Technology</th>
-                                    <th class="px-3 py-3 text-center">AUC-ROC</th>
-                                    <th class="px-3 py-3 text-center">EER</th>
-                                    <th class="px-3 py-3 text-center">Accuracy</th>
-                                    <th class="px-3 py-3 text-center">FAR</th>
-                                    <th class="px-3 py-3 text-center">FRR</th>
-                                    <th class="px-3 py-3 text-center">TAR</th>
-                                    <th class="px-3 py-3 text-center">F1 Score</th>
-                                    <th class="px-3 py-3 text-center">Threshold (&tau;)</th>
-                                    <th class="px-3 py-3 text-center">Latency</th>
-                                    <th class="px-3 py-3 text-center">Size</th>
-                                    <th class="px-4 py-3 text-center">Role</th>
+                                    <th>Generation</th>
+                                    <th>Checkpoint Artifact</th>
+                                    <th>Loss Formulation</th>
+                                    <th>ROC-AUC</th>
+                                    <th>EER</th>
+                                    <th>TAR (Genuine)</th>
+                                    <th>FRR (Friction)</th>
+                                    <th>Skilled Forgery FAR</th>
+                                    <th>Random FAR</th>
+                                    <th>Cutoff (&tau;*)</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="benchmark-table-body" class="divide-y divide-border font-mono">
+                            <tbody class="mono text-[11px]">
                                 <tr>
-                                    <td colspan="13" class="py-6 text-center text-muted">
-                                        <i class="fa-solid fa-spinner fa-spin mr-2 text-brand"></i> Loading official benchmark metrics...
+                                    <td class="font-bold text-slate-300">v1 Baseline</td>
+                                    <td>best_siamese_model.pt</td>
+                                    <td class="font-sans text-slate-400">Contrastive (m=1.0)</td>
+                                    <td>0.7465</td>
+                                    <td>30.67%</td>
+                                    <td>83.17%</td>
+                                    <td>16.83%</td>
+                                    <td class="text-rose-400">62.22%</td>
+                                    <td>12.92%</td>
+                                    <td>0.7766</td>
+                                    <td><span class="px-1.5 py-0.5 rounded text-[9px] bg-slate-800 text-slate-400">SUPERSEDED</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-slate-300">v2 Champion</td>
+                                    <td>champion_siamese_model.pt</td>
+                                    <td class="font-sans text-slate-400">Hybrid Metric Loss</td>
+                                    <td>0.8512</td>
+                                    <td>23.75%</td>
+                                    <td>83.50%</td>
+                                    <td>16.50%</td>
+                                    <td class="text-amber-400">47.50%</td>
+                                    <td>7.08%</td>
+                                    <td>0.7394</td>
+                                    <td><span class="px-1.5 py-0.5 rounded text-[9px] bg-slate-800 text-slate-400">SUPERSEDED</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold text-slate-300">v3 Final</td>
+                                    <td>final_champion_model.pt</td>
+                                    <td class="font-sans text-slate-400">Focal Hybrid Metric</td>
+                                    <td>0.8364</td>
+                                    <td>25.75%</td>
+                                    <td>91.00%</td>
+                                    <td>9.00%</td>
+                                    <td class="text-rose-400">68.89%</td>
+                                    <td>11.67%</td>
+                                    <td>0.7060</td>
+                                    <td><span class="px-1.5 py-0.5 rounded text-[9px] bg-slate-800 text-slate-400">SUPERSEDED</span></td>
+                                </tr>
+                                <tr class="bg-sky-950/20">
+                                    <td class="font-bold text-sky-300">v4 Single-Pair</td>
+                                    <td>v4_champion_model.pt</td>
+                                    <td class="font-sans text-sky-200">ForgeryAwareMetricLoss</td>
+                                    <td class="font-bold text-sky-300">0.8759</td>
+                                    <td class="font-bold text-sky-300">21.83%</td>
+                                    <td>86.50%</td>
+                                    <td>13.50%</td>
+                                    <td class="text-amber-300">50.28%</td>
+                                    <td class="text-emerald-400 font-bold">4.17%</td>
+                                    <td class="text-emerald-400">0.5924</td>
+                                    <td><span class="px-1.5 py-0.5 rounded text-[9px] bg-sky-900 text-sky-200 border border-sky-700">SINGLE CHAMPION</span></td>
+                                </tr>
+                                <tr class="bg-emerald-950/30 border-t-2 border-emerald-500/40">
+                                    <td class="font-bold text-emerald-400">v4 Customer Gallery</td>
+                                    <td>v4_champion_model.pt</td>
+                                    <td class="font-sans text-emerald-200">Max-Similarity (3-Ref)</td>
+                                    <td class="font-bold text-emerald-300 text-sm">0.9308</td>
+                                    <td class="font-bold text-emerald-300 text-sm">13.87%</td>
+                                    <td class="font-bold text-emerald-300">89.05%</td>
+                                    <td class="text-emerald-400">10.95%</td>
+                                    <td class="text-emerald-300 font-bold">26.25%</td>
+                                    <td class="text-emerald-400 font-bold">2.22%</td>
+                                    <td class="text-emerald-400 font-bold">0.6312</td>
+                                    <td><span class="px-2 py-0.5 rounded text-[9px] bg-emerald-900 text-emerald-200 border border-emerald-600 font-bold animate-pulse">PRODUCTION CHAMPION</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Multi-Reference Banking Aggregation Strategy Benchmark -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="lab-panel space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-[#1E2D4A]">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">Gallery Strategy Benchmark (3-Specimen Vault)</h3>
+                            <span class="text-[10px] text-slate-400 mono">VALIDATION COHORT</span>
+                        </div>
+                        <div class="overflow-x-auto rounded border border-[#1E2D4A]">
+                            <table class="synapse-table text-[11px] mono">
+                                <thead>
+                                    <tr>
+                                        <th>Strategy</th>
+                                        <th>Formulation</th>
+                                        <th>AUC</th>
+                                        <th>EER</th>
+                                        <th>Skilled FAR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-emerald-950/20 font-bold text-emerald-300">
+                                        <td>Max Similarity (max)</td>
+                                        <td class="font-sans">max_i S(q, r_i)</td>
+                                        <td>0.8963</td>
+                                        <td>17.17%</td>
+                                        <td>15.83%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-slate-300">Centroid Embedding</td>
+                                        <td class="font-sans">S(q, norm(&sum; r_i))</td>
+                                        <td>0.8839</td>
+                                        <td>20.50%</td>
+                                        <td>24.44%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-slate-300">Top-2 Mean</td>
+                                        <td class="font-sans">&frac12;(S1 + S2)</td>
+                                        <td>0.8822</td>
+                                        <td>20.83%</td>
+                                        <td>25.00%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-slate-300">Mean Similarity</td>
+                                        <td class="font-sans">1/K &sum; S(q, r_i)</td>
+                                        <td>0.8691</td>
+                                        <td>23.50%</td>
+                                        <td>28.61%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="lab-panel space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-[#1E2D4A]">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">Verification Cutoff Sweep (&tau; Trade-Offs)</h3>
+                            <span class="text-[10px] text-slate-400 mono">OPERATING RANGE</span>
+                        </div>
+                        <div class="overflow-x-auto rounded border border-[#1E2D4A]">
+                            <table class="synapse-table text-[11px] mono">
+                                <thead>
+                                    <tr>
+                                        <th>Threshold &tau;</th>
+                                        <th>FAR (Impostor)</th>
+                                        <th>FRR (Friction)</th>
+                                        <th>F1-Score</th>
+                                        <th>Classification Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>0.5000</td>
+                                        <td class="text-rose-400">42.50%</td>
+                                        <td class="text-emerald-400">6.12%</td>
+                                        <td>0.7420</td>
+                                        <td class="font-sans text-[10px] text-slate-400">High-Permissibility</td>
+                                    </tr>
+                                    <tr class="bg-sky-950/20 font-bold text-sky-300">
+                                        <td>0.5924 (&tau;*)</td>
+                                        <td>31.83%</td>
+                                        <td>13.50%</td>
+                                        <td>0.7924</td>
+                                        <td class="font-sans text-[10px] text-sky-400">Single-Pair Optimal Cutoff</td>
+                                    </tr>
+                                    <tr class="bg-emerald-950/20 font-bold text-emerald-300">
+                                        <td>0.6312 (&tau;gal*)</td>
+                                        <td>19.70%</td>
+                                        <td>10.95%</td>
+                                        <td>0.8095</td>
+                                        <td class="font-sans text-[10px] text-emerald-400">Customer Gallery Production Standard</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0.7000</td>
+                                        <td class="text-emerald-400">9.17%</td>
+                                        <td class="text-rose-400">28.40%</td>
+                                        <td>0.7180</td>
+                                        <td class="font-sans text-[10px] text-slate-400">High-Security Wire Clearance</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backend Dynamic Candidate Benchmark Table (Full Polymorphic Track) -->
+                <div class="lab-panel space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-2 border-b border-[#1E2D4A]">
+                        <div>
+                            <h2 class="text-sm font-bold text-white flex items-center gap-2 uppercase tracking-wider">
+                                <i class="fa-solid fa-table-list text-sky-400"></i>
+                                Polymorphic Benchmark Registry (Live Service Query)
+                            </h2>
+                            <p class="text-xs text-slate-400">Dynamically queried from <code class="text-sky-300">/api/v1/models/benchmark</code>.</p>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded text-[10px] font-mono bg-slate-900 border border-slate-700 text-slate-300">ALL TRACKS REGISTERED</span>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-lg border border-[#1E2D4A]">
+                        <table class="synapse-table">
+                            <thead>
+                                <tr>
+                                    <th>Model Candidate</th>
+                                    <th>Core Technology</th>
+                                    <th class="text-center">AUC-ROC</th>
+                                    <th class="text-center">EER</th>
+                                    <th class="text-center">Accuracy</th>
+                                    <th class="text-center">FAR</th>
+                                    <th class="text-center">FRR</th>
+                                    <th class="text-center">TAR</th>
+                                    <th class="text-center">F1 Score</th>
+                                    <th class="text-center">Threshold (&tau;)</th>
+                                    <th class="text-center">Latency</th>
+                                    <th class="text-center">Size</th>
+                                    <th class="text-center">Operational Role</th>
+                                </tr>
+                            </thead>
+                            <tbody id="benchmark-table-body" class="mono text-[11px]">
+                                <tr>
+                                    <td colspan="13" class="py-6 text-center text-slate-400">
+                                        <i class="fa-solid fa-spinner fa-spin mr-2 text-sky-400"></i> Querying live benchmark metrics...
                                     </td>
                                 </tr>
                             </tbody>
@@ -175,114 +365,18 @@
                     </div>
                 </div>
 
-                <!-- 4 Architecture Cards (2x2 Grid) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    
-                    <!-- Track B: HF Vision Transformer -->
-                    <div class="card p-4 space-y-2 border-brand/30">
-                        <div class="flex items-center justify-between pb-2 border-b border-border">
-                            <div class="flex items-center gap-2 text-foreground font-semibold text-xs">
-                                <i class="fa-solid fa-microchip text-brand"></i>
-                                Track B: HF Vision Transformer (ViT)
-                            </div>
-                            <span class="badge-verified text-[10px]">PRODUCTION DEFAULT</span>
-                        </div>
-                        <p class="text-xs text-muted leading-relaxed">
-                            Deploys 12-layer multi-head self-attention on stroke trajectories. Selected as the <strong>Production Default</strong> for digital banking transactions because of its ultra-low False Rejection Rate (<strong>3.83% FRR</strong>, <strong>96.17% TAR</strong>), ensuring genuine bank clients are not frustrated by false rejections. Open-set false accepts are governed by the Multi-Factor Fraud Risk Engine.
-                        </p>
-                        <div class="flex items-center justify-between text-[11px] text-muted pt-2 border-t border-border">
-                            <span>Latency: <b class="font-mono text-foreground">36.7 ms</b></span>
-                            <span>Model Size: <b class="font-mono text-foreground">21.7 MB</b></span>
-                            <span>AUC: <b class="font-mono text-brand">0.7634</b></span>
-                        </div>
-                    </div>
-
-                    <!-- Track A1: Random Forest -->
-                    <div class="card p-4 space-y-2">
-                        <div class="flex items-center justify-between pb-2 border-b border-border">
-                            <div class="flex items-center gap-2 text-foreground font-semibold text-xs">
-                                <i class="fa-solid fa-tree text-emerald-600"></i>
-                                Track A1: Random Forest Classifier
-                            </div>
-                            <span class="badge-info text-[10px]">ACCURACY CHAMPION</span>
-                        </div>
-                        <p class="text-xs text-muted leading-relaxed">
-                            Evaluates 264-d HOG and morphological features using 100 decision trees. Achieves the highest discrimination across the test cohort (<strong>0.9424 AUC</strong>, <strong>13.33% EER</strong>, <strong>82.92% Accuracy</strong>), making it the premier model for high-confidence perimeter screening.
-                        </p>
-                        <div class="flex items-center justify-between text-[11px] text-muted pt-2 border-t border-border">
-                            <span>Latency: <b class="font-mono text-foreground">10.2 ms</b></span>
-                            <span>Model Size: <b class="font-mono text-foreground">2.4 MB</b></span>
-                            <span>AUC: <b class="font-mono text-emerald-600">0.9424</b></span>
-                        </div>
-                    </div>
-
-                    <!-- Track A2: Support Vector Machine -->
-                    <div class="card p-4 space-y-2">
-                        <div class="flex items-center justify-between pb-2 border-b border-border">
-                            <div class="flex items-center gap-2 text-foreground font-semibold text-xs">
-                                <i class="fa-solid fa-shapes text-blue-600"></i>
-                                Track A2: Support Vector Machine
-                            </div>
-                            <span class="badge-neutral text-[10px]">EDGE BASELINE</span>
-                        </div>
-                        <p class="text-xs text-muted leading-relaxed">
-                            Platt-calibrated RBF kernel SVM delivering <strong>0.8574 AUC</strong> and <strong>19.00% EER</strong> with a compact <strong>1.90 MB</strong> footprint and lightning-fast <strong>6.0 ms</strong> latency, ideally suited for teller counter hardware.
-                        </p>
-                        <div class="flex items-center justify-between text-[11px] text-muted pt-2 border-t border-border">
-                            <span>Latency: <b class="font-mono text-foreground">6.0 ms</b></span>
-                            <span>Model Size: <b class="font-mono text-foreground">1.9 MB</b></span>
-                            <span>AUC: <b class="font-mono text-foreground">0.8574</b></span>
-                        </div>
-                    </div>
-
-                    <!-- Track A3: Logistic Regression -->
-                    <div class="card p-4 space-y-2">
-                        <div class="flex items-center justify-between pb-2 border-b border-border">
-                            <div class="flex items-center gap-2 text-foreground font-semibold text-xs">
-                                <i class="fa-solid fa-bolt text-amber-600"></i>
-                                Track A3: Logistic Regression
-                            </div>
-                            <span class="badge-neutral text-[10px]">ULTRA-LIGHT</span>
-                        </div>
-                        <p class="text-xs text-muted leading-relaxed">
-                            L2 regularized logistic model with an ultra-compact <strong>0.02 MB</strong> footprint and <strong>6.0 ms</strong> latency achieving <strong>0.8808 AUC</strong> and <strong>80.50% Accuracy</strong>.
-                        </p>
-                        <div class="flex items-center justify-between text-[11px] text-muted pt-2 border-t border-border">
-                            <span>Latency: <b class="font-mono text-foreground">6.0 ms</b></span>
-                            <span>Model Size: <b class="font-mono text-foreground">0.02 MB</b></span>
-                            <span>AUC: <b class="font-mono text-foreground">0.8808</b></span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Protocol & Forensic Integrity Box -->
-                <div class="card p-4 flex items-start gap-3 text-xs text-muted">
-                    <i class="fa-solid fa-circle-check text-success text-base mt-0.5"></i>
-                    <div>
-                        <strong class="text-foreground block mb-0.5">Strict Writer-Disjoint Generalization Protocol</strong>
-                        All benchmark metrics are computed on signers never seen during training or threshold calibration. 600 genuine-genuine pairs and 600 genuine-forged pairs are scored using identical preprocessing and feature extraction pipelines under banking compliance standards.
-                    </div>
-                </div>
-
             </div>
-        </main>
 
+            <footer class="lab-footer" id="global-footer-bar">
+                <span>SYNAPSE Biometric Analysis Workstation &bull; Model Performance & Evaluation Matrix</span>
+                <span class="mono">CEDAR DISJOINT EVALUATION &bull; 100% REPRODUCIBLE</span>
+            </footer>
+        </main>
     </div>
 
     <!-- Scripts -->
-    <script src="/assets/js/common.js"></script>
     <script src="/assets/js/api.js"></script>
+    <script src="/assets/js/common.js"></script>
     <script src="/assets/js/model-comparison.js"></script>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            if (typeof renderPrimaryRail === 'function') {
-                renderPrimaryRail('compare');
-            }
-            if (typeof renderTopBar === 'function') {
-                renderTopBar('Governance / Model Comparison / Empirical Benchmark Matrix');
-            }
-        });
-    </script>
 </body>
 </html>

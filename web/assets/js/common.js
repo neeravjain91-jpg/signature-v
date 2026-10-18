@@ -1,19 +1,19 @@
 /**
- * SIGNATURE VMAKE — Global Common Infrastructure
- * Enterprise Biometric Banking Architecture (3-Level Layout)
+ * SYNAPSE — Biometric Analysis Lab Common Infrastructure
+ * Intelligent Signature Verification & Fraud Risk Assessment System
  * Provides:
- * - Level 1: Dark Forest Green Vertical Primary Navigation Rail
- * - Level 3: Workspace Top Bar with Breadcrumbs & Profile
- * - API Client Configuration & Connection Health Indicator
+ * - Level 1: Deep Navy / Charcoal Biometric Navigation Rail
+ * - Level 3: Forensic Workspace Top Bar with Model Telemetry & Status
+ * - API Client Configuration & Connection Health Monitor
  * - Shared Modals & Utilities
  */
 
 // 1. Dynamic API Base Discovery & Resolution
 const urlParams = new URLSearchParams(window.location.search);
-let storedApi = localStorage.getItem('vmake_api_base');
+let storedApi = localStorage.getItem('synapse_api_base') || localStorage.getItem('vmake_api_base');
 let queryApi = urlParams.get('api');
 if (queryApi) {
-    localStorage.setItem('vmake_api_base', queryApi);
+    localStorage.setItem('synapse_api_base', queryApi);
     storedApi = queryApi;
 }
 
@@ -31,27 +31,27 @@ if (storedApi) {
 // Multi-Page Independent URL Routes Definition
 const NAV_ITEMS = [
     { title: 'Overview', path: '/', id: 'nav-overview', icon: 'fa-solid fa-chart-line' },
-    { title: 'Manual Register & Verify', path: '/manual-workflow', id: 'nav-manual', icon: 'fa-solid fa-user-plus' },
-    { title: 'Cheque Studio', path: '/verification-studio', id: 'nav-studio', icon: 'fa-solid fa-money-check-dollar' },
-    { title: 'Model Comparison', path: '/model-comparison', id: 'nav-comparison', icon: 'fa-solid fa-scale-balanced' },
-    { title: 'Officer Queue', path: '/compliance-queue', id: 'nav-queue', icon: 'fa-solid fa-user-clock' },
-    { title: 'Audit Trail', path: '/audit-timeline', id: 'nav-audit', icon: 'fa-solid fa-timeline' },
+    { title: 'Signature Analysis Lab', path: '/manual-workflow', id: 'nav-manual', icon: 'fa-solid fa-fingerprint' },
+    { title: 'Fraud Risk Studio', path: '/verification-studio', id: 'nav-studio', icon: 'fa-solid fa-microscope' },
+    { title: 'Model Evaluation', path: '/model-comparison', id: 'nav-comparison', icon: 'fa-solid fa-chart-simple' },
+    { title: 'Verification History', path: '/compliance-queue', id: 'nav-queue', icon: 'fa-solid fa-clock-rotate-left' },
+    { title: 'Evidence & Traceability', path: '/audit-timeline', id: 'nav-audit', icon: 'fa-solid fa-shield-halved' },
     { title: 'Model Registry & Health', path: '/model-registry', id: 'nav-health', icon: 'fa-solid fa-heart-pulse' }
 ];
 
-// 2. Primary Navigation Definition (Level 1 Rail)
+// Primary Navigation Definition (Level 1 Rail)
 const RAIL_ITEMS = [
-    { title: 'Cases', path: '/', id: 'nav-cases', icon: 'fa-regular fa-folder-closed' },
-    { title: 'Register', path: '/manual-workflow', id: 'nav-register', icon: 'fa-solid fa-user-plus' },
-    { title: 'Studio', path: '/verification-studio', id: 'nav-studio', icon: 'fa-solid fa-magnifying-glass' },
-    { title: 'Queue', path: '/compliance-queue', id: 'nav-queue', icon: 'fa-solid fa-users' },
-    { title: 'Audit', path: '/audit-timeline', id: 'nav-audit', icon: 'fa-regular fa-file-lines' },
-    { title: 'Benchmark', path: '/model-comparison', id: 'nav-model', icon: 'fa-solid fa-chart-simple' },
+    { title: 'Overview', path: '/', id: 'nav-cases', icon: 'fa-solid fa-chart-line' },
+    { title: 'Lab', path: '/manual-workflow', id: 'nav-register', icon: 'fa-solid fa-fingerprint' },
+    { title: 'Studio', path: '/verification-studio', id: 'nav-studio', icon: 'fa-solid fa-microscope' },
+    { title: 'Evaluation', path: '/model-comparison', id: 'nav-model', icon: 'fa-solid fa-chart-simple' },
+    { title: 'History', path: '/compliance-queue', id: 'nav-queue', icon: 'fa-solid fa-clock-rotate-left' },
+    { title: 'Traceability', path: '/audit-timeline', id: 'nav-audit', icon: 'fa-solid fa-shield-halved' },
     { title: 'Health', path: '/model-registry', id: 'nav-health', icon: 'fa-solid fa-heart-pulse' }
 ];
 
 /**
- * Renders the Level 1 Dark Forest Green Vertical Primary Navigation Rail.
+ * Renders the Deep Charcoal Biometric Analysis Navigation Rail.
  */
 function renderPrimaryRail(activeNavKey) {
     const railEl = document.getElementById('primary-rail');
@@ -82,8 +82,8 @@ function renderPrimaryRail(activeNavKey) {
     }).join('');
 
     railEl.innerHTML = `
-        <a href="/" class="rail-logo" title="SIGNATURE VMAKE Platform">
-            V
+        <a href="/" class="rail-logo" title="SYNAPSE Biometric Analysis Lab">
+            <i class="fa-solid fa-signature"></i>
         </a>
 
         <div class="rail-nav-list">
@@ -91,25 +91,25 @@ function renderPrimaryRail(activeNavKey) {
         </div>
 
         <div class="rail-bottom">
-            <button type="button" onclick="openApiConfigModal()" class="rail-nav-item" title="Settings & Backend API" id="nav-settings">
+            <button type="button" onclick="openApiConfigModal()" class="rail-nav-item" title="Diagnostics & API Engine" id="nav-settings">
                 <i class="fa-solid fa-gear"></i>
-                <span>Settings</span>
+                <span>Config</span>
             </button>
         </div>
     `;
 }
 
 /**
- * Renders the Level 3 Workspace Top Bar with Breadcrumbs & User Profile.
+ * Renders the Forensic Workspace Top Bar with Model Telemetry & Status.
  */
-function renderTopBar(breadcrumbsText = 'Review queue / DEMO-101') {
+function renderTopBar(breadcrumbsText = 'Cases / Signature verification / Case review') {
     const topbarEl = document.getElementById('workspace-topbar');
     if (!topbarEl) return;
 
     const parts = breadcrumbsText.split('/').map(p => p.trim());
     const crumbHtml = parts.map((part, idx) => {
         if (idx === parts.length - 1) {
-            return `<span class="crumb-active" id="crumb-current">${part}</span>`;
+            return `<span class="crumb-active">${part}</span>`;
         }
         return `<span>${part}</span> <span class="text-slate-400">/</span>`;
     }).join(' ');
@@ -120,27 +120,25 @@ function renderTopBar(breadcrumbsText = 'Review queue / DEMO-101') {
         </div>
 
         <div class="topbar-right">
-            <div id="conn-pill" onclick="openApiConfigModal()" class="status-pill passed cursor-pointer" title="Click to view/change Backend API connection">
-                <span id="conn-status-text">REST API Connected</span>
+            <div class="flex items-center gap-2">
+                <button type="button" class="topbar-icon-btn" onclick="openSearchModal()" title="Search cases">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button type="button" class="topbar-icon-btn" onclick="openApiConfigModal()" title="API Engine Diagnostics">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
             </div>
-
-            <button type="button" class="topbar-icon-btn" onclick="openSearchModal()" title="Search cases or records">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-
-            <a href="${API_BASE ? API_BASE + '/docs' : '/docs'}" target="_blank" class="topbar-icon-btn" title="Open API Documentation (Swagger)">
-                <i class="fa-solid fa-book"></i>
-            </a>
 
             <div class="user-profile-badge" onclick="openApiConfigModal()" title="Verification Officer Session">
-                <div class="user-avatar">JS</div>
-                <div class="user-info hidden sm:flex">
-                    <span class="user-name">John Smith</span>
+                <div class="user-avatar">AM</div>
+                <div class="user-info">
+                    <span class="user-name">Alex Morgan</span>
                     <span class="user-role">Verification Officer</span>
                 </div>
-                <i class="fa-solid fa-chevron-down text-slate-400 text-xs hidden sm:inline-block"></i>
             </div>
         </div>
+    `;
+}
     `;
 }
 
@@ -148,7 +146,6 @@ function renderTopBar(breadcrumbsText = 'Review queue / DEMO-101') {
  * Backward compatibility: renderGlobalNavigation called by existing page scripts.
  */
 function renderGlobalNavigation(activeId) {
-    // Map activeId to new rail item
     let railKey = activeId;
     if (activeId === 'nav-overview') railKey = 'nav-cases';
     else if (activeId === 'nav-manual') railKey = 'nav-register';
@@ -156,11 +153,10 @@ function renderGlobalNavigation(activeId) {
     else if (activeId === 'nav-comparison') railKey = 'nav-model';
     else if (activeId === 'nav-queue') railKey = 'nav-queue';
     else if (activeId === 'nav-audit') railKey = 'nav-audit';
-    else if (activeId === 'nav-health') railKey = 'nav-model';
+    else if (activeId === 'nav-health') railKey = 'nav-health';
 
     renderPrimaryRail(railKey);
 
-    // Keep hidden #global-header for test assertions if present
     const headerEl = document.getElementById('global-header');
     if (headerEl && !headerEl.innerHTML) {
         headerEl.style.display = 'none';
@@ -189,49 +185,49 @@ function injectSharedModals() {
 
     const modalContainer = document.createElement('div');
     modalContainer.innerHTML = `
-        <div id="api-config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
-                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <div id="api-config-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl text-slate-100">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                     <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-950 border border-emerald-600/40 text-emerald-400 flex items-center justify-center">
                             <i class="fa-solid fa-server"></i>
                         </div>
                         <div>
-                            <h3 class="text-base font-bold text-slate-900">Backend API Connection</h3>
-                            <p class="text-xs text-slate-500">Configure connection to FastAPI verification service</p>
+                            <h3 class="text-base font-bold text-white">SIGNATURE VMAKE Engine Diagnostics</h3>
+                            <p class="text-xs text-slate-400">Configure connection to FastAPI verification microservice</p>
                         </div>
                     </div>
-                    <button onclick="closeApiConfigModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">&times;</button>
+                    <button onclick="closeApiConfigModal()" class="text-slate-400 hover:text-white text-lg cursor-pointer">&times;</button>
                 </div>
 
                 <div class="space-y-1">
-                    <label class="block text-xs font-semibold text-slate-700">Backend Base URL:</label>
-                    <input id="api-url-input" type="text" placeholder="http://localhost:8000 or empty for relative proxy" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 mono focus:outline-none focus:border-emerald-700">
+                    <label class="block text-xs font-semibold text-slate-300">Backend Base URL:</label>
+                    <input id="api-url-input" type="text" placeholder="http://localhost:8000 or empty for relative proxy" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-emerald-300 mono focus:outline-none focus:border-emerald-500">
                     <span class="text-[11px] text-slate-500">Leave blank to use root-relative endpoints (/api/v1/...).</span>
                 </div>
                 
                 <div class="space-y-1.5">
-                    <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Quick Presets:</span>
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Quick Presets:</span>
                     <div class="grid grid-cols-2 gap-2">
-                        <button type="button" onclick="setApiPreset('http://localhost:8000')" class="px-2.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-200 text-xs text-left transition flex items-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-laptop text-emerald-600"></i> Localhost (8000)
+                        <button type="button" onclick="setApiPreset('http://localhost:8000')" class="px-2.5 py-2 bg-slate-800 hover:bg-slate-750 text-slate-200 rounded-lg border border-slate-700 text-xs text-left transition flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-laptop text-emerald-400"></i> Localhost (8000)
                         </button>
-                        <button type="button" onclick="setApiPreset('')" class="px-2.5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-200 text-xs text-left transition flex items-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-cloud text-blue-600"></i> Relative (/api Proxy)
+                        <button type="button" onclick="setApiPreset('')" class="px-2.5 py-2 bg-slate-800 hover:bg-slate-750 text-slate-200 rounded-lg border border-slate-700 text-xs text-left transition flex items-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-cloud text-emerald-400"></i> Relative (/api Proxy)
                         </button>
                     </div>
                 </div>
 
                 <div id="api-test-result" class="hidden text-xs p-2.5 rounded-lg border"></div>
 
-                <div class="flex justify-between items-center pt-3 border-t border-slate-100">
+                <div class="flex justify-between items-center pt-3 border-t border-slate-800">
                     <button type="button" onclick="testCurrentApiUrl()" id="btn-test-conn" class="btn-secondary text-xs">
-                        <i class="fa-solid fa-plug"></i> Test Connection
+                        <i class="fa-solid fa-plug"></i> Test Engine Connection
                     </button>
                     <div class="flex gap-2">
                         <button type="button" onclick="closeApiConfigModal()" class="btn-secondary text-xs">Cancel</button>
                         <button type="button" onclick="saveApiUrl()" class="btn-primary text-xs">
-                            <i class="fa-solid fa-floppy-disk"></i> Save & Connect
+                            <i class="fa-solid fa-floppy-disk"></i> Save & Apply
                         </button>
                     </div>
                 </div>
@@ -251,7 +247,8 @@ function openApiConfigModal() {
 
 function closeApiConfigModal() {
     const modal = document.getElementById('api-config-modal');
-    if (modal) modal.classList.add('hidden');
+    if (!modal) return;
+    modal.classList.add('hidden');
 }
 
 function setApiPreset(url) {
@@ -262,72 +259,48 @@ function setApiPreset(url) {
 async function testCurrentApiUrl() {
     const input = document.getElementById('api-url-input');
     const resultBox = document.getElementById('api-test-result');
-    const btn = document.getElementById('btn-test-conn');
-    const testUrl = (input ? input.value.trim() : '') || '';
+    if (!input || !resultBox) return;
 
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing...';
-    resultBox.classList.remove('hidden');
-    resultBox.className = 'text-xs p-2.5 rounded-lg border bg-slate-50 text-slate-600 border-slate-200';
-    resultBox.innerText = 'Connecting to ' + (testUrl || 'relative API') + '...';
+    const testUrl = (input.value || '').trim().replace(/\/$/, '');
+    resultBox.classList.remove('hidden', 'bg-emerald-950/60', 'border-emerald-600/40', 'text-emerald-300', 'bg-rose-950/60', 'border-rose-600/40', 'text-rose-300');
+    resultBox.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing SIGNATURE VMAKE backend connection...';
 
     try {
-        const pingUrl = testUrl ? (testUrl.replace(/\/$/, '') + '/api/v1/health') : '/api/v1/health';
-        const res = await fetch(pingUrl);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        resultBox.className = 'text-xs p-2.5 rounded-lg border bg-emerald-50 text-emerald-800 border-emerald-200 font-medium';
-        resultBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Connected: Status <strong>${json.status || 'HEALTHY'}</strong> &bull; Database <strong>${json.database || 'OK'}</strong>`;
+        const resp = await fetch((testUrl || '') + '/api/v1/health');
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        resultBox.classList.add('bg-emerald-950/60', 'border-emerald-600/40', 'text-emerald-300');
+        resultBox.innerHTML = `
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> Connection Succeeded</div>
+            <div class="text-[11px] text-emerald-200/80 mt-1">Status: ${data.status} | Service: ${data.service}</div>
+            <div class="text-[11px] text-emerald-200/80 mono">Model: ${data.active_model ? data.active_model.name : 'Ready'}</div>
+        `;
     } catch (err) {
-        resultBox.className = 'text-xs p-2.5 rounded-lg border bg-rose-50 text-rose-800 border-rose-200 font-medium';
-        resultBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-rose-600 mr-1"></i> Connection failed: ${err.message}`;
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-plug"></i> Test Connection';
+        resultBox.classList.add('bg-rose-950/60', 'border-rose-600/40', 'text-rose-300');
+        resultBox.innerHTML = `
+            <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-xmark"></i> Connection Failed</div>
+            <div class="text-[11px] text-rose-200/80 mt-1">${err.message || 'Could not connect to FastAPI server.'}</div>
+        `;
     }
 }
 
 function saveApiUrl() {
     const input = document.getElementById('api-url-input');
-    const newBase = input ? input.value.trim() : '';
-    if (newBase) {
-        localStorage.setItem('vmake_api_base', newBase);
-        API_BASE = newBase.replace(/\/$/, '');
-    } else {
-        localStorage.removeItem('vmake_api_base');
-        API_BASE = '';
-    }
+    if (!input) return;
+    const newBase = input.value.trim().replace(/\/$/, '');
+    localStorage.setItem('vmake_api_base', newBase);
+    API_BASE = newBase;
     closeApiConfigModal();
     window.location.reload();
 }
 
-/**
- * Checks backend health and updates connection status badge.
- */
-async function checkBackendHealth() {
-    const badge = document.getElementById('conn-pill');
-    const textEl = document.getElementById('conn-status-text');
-
-    try {
-        const healthUrl = (API_BASE || '') + '/api/v1/health';
-        const res = await fetch(healthUrl);
-        if (res.ok) {
-            if (badge) badge.className = 'status-pill passed cursor-pointer';
-            if (textEl) textEl.innerText = 'REST API Connected';
-        } else {
-            if (badge) badge.className = 'status-pill review cursor-pointer';
-            if (textEl) textEl.innerText = `API HTTP ${res.status}`;
-        }
-    } catch (_) {
-        if (badge) badge.className = 'status-pill rejected cursor-pointer';
-        if (textEl) textEl.innerText = 'API Offline';
-    }
-}
-
+// Global Search Modal placeholder
 function openSearchModal() {
     const searchInput = document.getElementById('case-search-input');
     if (searchInput) {
         searchInput.focus();
         searchInput.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        alert('SIGNATURE VMAKE Case Search: Please use the search input in the operations sidebar.');
     }
 }

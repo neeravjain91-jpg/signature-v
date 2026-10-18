@@ -702,6 +702,39 @@ body {
     background-color: var(--blue-dot);
 }
 
+/* Compatibility Badges */
+.badge-info, .badge-neutral, .badge-success, .badge-danger, .badge-warning {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+.badge-info { background-color: var(--blue-bg); color: var(--blue-text); border: 1px solid var(--blue-border); }
+.badge-neutral { background-color: #F3F4F6; color: #4B5563; border: 1px solid #E5E7EB; }
+.badge-success { background-color: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+.badge-danger { background-color: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
+.badge-warning { background-color: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
+
+/* Compatibility Utility Classes */
+.card {
+    background-color: #FFFFFF;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+.bg-surface { background-color: #FFFFFF; }
+.border-border { border-color: #E5E7EB; }
+.text-foreground { color: #111827; }
+.text-muted { color: #6B7280; }
+.text-success { color: #15803D; }
+.text-danger { color: #DC2626; }
+.text-warning { color: #D97706; }
+.progress-track { background-color: #E5E7EB; border-radius: 9999px; overflow: hidden; height: 8px; }
+.progress-bar { height: 100%; border-radius: 9999px; transition: width 0.3s ease; }
+
 /* Signature Cards Grid */
 .signature-cards-grid {
     display: grid;

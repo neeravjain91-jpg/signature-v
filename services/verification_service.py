@@ -49,7 +49,7 @@ class BankingVerificationService:
         if verifier is not None:
             self.verifier = verifier
         else:
-            self.verifier = get_model_verifier("transformer", checkpoint_path=checkpoint_path)
+            self.verifier = get_model_verifier("siamese", checkpoint_path=checkpoint_path)
         self.risk_engine = risk_engine or FraudRiskEngine()
 
 
@@ -260,8 +260,8 @@ class BankingVerificationService:
         if ref_image_path.startswith("vault://"):
             # Use demo enrolled specimen on disk if available, otherwise raw dataset sample
             potential_paths = [
-                f"data/raw/signatures/full_org/original_1_1.png",
-                f"data/raw/signatures/full_org/original_46_1.png"
+                "data/raw/signatures/full_org/original_46_1.png",
+                "data/raw/signatures/full_org/original_1_1.png"
             ]
             for p in potential_paths:
                 if Path(p).exists():

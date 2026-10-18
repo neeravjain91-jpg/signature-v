@@ -21,14 +21,16 @@
     <header id="global-header" style="display:none;"></header>
     <footer id="global-footer" style="display:none;"></footer>
 
-    <!-- App Frame: 3-Level Enterprise Layout -->
-    <div class="app-layout">
+    <!-- Three-Level Enterprise Workspace Layout -->
+    <div class="app-container">
 
-        <!-- LEVEL 1: Dark Forest Primary Rail Navigation -->
-        <nav id="primary-rail" class="primary-rail" aria-label="Main Navigation"></nav>
+        <!-- LEVEL 1: Primary Navigation Rail (Dark Forest Green) -->
+        <aside class="nav-rail" id="primary-rail">
+            <!-- Injected by common.js -->
+        </aside>
 
-        <!-- LEVEL 2: Light Context Sidebar (Queue Filters & SLAs) -->
-        <aside class="context-sidebar flex flex-col justify-between" aria-label="Queue Controls">
+        <!-- LEVEL 2: Context / Operations Sidebar (Queue Filters & SLAs) -->
+        <aside class="context-sidebar" id="context-sidebar" aria-label="Queue Controls">
             <div class="p-4 space-y-5 overflow-y-auto">
                 <!-- Sidebar Header -->
                 <div class="border-b border-border pb-3">
@@ -84,10 +86,10 @@
             </div>
         </aside>
 
-        <!-- LEVEL 3: Spacious Main Content Workspace -->
-        <main class="workspace-area" aria-label="Officer Adjudication Queue">
+        <!-- LEVEL 3: Main Workspace (Officer Adjudication Queue) -->
+        <main class="main-workspace" aria-label="Officer Adjudication Queue">
             <!-- Level 3 Top Bar -->
-            <header id="top-bar-placeholder"></header>
+            <header class="workspace-topbar" id="workspace-topbar"></header>
 
             <!-- Workspace Scrollable Content -->
             <div class="workspace-content space-y-5">

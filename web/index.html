@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGNATURE VMAKE — Overview & Executive Dashboard</title>
-    <!-- Modern Sans-Serif Font & Font Awesome -->
+    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Enterprise Design System Stylesheet -->
     <link rel="stylesheet" href="/assets/css/app.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-[#090D16] text-slate-100 min-h-screen">
 
-    <!-- Test Harness Anchors (Hidden) -->
+    <!-- Automated Test Harness Anchors (Hidden) -->
     <header id="global-header" style="display: none;">
-        <span>SIGNATURE VMAKE &bull; AI BIOMETRIC PLATFORM</span>
+        <span>SIGNATURE VMAKE &bull; SYNAPSE BIOMETRIC ANALYSIS LAB</span>
         <nav>
             <a href="/">Overview</a>
             <a href="/manual-workflow">Manual Register & Verify</a>
@@ -27,273 +28,302 @@
             <a href="/model-registry">Model Registry & Health</a>
         </nav>
     </header>
-    <footer id="global-footer" style="display: none;">SIGNATURE VMAKE &copy; 2026. Production ViT, RF, SVM, Logistic.</footer>
+    <footer id="global-footer" style="display: none;">SIGNATURE VMAKE &copy; 2026. SYNAPSE Siamese ResNet-18 v4 Champion.</footer>
 
-    <!-- Three-Level Enterprise Workspace Layout -->
     <div class="app-container">
 
-        <!-- LEVEL 1: Primary Navigation Rail (Dark Forest Green) -->
-        <aside class="nav-rail" id="primary-rail">
-            <!-- Injected by common.js / overview.js -->
+        <!-- LEVEL 1: Primary Navigation Rail (Deep Navy / Charcoal) -->
+        <aside class="primary-rail" id="primary-rail">
+            <!-- Injected by common.js -->
         </aside>
 
-        <!-- LEVEL 2: Context / Operations Sidebar (Review Queue) -->
-        <aside class="context-sidebar" id="context-sidebar">
-            <div class="sidebar-header">
-                <div class="brand-badge-row">
+        <!-- LEVEL 2: Forensic Queue & Specimen Cases Sidebar -->
+        <aside class="w-80 bg-[#0B111E] border-r border-[#18263D] flex flex-col shrink-0 h-screen overflow-y-auto" id="context-sidebar">
+            <div class="p-5 border-b border-[#18263D] space-y-3">
+                <div class="flex items-center justify-between">
                     <div>
-                        <div class="brand-title">SIGNATURE VMAKE</div>
-                        <div class="brand-subtitle">BIOMETRIC PLATFORM</div>
+                        <div class="text-xs font-bold tracking-wider text-sky-400 flex items-center gap-1.5 uppercase">
+                            <i class="fa-solid fa-signature"></i> SYNAPSE FORENSICS
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono">BIOMETRIC ANALYSIS LAB</div>
                     </div>
-                    <span class="demo-chip">DEMO DATA</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-950/80 text-sky-300 border border-sky-800/60 uppercase">ONLINE</span>
                 </div>
 
-                <div class="queue-title-row">
-                    <h2 class="queue-title">Review queue</h2>
-                    <span class="count-pill" id="queue-count-pill">99</span>
+                <div class="flex items-center justify-between pt-1">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300">Forensic Case Queue</h2>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-slate-900 border border-slate-700 text-sky-300" id="queue-count-pill">99</span>
                 </div>
 
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="case-search-input" placeholder="Search by name, case ID or amount..." oninput="handleCaseSearch()">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500"></i>
+                    <input type="text" id="case-search-input" placeholder="Search case ref, account, name..." oninput="handleCaseSearch()" class="w-full bg-[#080C14] border border-[#1E2D4A] rounded-lg pl-8 pr-3 py-1.5 text-xs text-sky-300 mono focus:outline-none focus:border-sky-500">
                 </div>
 
-                <div class="filter-chips">
-                    <button type="button" class="filter-chip active" id="filter-btn-all" onclick="setCaseFilter('all')">All</button>
-                    <button type="button" class="filter-chip" id="filter-btn-high_risk" onclick="setCaseFilter('high_risk')">
-                        <span class="dot-red"></span> High risk
+                <div class="flex gap-1.5 pt-1 text-xs">
+                    <button type="button" class="flex-1 py-1 rounded bg-sky-950 text-sky-300 border border-sky-800/80 font-semibold text-[11px] transition text-center" id="filter-btn-all" onclick="setCaseFilter('all')">All</button>
+                    <button type="button" class="flex-1 py-1 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-[11px] transition text-center" id="filter-btn-high_risk" onclick="setCaseFilter('high_risk')">
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500 inline-block mr-1"></span>High Risk
                     </button>
-                    <button type="button" class="filter-chip" id="filter-btn-assigned" onclick="setCaseFilter('assigned')">Assigned</button>
+                    <button type="button" class="flex-1 py-1 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-[11px] transition text-center" id="filter-btn-assigned" onclick="setCaseFilter('assigned')">Assigned</button>
                 </div>
             </div>
 
-            <!-- Case List -->
-            <div class="sidebar-body" id="sidebar-case-list">
+            <!-- Case List Items -->
+            <div class="p-3 flex-grow space-y-2 overflow-y-auto" id="sidebar-case-list">
                 <!-- Dynamically populated by overview.js -->
             </div>
 
             <!-- Sidebar Footer -->
-            <div class="sidebar-footer">
-                <div class="assigned-row">
-                    <span class="text-xs font-semibold text-slate-700">Assigned to you</span>
-                    <span class="count-pill">6</span>
-                </div>
+            <div class="p-4 border-t border-[#18263D] bg-[#070A12] text-[11px] text-slate-400 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <div class="avatar-stack">
-                        <div class="avatar-circle">AM</div>
-                        <div class="avatar-circle" style="background-color: #2563EB;">JD</div>
-                        <div class="avatar-circle" style="background-color: #4B5563;"><i class="fa-solid fa-users text-[8px]"></i></div>
-                    </div>
-                    <span class="text-[11px] text-slate-500">You and 2 others</span>
-                    <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+                    <div class="w-6 h-6 rounded bg-sky-900 text-sky-200 text-[10px] font-bold flex items-center justify-center">AN</div>
+                    <span class="text-xs text-slate-300">Biometric Analyst</span>
                 </div>
+                <span class="mono text-[10px] text-slate-500">FORENSIC-V4</span>
             </div>
         </aside>
 
-        <!-- LEVEL 3: Main Workspace (Case Review Canvas) -->
-        <main class="main-workspace">
+        <!-- LEVEL 3: Main Analytical Workspace -->
+        <main class="workspace-frame">
 
-            <!-- Top Bar -->
-            <header class="workspace-topbar" id="workspace-topbar">
-                <!-- Injected by common.js / overview.js -->
+            <!-- Top Telemetry Header -->
+            <header class="lab-header" id="workspace-topbar">
+                <!-- Injected by common.js -->
             </header>
 
-            <!-- Workspace Content -->
-            <div class="workspace-content">
+            <div class="lab-workspace space-y-6">
 
-                <!-- Section Command Tag -->
-                <p class="section-command-label">03 / REVIEW COMMAND</p>
+                <!-- Dedicated Hero Workstation Banner -->
+                <div class="p-6 rounded-2xl bg-gradient-to-r from-[#0E1626] via-[#121E34] to-[#0A101C] border border-[#1E2D4A] flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-xl">
+                    <div class="space-y-2 max-w-2xl">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-sky-950 text-sky-300 border border-sky-800/80 uppercase tracking-wider">PROJECT SYNAPSE</span>
+                            <span class="text-xs text-slate-500">&bull;</span>
+                            <span class="text-xs text-slate-400 mono">ResNet-18 Siamese Metric Learner</span>
+                        </div>
+                        <h1 class="text-2xl font-bold text-white tracking-tight">Intelligent Signature Verification & Forensic Analysis Laboratory</h1>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Writer-independent deep representation learning system featuring <strong>Shared ResNet-18 Siamese Feature Extraction</strong>, <strong>Forgery-Aware Metric Loss</strong>, and <strong>Multi-Specimen Customer Gallery Aggregation</strong>.
+                        </p>
+                    </div>
 
-                <!-- Page Header Row -->
-                <div class="page-header-row">
-                    <h1 class="page-main-heading">Case review</h1>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                        <a href="/manual-workflow" class="btn-synapse btn-primary py-2.5 px-4 text-xs font-bold flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-microscope text-sm"></i>
+                            <span>Launch Signature Analysis Lab</span>
+                        </a>
+                        <button type="button" class="btn-synapse btn-secondary py-2.5 px-4 text-xs flex items-center justify-center gap-2" onclick="exportCaseReport()">
+                            <i class="fa-regular fa-file-pdf"></i>
+                            <span>Export Audit</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Case Metadata Header Card -->
+                <div class="glass-card p-4">
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-xs">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Customer Signer</span>
+                            <h3 class="text-sm font-bold text-white mt-0.5 truncate" id="case-customer-name">Alex Morgan</h3>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Case Identifier</span>
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                <h3 class="text-sm font-bold text-sky-300 mono" id="case-id-display">DEMO-101</h3>
+                                <span class="px-1.5 py-0.2 rounded text-[9px] bg-slate-800 text-slate-400 mono" id="case-demo-badge">CEDAR-46</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Transaction Category</span>
+                            <h3 class="text-sm font-bold text-slate-200 mt-0.5" id="case-txn-type">Cheque clearance</h3>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Exposure Amount</span>
+                            <h3 class="text-sm font-bold text-slate-100 mono mt-0.5" id="case-amount-display">$4,500.00</h3>
+                        </div>
+                        <div class="flex items-center justify-start md:justify-end">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider" id="case-status-badge">Review required</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side-by-Side Biometric Comparison Frames -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    <!-- Reference Specimen Frame -->
+                    <div class="specimen-card">
+                        <div class="specimen-card-header">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-fingerprint text-sky-400"></i> Registered Genuine Specimen
+                            </h4>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-800/60 uppercase" id="specimen-badge-tag">Genuine Reference</span>
+                        </div>
+                        <div class="specimen-canvas-frame" id="ref-overview-frame">
+                            <div class="canvas-crosshair"></div>
+                            <img id="specimen-signature-img" src="/api/v1/sample-image?type=genuine_ref" alt="Enrolled Specimen Signature" class="max-h-full max-w-full object-contain filter invert opacity-95">
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-slate-400 mono">
+                            <span>Resolution: 224 &times; 224 (Otsu CropPad)</span>
+                            <span class="text-sky-400">Quality: 96.2%</span>
+                        </div>
+                    </div>
+
+                    <!-- Questioned Signature Frame -->
+                    <div class="specimen-card">
+                        <div class="specimen-card-header">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-magnifying-glass text-sky-400"></i> Questioned Signature Under Review
+                            </h4>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950/80 text-amber-300 border border-amber-800/60 uppercase" id="questioned-badge-tag">Customer Cheque</span>
+                        </div>
+                        <div class="specimen-canvas-frame" id="query-overview-frame">
+                            <div class="canvas-crosshair"></div>
+                            <img id="questioned-signature-img" src="/api/v1/sample-image?type=forged_sub" alt="Questioned Presented Signature" class="max-h-full max-w-full object-contain filter invert opacity-95">
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-slate-400 mono">
+                            <span>Extractor: ResNet-18 Shared Weights</span>
+                            <span class="text-amber-400">Quality: 88.4%</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Verification Result & Biometric Verdict Panel -->
+                <div class="p-4 rounded-xl bg-[#0E1626] border border-[#1E2D4A] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg" id="verification-result-panel">
                     <div class="flex items-center gap-3">
-                        <button type="button" class="btn-secondary" onclick="exportCaseReport()" title="Export forensic audit report">
-                            <i class="fa-regular fa-file-pdf"></i> Export report
-                        </button>
+                        <div class="w-10 h-10 rounded-xl bg-amber-950 border border-amber-700/60 text-amber-400 flex items-center justify-center text-lg font-bold" id="result-verdict-icon">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Verification Verdict</span>
+                            <h3 class="text-base font-bold text-white" id="result-verdict-text">Review required</h3>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs border-t md:border-t-0 md:border-l border-[#1E2D4A] pt-3 md:pt-0 md:pl-6">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Similarity (S)</span>
+                            <h3 class="text-base font-bold text-sky-400 mono" id="result-similarity-text">0.5400</h3>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Operating Cutoff (&tau;*)</span>
+                            <h3 class="text-base font-bold text-emerald-400 mono" id="result-threshold-text">0.5924</h3>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold block">Forensic Rationale</span>
+                            <p class="text-xs font-semibold text-slate-200 mt-0.5 truncate max-w-[200px]" id="result-reason-text">Similarity below threshold</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Case Metadata Card -->
-                <div class="case-metadata-grid">
-                    <div>
-                        <h3 class="meta-field-value" id="case-customer-name">Alex Morgan</h3>
-                        <p class="meta-field-label">Customer</p>
-                    </div>
-                    <div>
-                        <h3 class="meta-field-value mono" id="case-id-display">DEMO-101</h3>
-                        <p class="meta-field-label">Case ID</p>
-                    </div>
-                    <div>
-                        <h3 class="meta-field-value" id="case-txn-type">Cheque clearance</h3>
-                        <p class="meta-field-label">Transaction type</p>
-                    </div>
-                    <div>
-                        <h3 class="meta-field-value" id="case-amount-display">$4,500.00</h3>
-                        <p class="meta-field-label">Transaction amount</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="status-pill review" id="case-status-badge">Review required</span>
-                    </div>
-                </div>
+                <!-- Evidence & Case Activity Two-Column Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                <!-- Signature Comparison Area (Two Side-by-Side Cards) -->
-                <div class="signature-cards-grid">
-                    <!-- Left: Registered Specimen -->
-                    <div class="signature-card">
-                        <div class="signature-card-header">
-                            <h4 class="signature-card-title">
-                                <i class="fa-regular fa-file-lines text-slate-500"></i> Registered specimen
+                    <!-- Evidence Checklist -->
+                    <div class="lab-panel space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-[#1E2D4A]">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-clipboard-check text-sky-400"></i> Automated Evidence Checklist
                             </h4>
-                            <span class="status-pill passed text-[10px]" id="specimen-badge-tag">Genuine reference</span>
+                            <span class="text-[10px] text-slate-400 mono">ISO 19795 AUDIT</span>
                         </div>
-                        <div class="signature-canvas-box">
-                            <img id="specimen-signature-img" src="/api/v1/sample-image?type=genuine_ref" alt="Enrolled Specimen Signature">
-                        </div>
-                    </div>
-
-                    <!-- Right: Questioned Signature -->
-                    <div class="signature-card">
-                        <div class="signature-card-header">
-                            <h4 class="signature-card-title">
-                                <i class="fa-regular fa-file-lines text-slate-500"></i> Questioned signature
-                            </h4>
-                            <span class="status-pill info text-[10px]" id="questioned-badge-tag">Customer cheque</span>
-                        </div>
-                        <div class="signature-canvas-box">
-                            <img id="questioned-signature-img" src="/api/v1/sample-image?type=forged_sub" alt="Questioned Presented Signature">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Verification Result Panel (Highlighted Bar) -->
-                <div class="verification-result-panel" id="verification-result-panel">
-                    <div class="verdict-icon-circle" id="result-verdict-icon">!</div>
-
-                    <div class="result-metric-group" style="min-width: 160px;">
-                        <span class="result-metric-label">Verification verdict</span>
-                        <h3 class="result-metric-value" id="result-verdict-text">Review required</h3>
-                    </div>
-
-                    <div class="result-divider"></div>
-
-                    <div class="result-metric-group" style="min-width: 90px;">
-                        <span class="result-metric-label">Similarity</span>
-                        <h3 class="result-metric-value mono" id="result-similarity-text">0.54</h3>
-                    </div>
-
-                    <div class="result-divider"></div>
-
-                    <div class="result-metric-group" style="min-width: 90px;">
-                        <span class="result-metric-label">Threshold</span>
-                        <h3 class="result-metric-value mono" id="result-threshold-text">0.59</h3>
-                    </div>
-
-                    <div class="result-divider"></div>
-
-                    <div class="result-metric-group flex-1">
-                        <span class="result-metric-label">Reason</span>
-                        <p class="text-xs font-semibold text-slate-800 m-0" id="result-reason-text">Similarity below threshold</p>
-                    </div>
-                </div>
-
-                <!-- Bottom Grid: Evidence & Review Notes -->
-                <div class="bottom-two-col-grid">
-                    <!-- Left: Evidence Checklist -->
-                    <div class="enterprise-card">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                            <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                <i class="fa-regular fa-file-lines text-slate-500"></i> Evidence
-                            </h4>
-                            <span class="text-[11px] text-slate-400">Automated Checks</span>
-                        </div>
-                        <div class="evidence-list" id="evidence-checklist-container">
-                            <!-- Populated dynamically -->
+                        <div class="space-y-2" id="evidence-checklist-container">
+                            <!-- Populated dynamically by overview.js -->
                         </div>
                     </div>
 
-                    <!-- Right: Review Notes & Case Activity -->
-                    <div class="flex flex-col gap-4">
-                        <!-- Review Notes -->
-                        <div class="enterprise-card">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                    <i class="fa-regular fa-pen-to-square text-slate-500"></i> Review notes
+                    <!-- Review Notes & Case Activity -->
+                    <div class="space-y-4">
+                        <div class="lab-panel space-y-2">
+                            <div class="flex items-center justify-between pb-2 border-b border-[#1E2D4A]">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                                    <i class="fa-regular fa-pen-to-square text-sky-400"></i> Forensic Analyst Review Notes
                                 </h4>
                             </div>
-                            <textarea id="case-review-notes" class="review-textarea" placeholder="Add your review notes, observations or next steps..." maxlength="1000" oninput="updateCharCount()"></textarea>
-                            <div class="char-counter" id="review-notes-char-count">0/1000</div>
+                            <textarea id="case-review-notes" class="input-synapse h-20 text-xs resize-none" placeholder="Add forensic observations, stroke comparison notes, or adjudication decisions..." maxlength="1000" oninput="updateCharCount()"></textarea>
+                            <div class="text-right text-[10px] text-slate-500 mono" id="review-notes-char-count">0/1000</div>
                         </div>
 
-                        <!-- Case Activity Timeline -->
-                        <div class="enterprise-card">
-                            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-                                <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                    <i class="fa-regular fa-clock text-slate-500"></i> Case activity
+                        <div class="lab-panel space-y-2">
+                            <div class="flex items-center justify-between pb-2 border-b border-[#1E2D4A]">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                                    <i class="fa-solid fa-clock-rotate-left text-sky-400"></i> Case Timeline Activity
                                 </h4>
                             </div>
-                            <div class="timeline-list" id="case-activity-container">
-                                <!-- Populated dynamically -->
+                            <div class="space-y-2" id="case-activity-container">
+                                <!-- Populated dynamically by overview.js -->
                             </div>
                         </div>
                     </div>
+
                 </div>
 
-                <!-- Bottom Action Bar -->
-                <div class="bottom-action-bar">
-                    <button type="button" class="btn-secondary" onclick="cycleCase(-1)" title="Go to previous case in queue">
-                        <i class="fa-solid fa-arrow-left"></i> Previous case
+                <!-- Bottom Adjudication Action Bar -->
+                <div class="p-4 rounded-xl bg-[#0E1626] border border-[#1E2D4A] flex flex-wrap items-center justify-between gap-3">
+                    <button type="button" class="btn-synapse btn-secondary text-xs" onclick="cycleCase(-1)">
+                        <i class="fa-solid fa-arrow-left"></i> Previous Case
                     </button>
-                    <div class="action-btn-group">
-                        <button type="button" class="btn-secondary" onclick="requestNewSample()" title="Request new specimen scan from customer">
-                            <i class="fa-regular fa-file-image"></i> Request new sample
+                    <div class="flex items-center gap-2">
+                        <button type="button" class="btn-synapse btn-secondary text-xs" onclick="requestNewSample()">
+                            <i class="fa-regular fa-file-image"></i> Request New Specimen
                         </button>
-                        <button type="button" class="btn-primary" id="btn-submit-review" onclick="submitCaseReview()" title="Submit final adjudication decision">
-                            <i class="fa-solid fa-paper-plane"></i> Submit review
+                        <button type="button" class="btn-synapse btn-primary text-xs" id="btn-submit-review" onclick="submitCaseReview()">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Adjudication
                         </button>
-                        <button type="button" class="btn-secondary" onclick="cycleCase(1)" title="Go to next case in queue">
-                            Next case <i class="fa-solid fa-arrow-right"></i>
+                        <button type="button" class="btn-synapse btn-secondary text-xs" onclick="cycleCase(1)">
+                            Next Case <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Executive Operations Metrics Drawer (Live Backend Telemetry) -->
-                <div class="enterprise-card mt-2">
-                    <div class="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-emerald-700"></i> Live Executive Clearing Telemetry
-                        </h4>
-                        <div class="flex items-center gap-3 text-xs text-slate-500">
-                            <span>Database: <strong class="text-emerald-700" id="overview-db-status">CONNECTED</strong></span>
+                <!-- Executive Clearing & Telemetry Stats Drawer -->
+                <div class="lab-panel space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#1E2D4A] gap-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-sky-400"></i>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-200">Production Model & Verification Telemetry</h4>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs text-slate-400 mono">
+                            <span>Database: <strong class="text-emerald-400" id="overview-db-status">CONNECTED</strong></span>
                             <span>&bull;</span>
-                            <span>Service: <strong class="text-emerald-700" id="overview-service-status">HEALTHY</strong></span>
+                            <span>Engine: <strong class="text-emerald-400" id="overview-service-status">HEALTHY</strong></span>
                         </div>
                     </div>
+
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                            <p class="text-[10px] uppercase font-bold text-slate-500">Total Verifications</p>
-                            <h3 class="text-xl font-bold text-slate-900 mt-1" id="stat-total-verif">--</h3>
+                        <div class="p-3 rounded-lg bg-[#080C14] border border-[#1E2D4A]">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Total Verifications</p>
+                            <h3 class="text-xl font-bold text-white mt-1 mono" id="stat-total-verif">--</h3>
                         </div>
-                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                            <p class="text-[10px] uppercase font-bold text-slate-500">Automated Pass Rate</p>
-                            <h3 class="text-xl font-bold text-emerald-700 mt-1" id="stat-verified-rate">--%</h3>
+                        <div class="p-3 rounded-lg bg-[#080C14] border border-[#1E2D4A]">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Genuine Pass Rate</p>
+                            <h3 class="text-xl font-bold text-emerald-400 mt-1 mono" id="stat-verified-rate">--%</h3>
                         </div>
-                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                            <p class="text-[10px] uppercase font-bold text-slate-500">Fraud Block Rate</p>
-                            <h3 class="text-xl font-bold text-rose-700 mt-1" id="stat-rejected-rate">--%</h3>
+                        <div class="p-3 rounded-lg bg-[#080C14] border border-[#1E2D4A]">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Fraud Block Rate</p>
+                            <h3 class="text-xl font-bold text-rose-400 mt-1 mono" id="stat-rejected-rate">--%</h3>
                         </div>
-                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-100">
-                            <p class="text-[10px] uppercase font-bold text-slate-500">Pending Reviews</p>
-                            <h3 class="text-xl font-bold text-amber-700 mt-1" id="stat-pending-reviews">--</h3>
+                        <div class="p-3 rounded-lg bg-[#080C14] border border-[#1E2D4A]">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Pending Review</p>
+                            <h3 class="text-xl font-bold text-amber-400 mt-1 mono" id="stat-pending-reviews">--</h3>
                         </div>
                     </div>
-                    <div class="mt-3 pt-2 border-t border-slate-100 flex flex-wrap justify-between items-center text-[11px] text-slate-500">
-                        <span>Production Backbone: <strong class="text-slate-800" id="overview-active-model-name">HF Vision Transformer</strong> (<span id="overview-active-model-arch">deit-tiny-patch16-224</span>)</span>
-                        <span>Calibrated Threshold: &tau;* = <strong class="text-slate-800" id="overview-active-model-thresh">0.7313</strong></span>
+
+                    <div class="pt-2 border-t border-[#1E2D4A] flex flex-wrap justify-between items-center text-[11px] text-slate-400 mono">
+                        <span>Champion Model: <strong class="text-sky-300" id="overview-active-model-name">SYNAPSE Siamese ResNet-18 (v4)</strong> (<span id="overview-active-model-arch">256-D Metric Head</span>)</span>
+                        <span>Frozen Cutoff: &tau;* = <strong class="text-emerald-400" id="overview-active-model-thresh">0.5924</strong></span>
                     </div>
                 </div>
 
             </div>
+
+            <!-- Global Footer -->
+            <footer class="lab-footer" id="global-footer-bar">
+                <span>SYNAPSE Biometric Analysis Workstation &bull; Intelligent Signature Verification & Fraud Risk Assessment</span>
+                <span class="mono">ISO 19795 COMPLIANT &bull; ZERO-LEAKAGE HELD-OUT PROTOCOL</span>
+            </footer>
+
         </main>
     </div>
 

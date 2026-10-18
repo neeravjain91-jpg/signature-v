@@ -54,10 +54,10 @@ class SignatureVerifier(SignatureVerificationModel):
 
         if checkpoint_path is not None:
             self.checkpoint_path = Path(checkpoint_path)
-        elif vmake_path.exists():
-            self.checkpoint_path = vmake_path
         elif v4_path.exists():
             self.checkpoint_path = v4_path
+        elif vmake_path.exists():
+            self.checkpoint_path = vmake_path
         elif final_champ_path.exists():
             self.checkpoint_path = final_champ_path
         elif champ_path.exists():
@@ -128,7 +128,7 @@ class SignatureVerifier(SignatureVerificationModel):
         else:
             resolved_threshold = float(checkpoint.get("optimal_threshold", 0.7500))
 
-        chosen_model_name = "VMAKE_Siamese_Champion" if "vmake" in str(self.checkpoint_path).lower() else "Siamese_ResNet_Champion"
+        chosen_model_name = "SYNAPSE_Siamese_ResNet18_Champion" if "v4" in str(self.checkpoint_path).lower() else ("VMAKE_Siamese_Champion" if "vmake" in str(self.checkpoint_path).lower() else "Siamese_ResNet_Champion")
         super().__init__(
             model_name=chosen_model_name,
             model_version=model_version,

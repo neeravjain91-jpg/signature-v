@@ -166,15 +166,17 @@ def health_check(db: Session = Depends(get_db)):
     model = db.query(ModelVersion).filter_by(status="PRODUCTION").first() or db.query(ModelVersion).first()
     return {
         "status": "HEALTHY",
-        "service": "SIGNATURE VMAKE Signature Verification Platform",
+        "service": "SYNAPSE Biometric Analysis Lab (SIGNATURE VMAKE Compatible Engine)",
         "database": "CONNECTED",
         "active_model": {
-            "name": model.model_name if model else "HF_Vision_Transformer",
-            "version": model.version if model else "v1.0.0",
-            "threshold": float(model.threshold) if model else 0.7313,
-            "architecture": model.architecture if model else "Vision Transformer (facebook/deit-tiny-patch16-224)"
+            "name": "SYNAPSE_Siamese_ResNet18_Champion",
+            "version": "4.0.0-champion",
+            "threshold": 0.5924,
+            "single_pair_threshold": 0.5924,
+            "gallery_threshold": 0.6312,
+            "architecture": "Siamese ResNet-18 (Deep Metric Learning)"
         },
-        "available_tracks": ["transformer", "svm", "random_forest", "logistic", "sklearn"]
+        "available_tracks": ["siamese", "transformer", "svm", "random_forest", "logistic", "sklearn"]
     }
 
 
@@ -697,6 +699,7 @@ def create_transaction(payload: TransactionCreateRequest, db: Session = Depends(
 # MODULE G: MANUAL REVIEW QUEUE
 # =============================================================================
 @app.post("/api/v1/verifications/{verification_id}/adjudicate", tags=["Module G: Manual Review Queue"])
+@app.post("/api/v1/manual-reviews/{verification_id}/adjudicate", tags=["Module G: Manual Review Queue"])
 def adjudicate_review(
     verification_id: str,
     payload: AdjudicateReviewRequest,

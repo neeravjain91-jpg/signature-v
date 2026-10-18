@@ -21,14 +21,16 @@
     <header id="global-header" style="display:none;"></header>
     <footer id="global-footer" style="display:none;"></footer>
 
-    <!-- App Frame: 3-Level Enterprise Layout -->
-    <div class="app-layout">
+    <!-- Three-Level Enterprise Workspace Layout -->
+    <div class="app-container">
 
-        <!-- LEVEL 1: Dark Forest Primary Rail Navigation -->
-        <nav id="primary-rail" class="primary-rail" aria-label="Main Navigation"></nav>
+        <!-- LEVEL 1: Primary Navigation Rail (Dark Forest Green) -->
+        <aside class="nav-rail" id="primary-rail">
+            <!-- Injected by common.js -->
+        </aside>
 
-        <!-- LEVEL 2: Light Context Sidebar (Studio Controls & Presets) -->
-        <aside class="context-sidebar flex flex-col justify-between" aria-label="Cheque Studio Controls">
+        <!-- LEVEL 2: Context / Operations Sidebar (Studio Controls & Presets) -->
+        <aside class="context-sidebar" id="context-sidebar" aria-label="Cheque Studio Controls">
             <div class="p-4 space-y-5 overflow-y-auto">
                 <!-- Sidebar Header -->
                 <div class="border-b border-border pb-3">
@@ -77,10 +79,11 @@
                 <div class="space-y-1.5">
                     <label for="select-model-track" class="text-xs font-medium text-foreground block">Biometric AI Engine</label>
                     <select id="select-model-track" class="w-full bg-surface border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground font-mono focus:outline-none focus:border-brand-accent">
-                        <option value="transformer" selected>Track B: HF Vision Transformer (Default)</option>
-                        <option value="random_forest">Track A1: Random Forest Champion</option>
-                        <option value="svm">Track A2: Classical SVM Baseline</option>
-                        <option value="logistic">Track A3: Classical Logistic Reg.</option>
+                        <option value="siamese" selected>SYNAPSE v4 Champion: Siamese ResNet-18 (&tau;* = 0.5924)</option>
+                        <option value="transformer">Track B: HF Vision Transformer (&tau;* = 0.7313)</option>
+                        <option value="random_forest">Track A1: Random Forest Champion (&tau;* = 0.4264)</option>
+                        <option value="svm">Track A2: Classical SVM Baseline (&tau;* = 0.3636)</option>
+                        <option value="logistic">Track A3: Classical Logistic Reg. (&tau;* = 0.2015)</option>
                     </select>
                 </div>
 
@@ -118,10 +121,10 @@
             </div>
         </aside>
 
-        <!-- LEVEL 3: Spacious Main Content Workspace -->
-        <main class="workspace-area" aria-label="Cheque Verification Workspace">
+        <!-- LEVEL 3: Main Workspace (Cheque Verification Workspace) -->
+        <main class="main-workspace" aria-label="Cheque Verification Workspace">
             <!-- Level 3 Top Bar -->
-            <header id="top-bar-placeholder"></header>
+            <header class="workspace-topbar" id="workspace-topbar"></header>
 
             <!-- Workspace Scrollable Content -->
             <div class="workspace-content space-y-5">
